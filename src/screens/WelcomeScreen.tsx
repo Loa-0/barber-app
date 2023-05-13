@@ -48,4 +48,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-//prueba committ Derek 2
