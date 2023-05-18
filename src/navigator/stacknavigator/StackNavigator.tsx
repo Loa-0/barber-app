@@ -20,7 +20,7 @@ export const StackNavigator = () => {
         name="Home"
         component={WelcomeScreen}
       />
-      <Stack.Screen name="Page1" component={Page1} />
+      <Stack.Screen name="Pagina1" component={Page1} />
       {/* <Stack.Screen name="Profile" component={Profile} /> */}
       {/* <Stack.Screen name="Settings" component={Settings} /> */}
     </Stack.Navigator>
