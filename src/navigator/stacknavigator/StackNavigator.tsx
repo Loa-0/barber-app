@@ -5,7 +5,7 @@ import {WelcomeScreen} from '../../screens/WelcomeScreen';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
-  Pagina1: {id: number; nombre: string};
+  Page1: {id: number; nombre: string};
 };
 const Stack = createStackNavigator<RootStackParams>();
 export const StackNavigator = () => {
@@ -20,7 +20,7 @@ export const StackNavigator = () => {
         name="Home"
         component={WelcomeScreen}
       />
-      <Stack.Screen name="Pagina1" component={Page1} />
+      <Stack.Screen name="Page1" component={Page1} />
       {/* <Stack.Screen name="Profile" component={Profile} /> */}
       {/* <Stack.Screen name="Settings" component={Settings} /> */}
     </Stack.Navigator>

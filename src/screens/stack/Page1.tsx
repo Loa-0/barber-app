@@ -4,7 +4,7 @@ import {styles} from '../../theme/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigator/stacknavigator/StackNavigator';
 
-interface Props extends StackScreenProps<RootStackParams, 'Pagina1'> {}
+interface Props extends StackScreenProps<RootStackParams, 'Page1'> {}
 
 export const Page1 = ({route, navigation}: Props) => {
   const {id, nombre} = route.params;
