@@ -1,29 +1,32 @@
+import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
 import {
   StyleSheet,
   ImageBackground,
   Text,
   View,
-  Button,
-  SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 
 const backgroundImage = require('../assets/main.jpg');
-const onPressLearnMore = (params: any) => {
-  console.log(params);
-};
 
-export const WelcomeScreen = () => {
+interface Props extends StackScreenProps<any, any> {}
+
+export const WelcomeScreen = ({navigation}: Props) => {
   return (
     <View style={styles.backgroundColor}>
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <Text>12312</Text>
-        <Button
-          onPress={onPressLearnMore}
-          title="Learn More"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Page1', {id: 1, nombre: 'Uriel'});
+          }}
+          // title="Learn More"
+          // color="#841584"
+          style={{backgroundColor: '#841584'}}
+          accessibilityLabel="Learn more about this purple button">
+          <Text>Inicio</Text>
+        </TouchableOpacity>
       </ImageBackground>
     </View>
   );

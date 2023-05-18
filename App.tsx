@@ -1,8 +1,13 @@
 import React from 'react';
-import {WelcomeScreen} from './src/screens/WelcomeScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {StackNavigator} from './src/navigator/stacknavigator/StackNavigator';
 
 const App = () => {
-  return <WelcomeScreen />;
+  return (
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
 };
 
 export default App;
