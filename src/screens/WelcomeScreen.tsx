@@ -2,32 +2,32 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
 import {
   StyleSheet,
-  ImageBackground,
+  // ImageBackground,
   Text,
   View,
   TouchableOpacity,
 } from 'react-native';
 
-const backgroundImage = require('../assets/main.jpg');
+// const backgroundImage = require('../assets/main.jpg');
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const WelcomeScreen = ({navigation}: Props) => {
   return (
     <View style={styles.backgroundColor}>
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <Text>12312</Text>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Page1', {id: 1, nombre: 'Uriel'});
-          }}
-          // title="Learn More"
-          // color="#841584"
-          style={{backgroundColor: '#841584'}}
-          accessibilityLabel="Learn more about this purple button">
-          <Text>Inicio</Text>
-        </TouchableOpacity>
-      </ImageBackground>
+      {/* <ImageBackground source={backgroundImage} style={styles.backgroundImage}> */}
+      <Text>Hola Chio</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Page1', {id: 1, nombre: 'Uriel'});
+        }}
+        // title="Learn More"
+        // color="#841584"
+        style={{backgroundColor: '#841584'}}
+        accessibilityLabel="Learn more about this purple button">
+        <Text>Inicio</Text>
+      </TouchableOpacity>
+      {/* </ImageBackground> */}
     </View>
   );
 };
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   backgroundColor: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: '#ffffff',
     width: '100%',
     height: '100%',
     alignSelf: 'center',

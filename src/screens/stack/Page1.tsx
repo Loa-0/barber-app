@@ -3,6 +3,7 @@ import {Text, View} from 'react-native';
 import {styles} from '../../theme/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigator/stacknavigator/StackNavigator';
+import {BottomNavigator} from '../../navigator/stacknavigator/BottonNavigator';
 
 interface Props extends StackScreenProps<RootStackParams, 'Page1'> {}
 
@@ -16,8 +17,11 @@ export const Page1 = ({route, navigation}: Props) => {
   }, []);
 
   return (
-    <View style={styles.globalMargin}>
-      <Text>Page1 {id}</Text>
-    </View>
+    <>
+      <View>
+        <Text>{id}</Text>
+      </View>
+      <BottomNavigator />
+    </>
   );
 };
