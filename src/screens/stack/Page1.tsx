@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Text, View} from 'react-native';
-import {styles} from '../../theme/AppStyles';
+// import {styles} from '../../theme/AppStyles';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigator/stacknavigator/StackNavigator';
 import {BottomNavigator} from '../../navigator/stacknavigator/BottonNavigator';
