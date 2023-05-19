@@ -13,7 +13,7 @@ export const BottomNavigator = () => {
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Services" component={Services} />
       <Tab.Screen name="Appoinments" component={Appoinments} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Configuración" component={Settings} />
     </Tab.Navigator>
   );
 };
