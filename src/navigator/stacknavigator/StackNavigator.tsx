@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Page1} from '../../screens/stack/Page1';
 import {WelcomeScreen} from '../../screens/WelcomeScreen';
+import {BottomNavigator} from './BottonNavigator';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
@@ -20,9 +20,11 @@ export const StackNavigator = () => {
         name="Home"
         component={WelcomeScreen}
       />
-      <Stack.Screen name="Page1" component={Page1} />
-      {/* <Stack.Screen name="Profile" component={Profile} /> */}
-      {/* <Stack.Screen name="Settings" component={Settings} /> */}
+      <Stack.Screen
+        name="Page1"
+        options={{headerShown: false}}
+        component={BottomNavigator}
+      />
     </Stack.Navigator>
   );
 };
