@@ -16,7 +16,7 @@ export const WelcomeScreen = ({navigation}: Props) => {
   return (
     <View style={styles.backgroundColor}>
       {/* <ImageBackground source={backgroundImage} style={styles.backgroundImage}> */}
-      <Text>Hola Chio</Text>
+      <Text>Hola Chiooooo</Text>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('Page1', {id: 1, nombre: 'Uriel'});
