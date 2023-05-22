@@ -64,18 +64,22 @@ export const ListEvent = () => {
           },
         }}
         theme={{
-          backgroundColor: '#000000',
-          calendarBackground: '#000000',
+          backgroundColor: globalColors.mainBack,
+          calendarBackground: globalColors.mainBack,
           textSectionTitleColor: globalColors.golden,
-          selectedDayBackgroundColor: '#00adf5',
-          selectedDayTextColor: '#ffffff',
-          todayTextColor: '#00adf5',
-          dayTextColor: '#2d4150',
-          textDisabledColor: '#d9e000',
+          selectedDayBackgroundColor: globalColors.blueSelected,
+          textSectionTitleDisabledColor: globalColors.golden,
+          monthTextColor: globalColors.mainText,
+          selectedDayTextColor: globalColors.mainText,
+          todayTextColor: globalColors.blueSelected,
+          dayTextColor: globalColors.mainText,
+          textDisabledColor: globalColors.ligthBlue,
         }}
       />
       <View>
-        <Text>Date: {selected.toString()}</Text>
+        <Text style={{color: globalColors.mainText}}>
+          Date: {selected.toString()}
+        </Text>
       </View>
     </>
   );

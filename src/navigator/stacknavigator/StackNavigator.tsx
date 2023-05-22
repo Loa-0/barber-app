@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {WelcomeScreen} from '../../screens/WelcomeScreen';
 import {BottomNavigator} from './BottonNavigator';
+import {globalColors} from '../../theme/AppStyles';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
@@ -12,7 +13,7 @@ export const StackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: {backgroundColor: 'white'},
+        cardStyle: {backgroundColor: globalColors.mainBack},
         headerStyle: {elevation: 0},
       }}>
       <Stack.Screen

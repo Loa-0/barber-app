@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -5,7 +6,7 @@ import {
 import React from 'react';
 import {ListEvent} from './ListEvent';
 
-export const Calendar = () => {
+export const CalendarComponent = () => {
   GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/calendar'], // what API you want to access on behalf of the user, default is email and profile
     webClientId:
@@ -14,17 +15,20 @@ export const Calendar = () => {
     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
   });
   return (
-    // <View>
-    //   <Text>Calendar</Text>
     <>
+      <ListEvent />
       <GoogleSigninButton
-        style={{width: 192, height: 48}}
+        style={{
+          width: 192,
+          height: 48,
+          position: 'absolute',
+          alignSelf: 'center',
+          bottom: 40,
+        }}
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={GoogleSignin.signIn}
-        // disabled={GoogleSignin.state.isSigninInProgress}
       />
-      <ListEvent />
     </>
   );
 };
