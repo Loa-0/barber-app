@@ -25,7 +25,7 @@ export const BottomNavigator = ({}: Props) => {
       <Tab.Screen
         name="Dashboard"
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Inicio',
           tabBarIcon: ({color}) => (
             <FontAwesome5
               name="home"
@@ -68,7 +68,7 @@ export const BottomNavigator = ({}: Props) => {
         name="Configuración"
         component={Settings}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Configuración',
           tabBarIcon: ({color}) => (
             <FontAwesome5
               name="cog"

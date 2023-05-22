@@ -1,40 +1,56 @@
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
+import {globalColors} from '../../theme/AppStyles';
 export const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    resizeMode: 'cover',
+    backgroundColor: globalColors.mainBack,
+    height: '100%',
+  },
+  safeArea: {
+    marginVertical: 20,
+    marginHorizontal: 20,
+    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1,
+  },
   subtitleText: {
-    color: '#070808',
+    color: globalColors.mainText,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  mainViewBlock: {
-    marginVertical: 20,
-    marginHorizontal: 20,
-  },
   separator: {
     marginVertical: 8,
-    borderBottomColor: '#737373',
+    borderBottomColor: globalColors.mainText,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  container: {
-    marginTop: 10,
+  themeContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
-  box: {
+  themeOption: {
+    flex: 1,
     alignItems: 'center',
-    marginHorizontal: 5,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'gray',
-    marginBottom: 10,
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    marginHorizontal: 8,
+    marginVertical: 5,
   },
-  boxTitle: {
+  selectedThemeOption: {
+    borderColor: globalColors.golden,
+  },
+  themeText: {
+    color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
   },
-  boxImg: {
-    width: 150,
-    height: 150,
-    marginBottom: 10,
+  themeIcon: {
+    width: 24,
+    height: 24,
   },
 });
