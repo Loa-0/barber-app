@@ -78,7 +78,6 @@ export const Services = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
     resizeMode: 'cover',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
