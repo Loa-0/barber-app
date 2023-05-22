@@ -1,4 +1,4 @@
-import {StatusBar, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {globalColors} from '../../theme/AppStyles';
 export const styles = StyleSheet.create({
   container: {
