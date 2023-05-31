@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {WelcomeScreen} from '../../screens/WelcomeScreen';
 import {BottomNavigator} from './BottonNavigator';
 import {globalColors} from '../../theme/AppStyles';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
@@ -10,11 +11,13 @@ export type RootStackParams = {
 };
 const Stack = createStackNavigator<RootStackParams>();
 export const StackNavigator = () => {
+  const {top} = useSafeAreaInsets();
+
   return (
     <Stack.Navigator
       screenOptions={{
         cardStyle: {backgroundColor: globalColors.mainBack},
-        headerStyle: {elevation: 0},
+        headerStyle: {elevation: 0, marginTop: top},
       }}>
       <Stack.Screen
         options={{headerShown: false}}

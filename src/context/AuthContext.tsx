@@ -1,5 +1,5 @@
 import React, {createContext, useReducer} from 'react';
-import {authReducer} from './AuthReducer';
+import {authReducer} from './authReducer';
 
 export interface AuthState {
   isLoggedIn: boolean;
