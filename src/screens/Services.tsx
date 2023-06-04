@@ -9,6 +9,9 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
+// import {HeaderComponent} from '../components/HeaderComponent';
+import {styles as S} from '../theme/AppStyles';
+import {HeaderComponent} from '../components/HeaderComponent';
 
 const DATA = [
   {
@@ -71,21 +74,24 @@ const Item = ({title, image}: ItemProps) => (
 
 export const Services = () => {
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://thumbs.dreamstime.com/b/barbershop-logo-barber-shop-icon-dark-background-white-barbershop-logo-barber-shop-icon-dark-background-132559455.jpg',
-      }} // URL de la imagen de fondo
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => (
-            <Item title={item.title} image={item.image} />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    </ImageBackground>
+    <View style={S.globalContainer}>
+      <ImageBackground
+        source={{
+          uri: 'https://thumbs.dreamstime.com/b/barbershop-logo-barber-shop-icon-dark-background-white-barbershop-logo-barber-shop-icon-dark-background-132559455.jpg',
+        }}
+        style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={DATA}
+            renderItem={({item}) => (
+              <Item title={item.title} image={item.image} />
+            )}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={<HeaderComponent title="Servicios" />}
+          />
+        </SafeAreaView>
+      </ImageBackground>
+    </View>
   );
 };
 

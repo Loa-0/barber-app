@@ -3,10 +3,15 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
-import React from 'react';
+import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {AuthContext} from '../../context/AuthContext';
+import {globalColors} from '../../theme/AppStyles';
+import {View, Text} from 'react-native';
 
 export const CalendarComponent = () => {
+  const {signIn, authState, signOut} = useContext(AuthContext);
   GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/calendar'],
     webClientId:
@@ -17,6 +22,25 @@ export const CalendarComponent = () => {
   return (
     <>
       <ListEvent />
+      <View>
+        <Text style={{color: globalColors.mainText}}>Hoola</Text>
+        {authState.isLoggedIn ? (
+          <TouchableOpacity
+            onPress={() => {
+              signIn;
+            }}>
+            <Text style={{color: globalColors.mainText}}>Login</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              signOut;
+            }}>
+            <Text style={{color: globalColors.mainText}}>SignOut</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       <GoogleSigninButton
         style={{
           width: 192,
