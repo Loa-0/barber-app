@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   SafeAreaView,
   View,
@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Text,
   Image,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
+import {ThemeContext} from '../context/ThemeContext';
 
 const DATA = [
   {
@@ -57,35 +57,58 @@ const DATA = [
 
 type ItemProps = {title: string; image: any};
 
-const Item = ({title, image}: ItemProps) => (
-  <View style={styles.item}>
-    <Image source={image} style={styles.image} />
-    <View style={styles.content}>
-      <Text style={styles.title}>{title}</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Reservar</Text>
-      </TouchableOpacity>
+const Item = ({title, image}: ItemProps) => {
+  const {
+    themeState: {
+      colors,
+      textShadowColor,
+      transparentBackground,
+      secondaryButton,
+    },
+  } = useContext(ThemeContext);
+  return (
+    <View
+      style={{
+        ...styles.item,
+        borderColor: colors.border,
+        backgroundColor: transparentBackground,
+      }}>
+      <Image source={image} style={{...styles.image}} />
+      <View style={styles.content}>
+        <Text
+          style={{
+            ...styles.title,
+            color: colors.text,
+            textShadowColor: textShadowColor,
+          }}>
+          {title}
+        </Text>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            backgroundColor: secondaryButton,
+            borderColor: colors.border,
+          }}>
+          <Text style={{...styles.buttonText}}>Reservar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export const Services = () => {
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
   return (
-    <ImageBackground
-      source={{
-        uri: 'https://thumbs.dreamstime.com/b/barbershop-logo-barber-shop-icon-dark-background-white-barbershop-logo-barber-shop-icon-dark-background-132559455.jpg',
-      }} // URL de la imagen de fondo
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => (
-            <Item title={item.title} image={item.image} />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    </ImageBackground>
+    <SafeAreaView
+      style={{...styles.container, backgroundColor: colors.background}}>
+      <FlatList
+        data={DATA}
+        renderItem={({item}) => <Item title={item.title} image={item.image} />}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -93,7 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   item: {
     padding: 20,
@@ -101,10 +123,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     flexDirection: 'row', // Para alinear la imagen y el texto horizontalmente
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
-    backgroundColor: 'rgba(255,255, 255, 0.2)',
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
-    borderColor: 'rgba(255, 255, 255, 1)',
   },
   content: {
     flex: 1,
@@ -115,8 +135,6 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 22,
-    color: 'white', // Color de las letras
-    textShadowColor: 'black', // Color del borde
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
     textShadowRadius: 1, // Radio del borde
   },
@@ -129,12 +147,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.5)',
   },
   button: {
-    backgroundColor: 'white',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'white',
   },
   buttonText: {
     color: 'black',
