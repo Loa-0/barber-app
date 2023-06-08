@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {StackNavigator} from './src/navigator/stacknavigator/StackNavigator';
 import {PaperProvider} from 'react-native-paper';
 import {AuthProvider} from './src/context/AuthContext';
+import {AgendaProvider} from './src/hooks/useCalendar';
 
 const App = () => {
   return (
@@ -19,5 +20,9 @@ const App = () => {
 export default App;
 
 const AppState = ({children}: any) => {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <AgendaProvider>{children}</AgendaProvider>
+    </AuthProvider>
+  );
 };
