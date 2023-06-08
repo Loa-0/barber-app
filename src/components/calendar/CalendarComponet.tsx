@@ -7,9 +7,12 @@ import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../context/AuthContext';
+import {globalColors} from '../../theme/AppStyles';
+import {View, Text, StyleSheet} from 'react-native';
 
 export const CalendarComponent = () => {
   const {signIn, authState, signOut} = useContext(AuthContext);
+
   GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/calendar'],
     webClientId:
@@ -20,33 +23,41 @@ export const CalendarComponent = () => {
   return (
     <>
       <ListEvent />
-      {authState.isLoggedIn ? (
-        <TouchableOpacity
-          onPress={() => {
-            signIn;
-          }}>
-          Login
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            signOut;
-          }}>
-          SignOut
-        </TouchableOpacity>
-      )}
-      <GoogleSigninButton
-        style={{
-          width: 192,
-          height: 48,
-          position: 'absolute',
-          alignSelf: 'center',
-          bottom: 40,
-        }}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={GoogleSignin.signIn}
-      />
+      <View style={{marginVertical: 20}}>
+        <Text style={{color: globalColors.mainText}}>Hoola</Text>
+        {authState.isLoggedIn ? (
+          <TouchableOpacity
+            onPress={() => {
+              signIn;
+            }}>
+            <Text style={{color: globalColors.mainText}}>Login</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={{marginBottom: 60}}
+            onPress={() => {
+              signOut;
+            }}>
+            <Text style={{color: globalColors.mainText}}>SignOut</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+      <View>
+        <GoogleSigninButton
+          style={pageStyles.googleBtn}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={GoogleSignin.signIn}
+        />
+      </View>
     </>
   );
 };
+const pageStyles = StyleSheet.create({
+  googleBtn: {
+    width: 192,
+    height: 48,
+    alignSelf: 'center',
+    bottom: 40,
+  },
+});

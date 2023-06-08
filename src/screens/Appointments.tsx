@@ -1,13 +1,17 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {CalendarComponent} from '../components/calendar/CalendarComponet';
+import {ScrollView} from 'react-native';
 import {styles as S} from '../theme/AppStyles';
+
+import {CalendarComponent} from '../components/calendar/CalendarComponet';
+import {HeaderComponent} from '../components/HeaderComponent';
+// import {AgendaScreen} from '../components/calendar/AgendaScreen';
 
 export const Appointments = () => {
   return (
-    <View style={S.globalContainer}>
-      <Text>Appoinments</Text>
+    <ScrollView style={S.globalContainer}>
+      <HeaderComponent title="Citas" />
       <CalendarComponent />
-    </View>
+      {/* <AgendaScreen /> */}
+    </ScrollView>
   );
 };

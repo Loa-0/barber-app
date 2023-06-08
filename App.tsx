@@ -4,6 +4,7 @@ import {StackNavigator} from './src/navigator/stacknavigator/StackNavigator';
 import {PaperProvider} from 'react-native-paper';
 import {AuthProvider} from './src/context/AuthContext';
 import {ThemeContext, ThemeProvider} from './src/context/ThemeContext';
+import {AgendaProvider} from './src/hooks/useCalendar';
 
 const App = () => {
   const {themeState} = useContext(ThemeContext);
@@ -23,7 +24,11 @@ const App = () => {
 export default App;
 
 const AppState = ({children}: any) => {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <AgendaProvider>{children}</AgendaProvider>
+    </AuthProvider>
+  );
 };
 
 const ThemeState = ({children}: any) => {

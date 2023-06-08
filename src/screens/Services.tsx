@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {ThemeContext} from '../context/ThemeContext';
+// import {HeaderComponent} from '../components/HeaderComponent';
+import {styles as S} from '../theme/AppStyles';
+import {HeaderComponent} from '../components/HeaderComponent';
 
 const DATA = [
   {
@@ -101,14 +104,19 @@ export const Services = () => {
     themeState: {colors},
   } = useContext(ThemeContext);
   return (
-    <SafeAreaView
-      style={{...styles.container, backgroundColor: colors.background}}>
-      <FlatList
-        data={DATA}
-        renderItem={({item}) => <Item title={item.title} image={item.image} />}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView>
+    <View style={S.globalContainer}>
+      <SafeAreaView
+        style={{...styles.container, backgroundColor: colors.background}}>
+        <FlatList
+          data={DATA}
+          renderItem={({item}) => (
+            <Item title={item.title} image={item.image} />
+          )}
+          keyExtractor={item => item.id}
+          ListHeaderComponent={<HeaderComponent title="Servicios" />}
+        />
+      </SafeAreaView>
+    </View>
   );
 };
 
