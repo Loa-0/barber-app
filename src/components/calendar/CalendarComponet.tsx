@@ -7,7 +7,6 @@ import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../context/AuthContext';
-import {globalColors} from '../../theme/AppStyles';
 import {View, Text, StyleSheet} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 
