@@ -28,64 +28,60 @@ export const SettingsDisplay = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTheme]);
   return (
-    <View style={{...S.container, backgroundColor: colors.background}}>
-      <SafeAreaView style={S.safeArea}>
-        <ScrollView contentContainerStyle={S.contentContainer}>
-          <Text style={{...S.subtitleText, color: colors.text}}>
-            Preferencias de tema
-          </Text>
-          <View style={S.themeContainer}>
-            <TouchableOpacity
-              style={[
-                S.themeOption,
-                {
-                  borderColor:
-                    theme === 'light' ? highlightColor : colors.border,
-                },
-              ]}
-              onPress={() => {
-                handleThemeChange('light');
+    <SafeAreaView style={S.safeArea}>
+      <ScrollView contentContainerStyle={S.contentContainer}>
+        <Text style={{...S.subtitleText, color: colors.text}}>
+          Preferencias de tema
+        </Text>
+        <View style={S.themeContainer}>
+          <TouchableOpacity
+            style={[
+              S.themeOption,
+              {
+                borderColor: theme === 'light' ? highlightColor : colors.border,
+              },
+            ]}
+            onPress={() => {
+              handleThemeChange('light');
+            }}>
+            <Text
+              style={{
+                ...S.themeText,
+                color: theme === 'light' ? highlightColor : colors.text,
               }}>
-              <Text
-                style={{
-                  ...S.themeText,
-                  color: theme === 'light' ? highlightColor : colors.text,
-                }}>
-                <FontAwesome5
-                  name="cloud-sun"
-                  size={globalColors.iconSize}
-                  color={theme === 'light' ? highlightColor : colors.text}
-                />{' '}
-                Modo claro
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                S.themeOption,
-                {
-                  borderColor:
-                    theme === 'dark' ? highlightColor : colors.border,
-                },
-              ]}
-              onPress={() => {
-                handleThemeChange('dark');
+              <FontAwesome5
+                name="cloud-sun"
+                size={globalColors.iconSize}
+                color={theme === 'light' ? highlightColor : colors.text}
+              />{' '}
+              Modo claro
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              S.themeOption,
+              {
+                borderColor: theme === 'dark' ? highlightColor : colors.border,
+              },
+            ]}
+            onPress={() => {
+              handleThemeChange('dark');
+            }}>
+            <Text
+              style={{
+                ...S.themeText,
+                color: theme === 'dark' ? highlightColor : colors.text,
               }}>
-              <Text
-                style={{
-                  ...S.themeText,
-                  color: theme === 'dark' ? highlightColor : colors.text,
-                }}>
-                <FontAwesome5
-                  name="cloud-moon"
-                  size={globalColors.iconSize}
-                  color={theme === 'dark' ? highlightColor : colors.text}
-                />{' '}
-                Modo oscuro
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+              <FontAwesome5
+                name="cloud-moon"
+                size={globalColors.iconSize}
+                color={theme === 'dark' ? highlightColor : colors.text}
+              />{' '}
+              Modo oscuro
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

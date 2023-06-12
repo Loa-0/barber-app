@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
 export const globalColors = {
   mainBack: '#121212',
+  mainBlack: '#121212',
   mainText: '#ffffff',
   white: '#ffffff',
   golden: '#DAA520',
@@ -22,8 +23,6 @@ export const styles = StyleSheet.create({
   },
   globalContainer: {
     flex: 1,
-    backgroundColor: globalColors.mainBack,
-    color: globalColors.mainText,
   },
   mainBtn: {
     borderRadius: 50,
