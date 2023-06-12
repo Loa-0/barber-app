@@ -3,11 +3,15 @@ import React, {useContext, useState} from 'react';
 import {ToastAndroid, View} from 'react-native';
 import {Calendar, DateData} from 'react-native-calendars';
 import {Text} from 'react-native-paper';
-import {globalColors, styles as S} from '../../theme/AppStyles';
+import {globalColors} from '../../theme/AppStyles';
 import {AgendaContext} from '../../hooks/useCalendar';
+import {ThemeContext} from '../../context/ThemeContext';
 
 export const ListEvent = () => {
   const {markedDates} = useContext(AgendaContext);
+  const {
+    themeState: {colors, themeCalendar, highlightColor, currentTheme},
+  } = useContext(ThemeContext);
   // const {prevMonth, nextMonth} = useDates();
   const [selected, setSelected] = useState<string>();
   const handleSelectDate = (day: DateData) => {
@@ -44,12 +48,13 @@ export const ListEvent = () => {
   return (
     <>
       <View
+        key={currentTheme}
         style={{
           marginHorizontal: 20,
           borderRadius: 10,
           borderBottomWidth: 3,
-          borderBottomColor: globalColors.golden,
-          shadowColor: globalColors.mainText,
+          borderBottomColor: highlightColor,
+          shadowColor: colors.text,
           shadowOffset: {
             width: 0,
             height: 10,
@@ -64,7 +69,7 @@ export const ListEvent = () => {
           style={{borderRadius: 10}}
           onDayPress={handleSelectDate}
           markedDates={markedDates}
-          theme={S.themeCalendar}
+          theme={themeCalendar}
         />
       </View>
       <View style={{marginVertical: 20}}>
