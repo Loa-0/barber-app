@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {View, Text, TouchableOpacity, Alert, StyleSheet} from 'react-native';
-import {Agenda, DateData} from 'react-native-calendars';
+import {Agenda} from 'react-native-calendars';
 import {globalColors, styles as S} from '../../theme/AppStyles';
 import {AgendaEntry} from '../../interfaces/Appointments';
 import {AgendaContext} from '../../hooks/useCalendar';
