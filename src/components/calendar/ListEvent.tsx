@@ -10,7 +10,7 @@ import {ThemeContext} from '../../context/ThemeContext';
 export const ListEvent = () => {
   const {markedDates} = useContext(AgendaContext);
   const {
-    themeState: {colors, themeCalendar, highlightColor},
+    themeState: {colors, themeCalendar, highlightColor, currentTheme},
   } = useContext(ThemeContext);
   // const {prevMonth, nextMonth} = useDates();
   const [selected, setSelected] = useState<string>();
@@ -48,6 +48,7 @@ export const ListEvent = () => {
   return (
     <>
       <View
+        key={currentTheme}
         style={{
           marginHorizontal: 20,
           borderRadius: 10,
