@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {
   SafeAreaView,
   View,
@@ -6,12 +6,14 @@ import {
   StyleSheet,
   Text,
   Image,
-  ImageBackground,
   TouchableOpacity,
   Modal,
+  ImageBackground,
 } from 'react-native';
+// import {HeaderComponent} from '../components/HeaderComponent';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
+import { ThemeContext } from '../context/ThemeContext';
 
 const DATA = [
   {
@@ -88,66 +90,22 @@ const DATA = [
   },
 ];
 
-type ItemProps = { 
-  title: string; 
-  image: any; 
-  price: number;
-  duration: number};
+type ItemProps = {title: string; image: any};
 
-const Item = ({ title, image, price, duration }: ItemProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleImagePress = () => {
-    setModalVisible(true);
-  };
-  
-  const handleReservationPress = () => {
-    console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
-  };
-
-  return (
-    <TouchableOpacity style={styles.item} onPress={handleImagePress}>
-      <TouchableOpacity onPress={handleImagePress}>
-        <Image source={image} style={styles.image} />
+const Item = ({title, image}: ItemProps) => (
+  <View style={styles.item}>
+    <Image source={image} style={styles.image} />
+    <View style={styles.content}>
+      <Text style={styles.title}>{title}</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Reservar</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.content} onPress={handleImagePress}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.price}>${price}</Text>
-       <TouchableOpacity style={styles.button} onPress={handleReservationPress}>
-          <Text style={styles.buttonText}>Reservar</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-
-      <Modal
-        animationType="slide"
-        statusBarTranslucent={true}
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>El tiempo de este servicio es de {duration} hora</Text>
-            <Text style={styles.modalText}>el precio es de ${price}</Text>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={styles.textStyle}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </TouchableOpacity>
-  );
-};
-
-
+    </View>
+  </View>
+);
 
 export const ServicesScreen  = () => {
+  const {themeState:{colors} }=useContext(ThemeContext)
   return (
     <View style={S.globalContainer}>
       <ImageBackground
@@ -156,18 +114,15 @@ export const ServicesScreen  = () => {
         }}
         style={styles.container}>
         <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        ListHeaderComponent={<HeaderComponent title="Servicios" />}
-        renderItem={({ item }) => 
-          <Item 
-            title={item.title} 
-            image={item.image} 
-            price={item.price} 
-            duration={item.duration} />}
-        keyExtractor={(item) => item.id}
-      />
-    </SafeAreaView>
+          <FlatList
+            data={DATA}
+            renderItem={({item}) => (
+              <Item title={item.title} image={item.image} />
+            )}
+            keyExtractor={item => item.id}
+            ListHeaderComponent={<HeaderComponent title="Servicios" />}
+          />
+        </SafeAreaView>
       </ImageBackground>
     </View>
   );
@@ -177,7 +132,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   item: {
     padding: 20,
@@ -185,10 +139,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     flexDirection: 'row', // Para alinear la imagen y el texto horizontalmente
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
-    backgroundColor: 'rgba(255,255, 255, 0.2)',
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
-    borderColor: 'rgba(255, 255, 255, 1)',
   },
   content: {
     flex: 1,
@@ -198,19 +150,11 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 20,
-    color: 'white',
-    textShadowColor: 'black',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-  },
-  price: {
-    fontSize: 18,
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 10,
-    lineHeight: 24, // Ajusta el valor según sea necesario
-    alignItems: 'center',
+    fontSize: 22,
+    color: 'white', // Color de las letras
+    textShadowColor: 'black', // Color del borde
+    textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
+    textShadowRadius: 1, // Radio del borde
   },
   image: {
     width: 70,
@@ -221,13 +165,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.5)',
   },
   button: {
-    backgroundColor: 'white',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: 'white',
-    marginLeft: 10,
   },
   buttonText: {
     color: 'black',
