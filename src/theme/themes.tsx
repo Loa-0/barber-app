@@ -22,6 +22,8 @@ export interface ThemeState extends Theme {
   transparentBackground: string;
   secondaryButton: string;
   themeCalendar: calendarThemeType;
+  bulletOcupied: string;
+  bulletFree: string;
 }
 
 export const LightTheme: ThemeState = {
@@ -35,6 +37,8 @@ export const LightTheme: ThemeState = {
     border: 'rgba(0, 0, 0, 1)',
     notification: 'teal',
   },
+  bulletOcupied: globalColors.bulletOcupied,
+  bulletFree: globalColors.bulletFree,
   dividerColor: 'rgba(0,0,0,0.7)',
   highlightColor: globalColors.golden,
   textShadowColor: 'black',
@@ -68,6 +72,8 @@ export const DarkTheme: ThemeState = {
   dividerColor: 'rgba(255,0,0,0.7)',
   highlightColor: globalColors.golden,
   textShadowColor: globalColors.white,
+  bulletOcupied: globalColors.bulletOcupied,
+  bulletFree: globalColors.bulletFree,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
   secondaryButton: globalColors.white,
   themeCalendar: {

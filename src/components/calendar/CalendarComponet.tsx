@@ -7,14 +7,14 @@ import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../context/AuthContext';
-import {View, Text, StyleSheet} from 'react-native';
-// import axios from 'axios';
+import {View, Text} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 
 export const CalendarComponent = () => {
   const {signIn, authState, signOut} = useContext(AuthContext);
   const {
     themeState: {colors},
+    
   } = useContext(ThemeContext);
 
   const signInWithGoogle = async () => {
@@ -63,6 +63,61 @@ export const CalendarComponent = () => {
   return (
     <>
       <ListEvent />
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: 20,
+          marginTop: 10,
+        }}>
+        <Text style={{color: colors.text, marginBottom: 10}}>
+          Disponibilidad
+        </Text>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+            marginHorizontal: 20,
+          }}>
+          <>
+            <View
+              style={{
+                borderRadius: 100,
+                backgroundColor: the,
+                marginHorizontal: 10,
+                height: 30,
+                width: 30,
+              }}
+            />
+            <Text style={{color: colors.text}}>Baja</Text>
+          </>
+          <>
+            <View
+              style={{
+                borderRadius: 100,
+                marginHorizontal: 10,
+                backgroundColor: 'red',
+                height: 30,
+                width: 30,
+              }}
+            />
+            <Text style={{color: colors.text}}>Media</Text>
+          </>
+          <>
+            <View
+              style={{
+                borderRadius: 100,
+                backgroundColor: 'red',
+                marginHorizontal: 10,
+                height: 30,
+                width: 30,
+              }}
+            />
+            <Text style={{color: colors.text}}>Alta</Text>
+          </>
+        </View>
+      </View>
       <View style={{marginVertical: 20}}>
         <Text style={{color: colors.text}}>Hoola</Text>
         {authState.isLoggedIn ? (
@@ -92,12 +147,12 @@ export const CalendarComponent = () => {
     </>
   );
 };
-const pageStyles = StyleSheet.create({
-  googleBtn: {
-    width: 192,
-    height: 48,
-    alignSelf: 'center',
-    bottom: 40,
-    backgroundColor: 'white',
-  },
-});
+// const pageStyles = StyleSheet.create({
+//   googleBtn: {
+//     width: 192,
+//     height: 48,
+//     alignSelf: 'center',
+//     bottom: 40,
+//     backgroundColor: 'white',
+//   },
+// });

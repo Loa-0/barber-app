@@ -72,9 +72,9 @@ export const ListEvent = () => {
           theme={themeCalendar}
         />
       </View>
-      <View style={{marginVertical: 20}}>
+      {/* <View style={{marginVertical: 20}}>
         <Text style={{color: globalColors.mainText}}>Date: {selected}</Text>
-      </View>
+      </View> */}
     </>
   );
 };
