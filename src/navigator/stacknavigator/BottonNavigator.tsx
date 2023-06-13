@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {Dashboard} from '../../screens/Dashboard';
-import {Services} from '../../screens/Services';
+import {ServicesScreen} from '../../screens/Services';
 import {Appointments} from '../../screens/Appointments';
 import {Settings} from '../../screens/Settings';
 import {RootStackParams} from './StackNavigator';
@@ -48,7 +48,7 @@ export const BottomNavigator = ({}: Props) => {
             />
           ),
         }}
-        component={Services}
+        component={ServicesScreen}
       />
       <Tab.Screen
         name="Appoinments"
