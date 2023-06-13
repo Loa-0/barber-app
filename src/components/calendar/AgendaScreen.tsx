@@ -4,6 +4,7 @@ import {Agenda} from 'react-native-calendars';
 import {globalColors, styles as S} from '../../theme/AppStyles';
 import {AgendaEntry} from '../../interfaces/Appointments';
 import {AgendaContext} from '../../hooks/useCalendar';
+import {ThemeContext} from '../../context/ThemeContext';
 
 const testIDs = {
   agenda: {
@@ -14,6 +15,9 @@ const testIDs = {
 
 export const AgendaScreen = () => {
   const {agenda, loadAgenda, today} = useContext(AgendaContext);
+  const {
+    themeState: {colors, themeCalendar, highlightColor},
+  } = useContext(ThemeContext);
   const [selectedDate, setSelectedDate] = useState<string>(today.dateString);
   const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
     console.log('Reservation day: ', reservation.day);
@@ -51,11 +55,11 @@ export const AgendaScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: globalColors.mainBack, flex: 1}}>
+    <View style={{backgroundColor: colors.background, flex: 1}}>
       <Text
         style={{
           fontSize: 30,
-          color: globalColors.mainText,
+          color: colors.text,
           textAlign: 'center',
         }}>
         {JSON.stringify(selectedDate)}
@@ -72,11 +76,11 @@ export const AgendaScreen = () => {
         markingType={'period'}
         monthFormat={'MMMM, yyyy'}
         theme={{
-          ...S.themeCalendar,
-          agendaKnobColor: globalColors.golden,
-          agendaTodayColor: globalColors.blueSelected,
-          agendaDayNumColor: globalColors.golden,
-          contentStyle: {backgroundColor: globalColors.mainBack},
+          ...themeCalendar,
+          agendaKnobColor: highlightColor,
+          agendaTodayColor: themeCalendar.todayTextColor,
+          agendaDayNumColor: highlightColor,
+          contentStyle: {backgroundColor: colors.background},
         }}
         // reservationsKeyExtractor={reservationsKeyExtractor}
       />

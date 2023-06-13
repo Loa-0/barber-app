@@ -7,12 +7,15 @@ import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../context/AuthContext';
-import {globalColors} from '../../theme/AppStyles';
 import {View, Text, StyleSheet} from 'react-native';
 // import axios from 'axios';
+import {ThemeContext} from '../../context/ThemeContext';
 
 export const CalendarComponent = () => {
   const {signIn, authState, signOut} = useContext(AuthContext);
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
 
   const signInWithGoogle = async () => {
     try {
@@ -61,13 +64,13 @@ export const CalendarComponent = () => {
     <>
       <ListEvent />
       <View style={{marginVertical: 20}}>
-        <Text style={{color: globalColors.mainText}}>Hoola</Text>
+        <Text style={{color: colors.text}}>Hoola</Text>
         {authState.isLoggedIn ? (
           <TouchableOpacity
             onPress={() => {
               signIn;
             }}>
-            <Text style={{color: globalColors.mainText}}>Login</Text>
+            <Text style={{color: colors.text}}>Login</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -75,7 +78,7 @@ export const CalendarComponent = () => {
             onPress={() => {
               signOut;
             }}>
-            <Text style={{color: globalColors.mainText}}>SignOut</Text>
+            <Text style={{color: colors.text}}>SignOut</Text>
           </TouchableOpacity>
         )}
       </View>
