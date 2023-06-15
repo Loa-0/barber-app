@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
+import { ThemeContext } from '../context/ThemeContext';
+import { c } from '../theme/themes';
 
 const DATA = [
   {
@@ -95,6 +97,7 @@ type ItemProps = {
   duration: number};
 
 const Item = ({ title, image, price, duration }: ItemProps) => {
+  const {themeState:{colors, dividerColor}} = useContext(ThemeContext)
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleImagePress = () => {
@@ -106,13 +109,13 @@ const Item = ({ title, image, price, duration }: ItemProps) => {
   };
 
   return (
-    <TouchableOpacity style={styles.item} onPress={handleImagePress}>
+    <TouchableOpacity style={{...styles.item,backgroundColor:dividerColor}} onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
         <Image source={image} style={styles.image} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={{...styles.title,color:colors.text,textShadowColor:colors.background}}>{title}</Text>
         <Text style={styles.price}>${price}</Text>
        <TouchableOpacity style={styles.button} onPress={handleReservationPress}>
           <Text style={styles.buttonText}>Reservar</Text>
@@ -142,33 +145,30 @@ const Item = ({ title, image, price, duration }: ItemProps) => {
         </View>
       </Modal>
     </TouchableOpacity>
+
   );
 };
 
 
 
 export const ServicesScreen  = () => {
+ const {themeState:{colors}} = useContext(ThemeContext)
   return (
     <View style={S.globalContainer}>
-      <ImageBackground
-        source={{
-          uri: 'https://thumbs.dreamstime.com/b/barbershop-logo-barber-shop-icon-dark-background-white-barbershop-logo-barber-shop-icon-dark-background-132559455.jpg',
-        }}
-        style={styles.container}>
+      
         <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        ListHeaderComponent={<HeaderComponent title="Servicios" />}
-        renderItem={({ item }) => 
-          <Item 
-            title={item.title} 
-            image={item.image} 
-            price={item.price} 
-            duration={item.duration} />}
-        keyExtractor={(item) => item.id}
-      />
+        <FlatList
+          data={DATA}
+          ListHeaderComponent={<HeaderComponent title="Servicios" />}
+          renderItem={({ item }) => 
+            <Item 
+              title={item.title} 
+              image={item.image} 
+              price={item.price} 
+              duration={item.duration} />}
+          keyExtractor={(item) => item.id}
+        />
     </SafeAreaView>
-      </ImageBackground>
     </View>
   );
 };
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     flexDirection: 'row', // Para alinear la imagen y el texto horizontalmente
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
-    backgroundColor: 'rgba(255,255, 255, 0.2)',
+    //backgroundColor: 'rgba(255,255, 255, 0.2)',
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
     borderColor: 'rgba(255, 255, 255, 1)',
@@ -199,8 +199,6 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
-    color: 'white',
-    textShadowColor: 'black',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 1,
   },
