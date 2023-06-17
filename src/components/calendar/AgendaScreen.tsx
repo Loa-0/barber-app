@@ -1,140 +1,152 @@
-import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Alert, StyleSheet} from 'react-native';
-import {Agenda} from 'react-native-calendars';
-import {globalColors, styles as S} from '../../theme/AppStyles';
-import {AgendaEntry} from '../../interfaces/Appointments';
-import {AgendaContext} from '../../hooks/useCalendar';
+import React, {useContext, useState, useEffect} from 'react';
+import {View, Text, StyleSheet, Pressable, ToastAndroid} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
+import {HourList} from './HourList';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {displayDate} from '../../helpers/Date';
+import {globalColors} from '../../theme/AppStyles';
+import {SelectedHour} from '../../interfaces/Appointments';
 
-const testIDs = {
-  agenda: {
-    CONTAINER: 'agenda',
-    ITEM: 'item',
-  },
-};
-
-export const AgendaScreen = () => {
-  const {agenda, loadAgenda, today} = useContext(AgendaContext);
+interface Props {
+  dateCurr: string;
+  time: string;
+  closeModal: () => void;
+}
+export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
   const {
-    themeState: {colors, themeCalendar, highlightColor},
+    themeState: {colors, highlightColor, titleText, bulletFree},
   } = useContext(ThemeContext);
-  const [selectedDate, setSelectedDate] = useState<string>(today.dateString);
-  const renderItem = (reservation: AgendaEntry, isFirst: boolean) => {
-    console.log('Reservation day: ', reservation.day);
-    const fontSize = isFirst ? 16 : 14;
-    const fontWeight = isFirst ? 'bold' : 'normal';
-    const color = isFirst ? 'black' : '#43515c';
-    console.log('Selected Date', selectedDate);
-    return (
-      <>
-        {isFirst && (
-          <TouchableOpacity style={styles.btnAgendar}>
-            <Text style={{textAlign: 'center'}}>Agendar</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          testID={testIDs.agenda.ITEM}
-          style={[styles.item, {height: reservation.height}]}
-          onPress={() => Alert.alert(reservation.name)}>
-          <Text style={{fontSize, color, fontWeight}}>{reservation.name}</Text>
-        </TouchableOpacity>
-      </>
-    );
-  };
+  const [globalSelection, setGlobalSelection] = useState<SelectedHour[]>([]);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [datesD, setDatesD] = useState({
+    startDate: '00:00',
+    endDate: '00:00',
+  });
 
-  const renderEmptyDate = () => {
-    return (
-      <View style={styles.emptyItem}>
-        <Text>This is empty date!</Text>
-      </View>
-    );
-  };
+  useEffect(() => {
+    if (globalSelection.length > 0) {
+      setIsDisabled(false);
+      setDatesD({
+        startDate: globalSelection[0].time,
+        endDate: globalSelection[1].time,
+      });
+    }
+  }, [globalSelection]);
 
-  const rowHasChanged = (r1: AgendaEntry, r2: AgendaEntry) => {
-    return r1.name !== r2.name;
+  useEffect(() => {
+    console.log(datesD);
+  }, [datesD]);
+
+  const onConfirm = () => {
+    if (isDisabled) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Selecciona una hora para tu cita',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
   };
 
   return (
-    <View style={{backgroundColor: colors.background, flex: 1}}>
-      <Text
-        style={{
-          fontSize: 30,
-          color: colors.text,
-          textAlign: 'center',
-        }}>
-        {JSON.stringify(selectedDate)}
-      </Text>
-      <Agenda
-        testID="agenda"
-        items={agenda}
-        loadItemsForMonth={loadAgenda}
-        selected={selectedDate}
-        renderItem={renderItem}
-        renderEmptyDate={renderEmptyDate}
-        rowHasChanged={rowHasChanged}
-        showClosingKnob={false}
-        markingType={'period'}
-        monthFormat={'MMMM, yyyy'}
-        theme={{
-          ...themeCalendar,
-          agendaKnobColor: highlightColor,
-          agendaTodayColor: themeCalendar.todayTextColor,
-          agendaDayNumColor: highlightColor,
-          contentStyle: {backgroundColor: colors.background},
-        }}
-        // reservationsKeyExtractor={reservationsKeyExtractor}
-      />
+    <View
+      style={{
+        ...styles.modalContainer,
+        backgroundColor: colors.background,
+        borderColor: highlightColor,
+      }}>
+      <>
+        <View style={styles.titleContainer}>
+          <Text style={{...styles.titleText, color: colors.text}}>
+            <>{displayDate(dateCurr)}</>
+          </Text>
+          <Icon
+            name="close-circle"
+            size={25}
+            onPress={closeModal}
+            color={colors.text}
+            style={styles.icon}
+          />
+        </View>
+        <View
+          style={{
+            ...styles.dataContainer,
+            backgroundColor: colors.background,
+            shadowColor: colors.text,
+          }}>
+          <View style={styles.dataFirstText}>
+            <Text
+              style={{
+                color: titleText,
+              }}>
+              Tiempo Aproximado:
+            </Text>
+            <Text style={{color: colors.text, ...styles.bold}}>{time}</Text>
+          </View>
+          <Text style={{color: colors.text}}>
+            De {datesD.startDate} a {datesD.endDate}
+          </Text>
+          <Pressable
+            style={{...styles.btnConfirm, backgroundColor: bulletFree}}
+            onPress={onConfirm}>
+            <Text style={{color: globalColors.white}}>Confirmar</Text>
+          </Pressable>
+        </View>
+        <HourList time={1.5} setGSelectedEvents={setGlobalSelection} />
+      </>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  btnAgendar: {
-    marginTop: 30,
-    marginBottom: 3,
-    backgroundColor: globalColors.ligthBlue,
-    borderRadius: 60,
-    height: 20,
-    width: '70%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  item: {
-    padding: 20,
-    borderRadius: 30,
-    backgroundColor: globalColors.golden,
-    borderBottomWidth: 1,
-    borderBottomColor: globalColors.white,
-    flexDirection: 'row',
-  },
-  itemHourText: {
-    color: globalColors.mainText,
-  },
-  itemDurationText: {
-    color: 'grey',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
-  },
-  itemTitleText: {
-    color: globalColors.mainText,
-    marginLeft: 16,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  itemButtonContainer: {
+  modalContainer: {
     flex: 1,
-    alignItems: 'flex-end',
-  },
-  emptyItem: {
-    paddingLeft: 20,
-    height: 52,
+    width: '80%',
+    marginVertical: 20,
+    alignSelf: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'red',
+    borderWidth: 1,
+    borderRadius: 20,
+    alignContent: 'center',
   },
-  emptyItemText: {
-    color: 'lightgrey',
-    fontSize: 14,
+  titleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  titleText: {
+    fontSize: 22,
+    alignSelf: 'center',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
+  icon: {right: 10, marginTop: 10, position: 'absolute'},
+  dataContainer: {
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    paddingVertical: 10,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 1.27,
+    elevation: 3,
+  },
+  dataFirstText: {flexDirection: 'row', marginBottom: 10},
+  bold: {
+    fontWeight: 'bold',
+  },
+  btnConfirm: {
+    marginTop: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '40%',
+    padding: 10,
   },
 });

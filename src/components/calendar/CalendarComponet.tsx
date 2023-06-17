@@ -1,52 +1,52 @@
 /* eslint-disable react-native/no-inline-styles */
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from '@react-native-google-signin/google-signin';
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+// } from '@react-native-google-signin/google-signin';
 import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AuthContext} from '../../context/AuthContext';
 import {View, Text} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
+import {SelectedServices} from './SelectedServices';
 
 export const CalendarComponent = () => {
   const {signIn, authState, signOut} = useContext(AuthContext);
   const {
-    themeState: {colors},
-    
+    themeState: {colors, bulletFree, highlightColor, bulletOcupied},
   } = useContext(ThemeContext);
 
-  const signInWithGoogle = async () => {
-    try {
-      GoogleSignin.configure({
-        webClientId:
-          '685556051749-94tc9vnciflm619semreu9msgv160cvv.apps.googleusercontent.com',
-        offlineAccess: true,
-        forceCodeForRefreshToken: true,
-      });
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('Usuario autenticado:', userInfo);
+  // const signInWithGoogle = async () => {
+  //   try {
+  //     GoogleSignin.configure({
+  //       webClientId:
+  //         '685556051749-94tc9vnciflm619semreu9msgv160cvv.apps.googleusercontent.com',
+  //       offlineAccess: true,
+  //       forceCodeForRefreshToken: true,
+  //     });
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+  //     console.log('Usuario autenticado:', userInfo);
 
-      // Aquí puedes hacer una llamada a la API de Google Calendar para obtener los eventos del calendario
-      // Puedes usar axios o fetch para realizar la solicitud HTTP
-      // Por ejemplo:
-      // const response = await axios.get('https://www.googleapis.com/calendar/v3/calendars/primary/events');
-      // console.log('Eventos del calendario:', response.data);
-    } catch (error) {
-      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      //   console.log('El inicio de sesión fue cancelado');
-      // } else if (error.code === statusCodes.IN_PROGRESS) {
-      //   console.log('El inicio de sesión está en progreso');
-      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      //   console.log('Servicios de Google Play no disponibles');
-      // } else {
-      //   console.log('Error al iniciar sesión:', error);
-      // }
-      console.log(error);
-    }
-  };
+  //     // Aquí puedes hacer una llamada a la API de Google Calendar para obtener los eventos del calendario
+  //     // Puedes usar axios o fetch para realizar la solicitud HTTP
+  //     // Por ejemplo:
+  //     // const response = await axios.get('https://www.googleapis.com/calendar/v3/calendars/primary/events');
+  //     // console.log('Eventos del calendario:', response.data);
+  //   } catch (error) {
+  //     // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //     //   console.log('El inicio de sesión fue cancelado');
+  //     // } else if (error.code === statusCodes.IN_PROGRESS) {
+  //     //   console.log('El inicio de sesión está en progreso');
+  //     // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //     //   console.log('Servicios de Google Play no disponibles');
+  //     // } else {
+  //     //   console.log('Error al iniciar sesión:', error);
+  //     // }
+  //     console.log(error);
+  //   }
+  // };
   // const getCalendarEvents = async () => {
   //   const calendarId =
   //     'ce1694d501efee6e2c457727b6d6f39b057d8dc56dee16dbe2c398a7741b194d@group.calendar.google.com';
@@ -84,7 +84,7 @@ export const CalendarComponent = () => {
             <View
               style={{
                 borderRadius: 100,
-                backgroundColor: the,
+                backgroundColor: bulletOcupied,
                 marginHorizontal: 10,
                 height: 30,
                 width: 30,
@@ -97,7 +97,7 @@ export const CalendarComponent = () => {
               style={{
                 borderRadius: 100,
                 marginHorizontal: 10,
-                backgroundColor: 'red',
+                backgroundColor: highlightColor,
                 height: 30,
                 width: 30,
               }}
@@ -108,7 +108,7 @@ export const CalendarComponent = () => {
             <View
               style={{
                 borderRadius: 100,
-                backgroundColor: 'red',
+                backgroundColor: bulletFree,
                 marginHorizontal: 10,
                 height: 30,
                 width: 30,
@@ -118,6 +118,7 @@ export const CalendarComponent = () => {
           </>
         </View>
       </View>
+      <SelectedServices />
       <View style={{marginVertical: 20}}>
         <Text style={{color: colors.text}}>Hoola</Text>
         {authState.isLoggedIn ? (
@@ -137,13 +138,13 @@ export const CalendarComponent = () => {
           </TouchableOpacity>
         )}
       </View>
-      <View>
+      {/* <View>
         <GoogleSigninButton
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
           onPress={signInWithGoogle}
         />
-      </View>
+      </View> */}
     </>
   );
 };

@@ -13,6 +13,7 @@ export const globalColors = {
   pink: '#dd99ee',
   bulletOcupied: '#800000',
   bulletFree: '#72a276',
+  disabledRed: 'rgba(255, 0, 0, 0.4);',
 };
 export const styles = StyleSheet.create({
   center: {
@@ -57,17 +58,5 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     fontFamily: 'sans-serif',
-  },
-  themeCalendar: {
-    backgroundColor: globalColors.mainBack,
-    calendarBackground: globalColors.mainBack,
-    textSectionTitleColor: globalColors.golden,
-    selectedDayBackgroundColor: globalColors.blueSelected,
-    textSectionTitleDisabledColor: globalColors.golden,
-    monthTextColor: globalColors.mainText,
-    selectedDayTextColor: globalColors.mainText,
-    todayTextColor: globalColors.blueSelected,
-    dayTextColor: globalColors.mainText,
-    textDisabledColor: globalColors.ligthBlue,
   },
 });

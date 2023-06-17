@@ -180,3 +180,9 @@ export interface End {
 export interface Reminders {
   useDefault: boolean;
 }
+
+export interface SelectedHour {
+  time: string;
+  isHourChange: boolean;
+  index: number;
+}

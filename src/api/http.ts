@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {AgendaSchedule} from '../interfaces/Appointments';
 
-const backendUri = 'https://1a1a-177-249-160-162.ngrok-free.app';
+const backendUri = 'https://2ec4-177-249-161-15.ngrok-free.app';
 
 export const httpApi = axios.create({
   baseURL: `${backendUri}/api`,
