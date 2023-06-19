@@ -1,13 +1,5 @@
 import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  Text,
-  Image,
-  TouchableOpacity,
-  Button,
-} from 'react-native';
+import {View, FlatList, Text, Image, TouchableOpacity} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {styles as S, globalColors} from '../../theme/AppStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -107,19 +99,23 @@ const Item = ({title, image}: ItemProps) => {
 
 export const EditServicesView = () => {
   const {
-    themeState: {colors, primaryButton},
+    themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
   return (
-    <View style={S.globalContainer}>
-      <SafeAreaView style={{backgroundColor: colors.background}}>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => (
-            <Item title={item.title} image={item.image} />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
+    <View style={{...S.globalContainer}}>
+      <TouchableOpacity
+        style={{
+          ...styles.newButton,
+          backgroundColor: primaryButton,
+          borderColor: highlightColor,
+        }}>
+        <Text style={{...styles.newButtonText, color: colors.text}}>Nuevo</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={DATA}
+        renderItem={({item}) => <Item title={item.title} image={item.image} />}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

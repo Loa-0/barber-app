@@ -43,4 +43,27 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
   },
+  newButtonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  newButton: {
+    borderRadius: 50,
+    borderWidth: 1,
+    borderBottomWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 120,
+    height: 40,
+    marginVertical: 5,
+    marginLeft: 16,
+  },
 });

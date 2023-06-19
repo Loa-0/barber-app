@@ -41,7 +41,7 @@ export const LightTheme: ThemeState = {
   textShadowColor: 'black',
   transparentBackground: 'rgba(0, 0, 0, 0.1)',
   secondaryButton: globalColors.white,
-  primaryButton: globalColors.ligthBlue,
+  primaryButton: globalColors.white,
   themeCalendar: {
     backgroundColor: globalColors.white,
     calendarBackground: globalColors.white,
@@ -72,7 +72,7 @@ export const DarkTheme: ThemeState = {
   textShadowColor: globalColors.white,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
   secondaryButton: globalColors.white,
-  primaryButton: globalColors.blueSelected,
+  primaryButton: 'rgba(255,255, 255, 0.5)',
   themeCalendar: {
     backgroundColor: globalColors.mainBlack,
     calendarBackground: globalColors.mainBlack,
