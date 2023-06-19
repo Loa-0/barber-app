@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {styles as S, globalColors} from '../../theme/AppStyles';
@@ -106,12 +107,11 @@ const Item = ({title, image}: ItemProps) => {
 
 export const EditServicesView = () => {
   const {
-    themeState: {colors},
+    themeState: {colors, primaryButton},
   } = useContext(ThemeContext);
   return (
     <View style={S.globalContainer}>
-      <SafeAreaView
-        style={{...styles.container, backgroundColor: colors.background}}>
+      <SafeAreaView style={{backgroundColor: colors.background}}>
         <FlatList
           data={DATA}
           renderItem={({item}) => (

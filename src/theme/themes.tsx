@@ -22,6 +22,7 @@ export interface ThemeState extends Theme {
   transparentBackground: string;
   secondaryButton: string;
   themeCalendar: calendarThemeType;
+  primaryButton: string;
 }
 
 export const LightTheme: ThemeState = {
@@ -40,6 +41,7 @@ export const LightTheme: ThemeState = {
   textShadowColor: 'black',
   transparentBackground: 'rgba(0, 0, 0, 0.1)',
   secondaryButton: globalColors.white,
+  primaryButton: globalColors.ligthBlue,
   themeCalendar: {
     backgroundColor: globalColors.white,
     calendarBackground: globalColors.white,
@@ -70,6 +72,7 @@ export const DarkTheme: ThemeState = {
   textShadowColor: globalColors.white,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
   secondaryButton: globalColors.white,
+  primaryButton: globalColors.blueSelected,
   themeCalendar: {
     backgroundColor: globalColors.mainBlack,
     calendarBackground: globalColors.mainBlack,
