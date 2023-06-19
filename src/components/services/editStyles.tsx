@@ -66,4 +66,61 @@ export const styles = StyleSheet.create({
     marginVertical: 5,
     marginLeft: 16,
   },
+  price: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 10,
+    lineHeight: 24, // Ajusta el valor según sea necesario
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'rgba(255,255,255,0.985)',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: 'rgba(255,255,255,0.985)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderColor: 'rgb(218,165,32)',
+    borderWidth: 2, // Agregado para el borde negro
+  },
+  buttonClose: {
+    backgroundColor: 'rgb(130,130,130)',
+    borderColor: 'black',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  reservationBox: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    alignItems: 'center',
+  },
+  reservationText: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
