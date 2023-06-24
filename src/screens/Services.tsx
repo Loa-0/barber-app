@@ -10,10 +10,9 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import {styles as S} from '../theme/AppStyles';
+//import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
 import { ThemeContext } from '../context/ThemeContext';
-import { c } from '../theme/themes';
 
 const DATA = [
   {
@@ -97,7 +96,7 @@ type ItemProps = {
   duration: number};
 
 const Item = ({ title, image, price, duration }: ItemProps) => {
-  const {themeState:{colors, dividerColor}} = useContext(ThemeContext)
+  const {themeState:{colors, servWhite}} = useContext(ThemeContext)
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleImagePress = () => {
@@ -109,7 +108,7 @@ const Item = ({ title, image, price, duration }: ItemProps) => {
   };
 
   return (
-    <TouchableOpacity style={{...styles.item,backgroundColor:dividerColor}} onPress={handleImagePress}>
+    <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
         <Image source={image} style={styles.image} />
       </TouchableOpacity>
@@ -144,19 +143,16 @@ const Item = ({ title, image, price, duration }: ItemProps) => {
           </View>
         </View>
       </Modal>
-    </TouchableOpacity>
-
+    </TouchableOpacity>  
   );
 };
 
 
-
 export const ServicesScreen  = () => {
- const {themeState:{colors}} = useContext(ThemeContext)
+ const {themeState:{colors, servWhite}} = useContext(ThemeContext);
+ const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View style={S.globalContainer}>
-      
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{...styles.container,backgroundColor: colors.background}}>
         <FlatList
           data={DATA}
           ListHeaderComponent={<HeaderComponent title="Servicios" />}
@@ -169,7 +165,6 @@ export const ServicesScreen  = () => {
           keyExtractor={(item) => item.id}
         />
     </SafeAreaView>
-    </View>
   );
 };
 
@@ -177,7 +172,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    //backgroundColor: 'rgba(0, 0, 0, 0.8)',
+
   },
   item: {
     padding: 20,
@@ -185,10 +181,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     flexDirection: 'row', // Para alinear la imagen y el texto horizontalmente
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
-    //backgroundColor: 'rgba(255,255, 255, 0.2)',
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
-    borderColor: 'rgba(255, 255, 255, 1)',
   },
   content: {
     flex: 1,

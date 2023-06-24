@@ -17,6 +17,7 @@ export type calendarThemeType = {
 export interface ThemeState extends Theme {
   currentTheme: 'light' | 'dark';
   dividerColor: string;
+  servWhite: string;
   highlightColor: string;
   textShadowColor: string;
   transparentBackground: string;
@@ -36,6 +37,7 @@ export const LightTheme: ThemeState = {
     notification: 'teal',
   },
   dividerColor: 'rgba(0,0,0,0.7)',
+  servWhite: 'rgba(0,0,0,0.2)',
   highlightColor: globalColors.golden,
   textShadowColor: 'black',
   transparentBackground: 'rgba(0, 0, 0, 0.1)',
@@ -66,6 +68,7 @@ export const DarkTheme: ThemeState = {
     notification: 'teal',
   },
   dividerColor: 'rgba(255,0,0,0.7)',
+  servWhite: 'rgba(255,255,255,0.2)',
   highlightColor: globalColors.golden,
   textShadowColor: globalColors.white,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
