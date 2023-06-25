@@ -4,6 +4,7 @@ import {styles as S} from '../theme/AppStyles';
 import {CalendarComponent} from '../components/calendar/CalendarComponet';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
+// import {Ejemplo} from '../components/calendar/Ejemplo';
 // import {AgendaScreen} from '../components/calendar/AgendaScreen';
 
 export const Appointments = () => {
@@ -18,6 +19,7 @@ export const Appointments = () => {
       }}>
       <HeaderComponent title="Citas" />
       <CalendarComponent />
+      {/* <Ejemplo /> */}
       {/* <AgendaScreen /> */}
     </ScrollView>
   );
