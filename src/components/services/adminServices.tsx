@@ -4,8 +4,9 @@ import {ThemeContext} from '../../context/ThemeContext';
 import {styles as S, globalColors} from '../../theme/AppStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {styles} from './editStyles';
-import {EditModal} from './editModal';
 import {InfoModal} from './infoModal';
+import {StackScreenProps} from '@react-navigation/stack';
+import {serviceInfoType} from './types';
 
 const DATA = [
   {
@@ -83,21 +84,15 @@ const DATA = [
 ];
 
 type ItemProps = {
-  title: string;
-  image: any;
-  price: number;
-  duration: number;
+  service: serviceInfoType;
+  onClickEdit: (service: serviceInfoType) => any;
 };
 
-const Item = ({title, image, price, duration}: ItemProps) => {
+const Item = ({service, onClickEdit}: ItemProps) => {
   const {
     themeState: {colors, transparentBackground, secondaryButton},
   } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const toggleEditModal = () => {
-    setEditModalVisible(!editModalVisible);
-  };
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
@@ -108,7 +103,7 @@ const Item = ({title, image, price, duration}: ItemProps) => {
       style={{...styles.item, backgroundColor: transparentBackground}}
       onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
-        <Image source={image} style={styles.image} />
+        <Image source={service.image} style={styles.image} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
@@ -118,16 +113,20 @@ const Item = ({title, image, price, duration}: ItemProps) => {
             color: colors.text,
             textShadowColor: colors.background,
           }}>
-          {title}
+          {service.title}
         </Text>
-        <Text style={{...styles.price, color: colors.text}}>${price}</Text>
+        <Text style={{...styles.price, color: colors.text}}>
+          ${service.price}
+        </Text>
         <TouchableOpacity
           style={{
             ...styles.button,
             backgroundColor: secondaryButton,
             borderColor: colors.border,
           }}
-          onPress={toggleEditModal}>
+          onPress={() => {
+            onClickEdit(service);
+          }}>
           <Text style={{...styles.buttonText}}>
             <FontAwesome5
               name="edit"
@@ -137,28 +136,33 @@ const Item = ({title, image, price, duration}: ItemProps) => {
           </Text>
         </TouchableOpacity>
       </TouchableOpacity>
-      <EditModal
-        title={title}
-        image={image}
-        price={price}
-        duration={duration}
-        visible={editModalVisible}
-        onClose={toggleEditModal}
-      />
       <InfoModal
-        price={price}
-        duration={duration}
+        price={service.price}
+        duration={service.duration}
         visible={modalVisible}
         onClose={handleImagePress}
       />
     </TouchableOpacity>
   );
 };
-
-export const EditServicesView = () => {
+interface Props extends StackScreenProps<any, any> {}
+export const AdminServicesView = ({navigation}: Props) => {
   const {
     themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
+
+  const navigateEditServices = ({
+    id,
+    title,
+    image,
+    price,
+    duration,
+  }: serviceInfoType) => {
+    navigation.navigate('AdminServices', {
+      screen: 'editService',
+      params: {id, title, image, price, duration},
+    });
+  };
   return (
     <View style={{...S.globalContainer}}>
       <TouchableOpacity
@@ -173,10 +177,12 @@ export const EditServicesView = () => {
         data={DATA}
         renderItem={({item}) => (
           <Item
-            title={item.title}
-            image={item.image}
-            price={item.price}
-            duration={item.duration}
+            // title={item.title}
+            // image={item.image}
+            // price={item.price}
+            // duration={item.duration}
+            service={item}
+            onClickEdit={navigateEditServices}
           />
         )}
         keyExtractor={item => item.id}

@@ -82,7 +82,6 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'rgba(255,255,255,0.985)',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -122,5 +121,70 @@ export const styles = StyleSheet.create({
   reservationText: {
     color: 'white',
     fontSize: 16,
+  },
+  formContainer: {
+    flex: 1,
+    paddingHorizontal: 22,
+  },
+  formTitle: {
+    marginHorizontal: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  formTitleText: {
+    fontSize: 22,
+    textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
+    textShadowRadius: 1, // Radio del borde
+  },
+  goBackArrowPos: {
+    position: 'absolute',
+    left: 0,
+  },
+  formImageContainer: {
+    alignItems: 'center',
+    marginVertical: 22,
+  },
+  formImage: {
+    height: 170,
+    width: 170,
+    borderRadius: 85,
+    borderWidth: 2,
+  },
+  formCameraPos: {
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
+    zIndex: 9999,
+  },
+  formInputContainer: {
+    flexDirection: 'column',
+    marginBottom: 6,
+  },
+  formTextBox: {
+    borderWidth: 1,
+    borderRadius: 4,
+    marginVertical: 6,
+    justifyContent: 'center',
+    paddingLeft: 8,
+    height: 44,
+    width: '100%',
+  },
+  formSubmitBtn: {
+    marginVertical: 30,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderBottomWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

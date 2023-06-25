@@ -9,7 +9,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {globalColors} from '../../theme/AppStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {EditServices} from '../../screens/EditServices';
+import {StackNavigatorAdmin} from './StackNavigatorAdmin';
 
 interface Props extends StackScreenProps<RootStackParams, 'Page1'> {}
 
@@ -66,8 +66,8 @@ export const BottomNavigator = ({}: Props) => {
         }}
       />
       <Tab.Screen
-        name="EditServices"
-        component={EditServices}
+        name="AdminServices"
+        component={StackNavigatorAdmin}
         options={{
           tabBarLabel: 'Editar',
           tabBarIcon: ({color}) => (
