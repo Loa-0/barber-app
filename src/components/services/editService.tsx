@@ -18,6 +18,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmin';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
+import NumericInput from 'react-native-numeric-input';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {
@@ -103,34 +104,36 @@ export const EditService = ({route, navigation}: Props) => {
             <Text style={{color: colors.text}}>Precio</Text>
             <View
               style={{
-                ...styles.formTextBox,
                 borderColor: colors.border,
               }}>
-              <TextInput
-                keyboardType="numeric"
-                // value={servicePrice}
-                // onChangeText={value => setServicePrice(value)}
-                editable={true}
-                cursorColor={colors.text}
-                style={{color: colors.text}}
+              <NumericInput
+                value={servicePrice}
+                onChange={value => {
+                  setServicePrice(value);
+                }}
+                step={0.01}
+                valueType="real"
+                textColor={colors.text}
+                minValue={0}
               />
             </View>
           </View>
 
           <View style={styles.formInputContainer}>
-            <Text style={{color: colors.text}}>Duración</Text>
+            <Text style={{color: colors.text}}>Duración en horas</Text>
             <View
               style={{
-                ...styles.formTextBox,
                 borderColor: colors.border,
               }}>
-              <TextInput
-                keyboardType="numeric"
-                // value={serviceDuration}
-                // onChangeText={value => setServiceDuration(value)}
-                editable={true}
-                cursorColor={colors.text}
-                style={{color: colors.text}}
+              <NumericInput
+                value={serviceDuration}
+                onChange={value => {
+                  setServiceDuration(value);
+                }}
+                step={0.5}
+                valueType="real"
+                textColor={colors.text}
+                minValue={0.5}
               />
             </View>
           </View>
