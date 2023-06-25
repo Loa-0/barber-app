@@ -22,6 +22,9 @@ export interface ThemeState extends Theme {
   transparentBackground: string;
   secondaryButton: string;
   themeCalendar: calendarThemeType;
+  bulletOcupied: string;
+  bulletFree: string;
+  titleText: string;
   primaryButton: string;
 }
 
@@ -31,13 +34,16 @@ export const LightTheme: ThemeState = {
   colors: {
     primary: '#5856D6',
     background: globalColors.white,
-    card: 'black',
-    text: 'black',
+    card: globalColors.mainBlack,
+    text: globalColors.mainBlack,
     border: 'rgba(0, 0, 0, 1)',
     notification: 'teal',
   },
+  bulletOcupied: globalColors.bulletOcupied,
+  bulletFree: globalColors.bulletFree,
   dividerColor: 'rgba(0,0,0,0.7)',
   highlightColor: globalColors.golden,
+  titleText: globalColors.blueSelected,
   textShadowColor: 'black',
   transparentBackground: 'rgba(0, 0, 0, 0.1)',
   secondaryButton: globalColors.white,
@@ -47,12 +53,12 @@ export const LightTheme: ThemeState = {
     calendarBackground: globalColors.white,
     textSectionTitleColor: globalColors.golden,
     selectedDayBackgroundColor: globalColors.blueSelected,
-    textSectionTitleDisabledColor: globalColors.golden,
     monthTextColor: globalColors.mainBlack,
     selectedDayTextColor: globalColors.mainBlack,
     todayTextColor: globalColors.blueSelected,
     dayTextColor: globalColors.mainBlack,
-    textDisabledColor: globalColors.ligthBlue,
+    textSectionTitleDisabledColor: globalColors.golden,
+    textDisabledColor: globalColors.ligthgray,
   },
 };
 //
@@ -70,9 +76,12 @@ export const DarkTheme: ThemeState = {
   dividerColor: 'rgba(255,0,0,0.7)',
   highlightColor: globalColors.golden,
   textShadowColor: globalColors.white,
+  bulletOcupied: globalColors.bulletOcupied,
+  bulletFree: globalColors.bulletFree,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
   secondaryButton: globalColors.white,
   primaryButton: 'rgba(255,255, 255, 0.5)',
+  titleText: globalColors.golden,
   themeCalendar: {
     backgroundColor: globalColors.mainBlack,
     calendarBackground: globalColors.mainBlack,
@@ -83,6 +92,6 @@ export const DarkTheme: ThemeState = {
     selectedDayTextColor: globalColors.white,
     todayTextColor: globalColors.blueSelected,
     dayTextColor: globalColors.white,
-    textDisabledColor: globalColors.ligthBlue,
+    textDisabledColor: globalColors.disabledRed,
   },
 };
