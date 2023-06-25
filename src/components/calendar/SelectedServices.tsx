@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
 import {View, Text} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
@@ -5,8 +6,8 @@ import {ThemeContext} from '../../context/ThemeContext';
 //Penfig uPDATE
 
 const DATA = {
-  total: 240,
-  time: 2,
+  total: 220,
+  time: 1.5,
   servicios: [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -67,13 +68,13 @@ export const SelectedServices = () => {
           alignItems: 'center',
         }}>
         {DATA.servicios.length > 1 &&
-          DATA.servicios.map(service => (
-            <Text style={{color: colors.text}}>
+          DATA.servicios.map((service, i) => (
+            <Text style={{color: colors.text}} key={i}>
               {service.title} - ${service.cost}
             </Text>
           ))}
         <Text style={{color: colors.text, fontWeight: 'bold', marginTop: 10}}>
-          Costo: ${DATA.total} Tiempo: {DATA.time}
+          Costo: ${DATA.total} Tiempo: 1h:30m
         </Text>
       </View>
     </View>

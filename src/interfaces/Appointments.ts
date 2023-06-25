@@ -2,6 +2,8 @@ export interface AgendaEntry {
   name: string;
   height: number;
   day: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface AgendaSchedule {
@@ -182,7 +184,8 @@ export interface Reminders {
 }
 
 export interface SelectedHour {
-  time: string;
-  isHourChange: boolean;
+  timeDisplay: string;
+  isHourChange?: boolean;
   index: number;
+  toDisplay?: boolean;
 }

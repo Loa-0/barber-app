@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {createContext, useState, useEffect} from 'react';
-import {AgendaSchedule, CalendarCountType} from '../interfaces/Appointments';
+import {
+  AgendaSchedule,
+  CalendarCountType,
+  SelectedHour,
+} from '../interfaces/Appointments';
 import {DateData, MarkedDates} from 'react-native-calendars';
-// import {timeToString} from '../helpers/Date';
 import {globalColors} from '../theme/AppStyles';
 import {getCalendar} from '../api/http';
 
@@ -12,7 +15,12 @@ type AgendaContextProps = {
   markedDates: MarkedDates;
   loadAgenda: (date: DateData) => Promise<void>;
   today: DateData;
+  loadedEvents: SelectedEvent;
 };
+
+interface SelectedEvent {
+  [date: string]: SelectedHour[];
+}
 
 //Mock Citas
 
@@ -26,9 +34,12 @@ export const AgendaProvider = ({children}: any) => {
     timestamp: new Date().getTime(),
     year: new Date().getFullYear(),
   };
+
+  const [loadedEvents, setLoadedEvents] = useState<SelectedEvent>({});
   const [agenda, setAgenda] = useState<AgendaSchedule>({});
   const [dayCounter, setDayCounter] = useState<CalendarCountType>({});
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+
   const countDates = () => {
     if (agenda) {
       const contador: CalendarCountType = {};
@@ -41,6 +52,7 @@ export const AgendaProvider = ({children}: any) => {
 
   useEffect(() => {
     countDates();
+    constructAgendaDaily();
   }, [agenda]);
 
   useEffect(() => {
@@ -59,11 +71,47 @@ export const AgendaProvider = ({children}: any) => {
     try {
       const agendaResponse = await getCalendar();
       setAgenda(agendaResponse);
-      console.log(agendaResponse);
     } catch (error) {
       console.log(error);
     }
   };
+  const constructAgendaDaily = () => {
+    if (agenda) {
+      const raw: SelectedEvent = {};
+      Object.keys(agenda).forEach(date => {
+        const events = agenda[date];
+        const eventsByDate: SelectedHour[] = [];
+        events.forEach(event => {
+          const [startHour, startMinute] = event.startDate.split(':');
+          const startTotalMinutes =
+            parseInt(startHour, 10) * 60 + parseInt(startMinute, 10);
+          const [endHour, endMinute] = event.endDate.split(':');
+          const endTotalMinutes =
+            parseInt(endHour, 10) * 60 + parseInt(endMinute, 10);
+          const differenceMinutes = endTotalMinutes - startTotalMinutes;
+          const differenceHours = Math.floor(differenceMinutes / 60);
+          for (let i = 0; i < differenceHours * 2; i++) {
+            const minutesToAdd = i * 30;
+            const totalMinutes = startTotalMinutes + minutesToAdd;
+            const hour = Math.floor(totalMinutes / 60);
+            const minute = totalMinutes % 60;
+            const timeDisplay = `${hour.toString().padStart(2, '0')}:${minute
+              .toString()
+              .padStart(2, '0')}`;
+
+            const selectedHour = {
+              timeDisplay: timeDisplay,
+              index: i / 2, // índice ajustado para ser decimal (0.5, 1, 1.5, ...)
+            };
+            eventsByDate.push(selectedHour);
+          }
+          raw[date] = eventsByDate;
+        });
+      });
+      setLoadedEvents(raw);
+    }
+  };
+
   const handleCount = () => {
     const updatedDate: MarkedDates = {};
     for (const date in dayCounter) {
@@ -98,6 +146,7 @@ export const AgendaProvider = ({children}: any) => {
         markedDates,
         agenda,
         loadAgenda,
+        loadedEvents,
         today,
       }}>
       {children}

@@ -6,8 +6,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {displayDate} from '../../helpers/Date';
 import {globalColors} from '../../theme/AppStyles';
 import {SelectedHour} from '../../interfaces/Appointments';
+import {AgendaContext} from '../../hooks/useCalendar';
 
 interface Props {
+  dayEvents?: any;
   dateCurr: string;
   time: string;
   closeModal: () => void;
@@ -16,6 +18,9 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
   const {
     themeState: {colors, highlightColor, titleText, bulletFree},
   } = useContext(ThemeContext);
+
+  const {loadedEvents} = useContext(AgendaContext);
+  //QAqui
   const [globalSelection, setGlobalSelection] = useState<SelectedHour[]>([]);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [datesD, setDatesD] = useState({
@@ -27,15 +32,13 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
     if (globalSelection.length > 0) {
       setIsDisabled(false);
       setDatesD({
-        startDate: globalSelection[0].time,
-        endDate: globalSelection[1].time,
+        startDate: globalSelection[0].timeDisplay,
+        endDate: globalSelection[1]
+          ? globalSelection[1].timeDisplay
+          : globalSelection[0].timeDisplay,
       });
     }
   }, [globalSelection]);
-
-  useEffect(() => {
-    console.log(datesD);
-  }, [datesD]);
 
   const onConfirm = () => {
     if (isDisabled) {
@@ -48,6 +51,7 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
       );
       return;
     }
+    console.log(datesD);
   };
 
   return (
@@ -94,7 +98,11 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
             <Text style={{color: globalColors.white}}>Confirmar</Text>
           </Pressable>
         </View>
-        <HourList time={1.5} setGSelectedEvents={setGlobalSelection} />
+        <HourList
+          timeEventDuration={1.5}
+          setGSelectedEvents={setGlobalSelection}
+          selectedGEvents={loadedEvents[dateCurr] ?? []}
+        />
       </>
     </View>
   );
