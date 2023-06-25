@@ -163,6 +163,11 @@ export const AdminServicesView = ({navigation}: Props) => {
       params: {id, title, image, price, duration},
     });
   };
+  const navigateNewService = () => {
+    navigation.navigate('AdminServices', {
+      screen: 'newService',
+    });
+  };
   return (
     <View style={{...S.globalContainer}}>
       <TouchableOpacity
@@ -170,7 +175,8 @@ export const AdminServicesView = ({navigation}: Props) => {
           ...styles.newButton,
           backgroundColor: primaryButton,
           borderColor: highlightColor,
-        }}>
+        }}
+        onPress={navigateNewService}>
         <Text style={{...styles.newButtonText, color: colors.text}}>Nuevo</Text>
       </TouchableOpacity>
       <FlatList

@@ -3,13 +3,13 @@ import {ScrollView} from 'react-native';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
-import {EditService} from '../components/services/editService';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../navigator/stacknavigator/StackNavigatorAdmin';
+import {NewService} from '../components/services/newService';
 
-interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
+interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 
-export const EditServicePage = ({navigation, route}: Props) => {
+export const NewServicePage = ({navigation, route}: Props) => {
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -19,8 +19,8 @@ export const EditServicePage = ({navigation, route}: Props) => {
         ...S.globalContainer,
         backgroundColor: colors.background,
       }}>
-      <HeaderComponent title="Editar servicio" />
-      <EditService navigation={navigation} route={route} />
+      <HeaderComponent title="Nuevo servicio" />
+      <NewService navigation={navigation} route={route} />
     </ScrollView>
   );
 };
