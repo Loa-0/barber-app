@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   SafeAreaView,
   View,
@@ -19,6 +19,8 @@ const DATA = [
     image: {
       uri: 'https://content.latest-hairstyles.com/wp-content/uploads/casual-slick-back-mens-haircut-with-fade.jpg',
     },
+    price: 200,
+    duration: 1,
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
@@ -100,6 +102,9 @@ const Item = ({title, image}: ItemProps) => (
 );
 
 export const Services = () => {
+  const {
+    themeState: {colors, titleText},
+  } = useContext(ThemeContext);
   return (
     <View style={S.globalContainer}>
       <SafeAreaView
