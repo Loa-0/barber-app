@@ -25,6 +25,7 @@ export interface ThemeState extends Theme {
   bulletOcupied: string;
   bulletFree: string;
   titleText: string;
+  servWhite: string;
 }
 
 export const LightTheme: ThemeState = {
@@ -39,6 +40,7 @@ export const LightTheme: ThemeState = {
     notification: 'teal',
   },
   bulletOcupied: globalColors.bulletOcupied,
+  servWhite: 'rgba(0,0,0,0.2)',
   bulletFree: globalColors.bulletFree,
   dividerColor: 'rgba(0,0,0,0.7)',
   highlightColor: globalColors.golden,
@@ -73,6 +75,7 @@ export const DarkTheme: ThemeState = {
   },
   dividerColor: 'rgba(255,0,0,0.7)',
   highlightColor: globalColors.golden,
+  servWhite: 'rgba(255,255,255,0.2)',
   textShadowColor: globalColors.white,
   bulletOcupied: globalColors.bulletOcupied,
   bulletFree: globalColors.bulletFree,

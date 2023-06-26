@@ -24,11 +24,6 @@ export const WelcomeScreen = ({navigation}: Props) => {
 };
 
 const pageStyle = StyleSheet.create({
-  backgroundImage: {
-    width: '100%',
-    padding: 20,
-    height: 300,
-const pageStyle = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',

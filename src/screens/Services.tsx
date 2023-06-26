@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Modal
 } from 'react-native';
 //import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
@@ -258,5 +259,13 @@ const styles = StyleSheet.create({
   reservationText: {
     color: 'white',
     fontSize: 16,
+  },
+  price: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 10,
+    lineHeight: 24, // Ajusta el valor según sea necesario
+    alignItems: 'center',
   },
 });
