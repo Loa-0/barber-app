@@ -11,6 +11,9 @@ export const globalColors = {
   ligthgray: 'lightgrey',
   ligthBlue: '#74bece',
   pink: '#dd99ee',
+  bulletOcupied: '#800000',
+  bulletFree: '#72a276',
+  disabledRed: 'rgba(255, 0, 0, 0.4);',
 };
 export const styles = StyleSheet.create({
   center: {

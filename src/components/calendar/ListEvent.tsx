@@ -1,11 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {ToastAndroid, View} from 'react-native';
+import {ToastAndroid, View, Modal} from 'react-native';
 import {Calendar, DateData} from 'react-native-calendars';
-import {Text} from 'react-native-paper';
-import {globalColors} from '../../theme/AppStyles';
 import {AgendaContext} from '../../hooks/useCalendar';
 import {ThemeContext} from '../../context/ThemeContext';
+import {AgendaScreen} from './AgendaScreen';
 
 export const ListEvent = () => {
   const {markedDates} = useContext(AgendaContext);
@@ -44,12 +43,42 @@ export const ListEvent = () => {
     }
     setSelected(day.dateString);
   };
+  const {markedDates, today} = useContext(AgendaContext);
+  const {
+    themeState: {colors, themeCalendar, highlightColor, currentTheme},
+  } = useContext(ThemeContext);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>();
+  const closeModal = () => {
+    setIsVisible(false);
+  };
+  const handleSelectDate = (day: DateData) => {
+    const currentDate = new Date();
+    const maxAllowedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+    );
+    if (day.timestamp > maxAllowedDate.getTime()) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Solo puedes hacer citas dentro de 30 dias',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
+    setSelected(day.dateString);
+    setIsVisible(true);
+  };
 
   return (
     <>
       <View
         key={currentTheme}
         style={{
+          marginTop: 15,
           marginHorizontal: 20,
           borderRadius: 10,
           borderBottomWidth: 3,
@@ -64,17 +93,31 @@ export const ListEvent = () => {
           elevation: 10,
         }}>
         <Calendar
-          // minDate={prevMonth.dateString}
+          minDate={today.dateString}
           // startDate={nextMonth.dateString}
           style={{borderRadius: 10}}
           onDayPress={handleSelectDate}
           markedDates={markedDates}
-          theme={themeCalendar}
+          theme={{
+            ...themeCalendar,
+            textInactiveColor: 'red',
+            disabledArrowColor: 'red',
+          }}
         />
       </View>
-      <View style={{marginVertical: 20}}>
-        <Text style={{color: globalColors.mainText}}>Date: {selected}</Text>
-      </View>
+      {selected && (
+        <Modal
+          animationType="fade"
+          visible={isVisible}
+          transparent={true}
+          style={{justifyContent: 'center', alignContent: 'center'}}>
+          <AgendaScreen
+            dateCurr={selected}
+            closeModal={closeModal}
+            time="1h-30m"
+          />
+        </Modal>
+      )}
     </>
   );
 };

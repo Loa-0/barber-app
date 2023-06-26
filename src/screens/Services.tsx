@@ -6,9 +6,7 @@ import {
   StyleSheet,
   Text,
   Image,
-  ImageBackground,
   TouchableOpacity,
-  Modal,
 } from 'react-native';
 //import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
@@ -21,7 +19,7 @@ const DATA = [
     image: {
       uri: 'https://content.latest-hairstyles.com/wp-content/uploads/casual-slick-back-mens-haircut-with-fade.jpg',
     },
-    price: 250,
+    price: 200,
     duration: 1,
   },
   {
@@ -172,8 +170,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-    //backgroundColor: 'rgba(0, 0, 0, 0.8)',
-
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   item: {
     padding: 20,
@@ -193,16 +190,8 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
-  },
-  price: {
-    fontSize: 18,
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 10,
-    lineHeight: 24, // Ajusta el valor según sea necesario
-    alignItems: 'center',
+    textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
+    textShadowRadius: 1, // Radio del borde
   },
   image: {
     width: 70,
@@ -213,13 +202,10 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.5)',
   },
   button: {
-    backgroundColor: 'white',
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'white',
-    marginLeft: 10,
   },
   buttonText: {
     color: 'black',
