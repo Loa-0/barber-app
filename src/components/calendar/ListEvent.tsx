@@ -8,6 +8,7 @@ import {AgendaScreen} from './AgendaScreen';
 
 export const ListEvent = () => {
   const {markedDates, today} = useContext(AgendaContext);
+
   const {
     themeState: {colors, themeCalendar, highlightColor, currentTheme},
   } = useContext(ThemeContext);
@@ -75,11 +76,7 @@ export const ListEvent = () => {
           visible={isVisible}
           transparent={true}
           style={{justifyContent: 'center', alignContent: 'center'}}>
-          <AgendaScreen
-            dateCurr={selected}
-            closeModal={closeModal}
-            time="1h-30m"
-          />
+          <AgendaScreen dateCurr={selected} closeModal={closeModal} />
         </Modal>
       )}
     </>

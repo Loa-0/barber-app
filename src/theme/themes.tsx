@@ -25,6 +25,7 @@ export interface ThemeState extends Theme {
   bulletOcupied: string;
   bulletFree: string;
   titleText: string;
+  primaryButton: string;
 }
 
 export const LightTheme: ThemeState = {
@@ -46,6 +47,7 @@ export const LightTheme: ThemeState = {
   textShadowColor: 'black',
   transparentBackground: 'rgba(0, 0, 0, 0.1)',
   secondaryButton: globalColors.white,
+  primaryButton: globalColors.white,
   themeCalendar: {
     backgroundColor: globalColors.white,
     calendarBackground: globalColors.white,
@@ -78,6 +80,7 @@ export const DarkTheme: ThemeState = {
   bulletFree: globalColors.bulletFree,
   transparentBackground: 'rgba(255,255, 255, 0.2)',
   secondaryButton: globalColors.white,
+  primaryButton: 'rgba(255,255, 255, 0.5)',
   titleText: globalColors.golden,
   themeCalendar: {
     backgroundColor: globalColors.mainBlack,

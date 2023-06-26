@@ -15,7 +15,11 @@ export interface ThemeContextProps {
 
 export const ThemeContext = createContext({} as ThemeContextProps);
 
-export const ThemeProvider = ({children}: {children: JSX.Element[]}) => {
+export const ThemeProvider = ({
+  children,
+}: {
+  children: JSX.Element[] | JSX.Element;
+}) => {
   const colorScheme = Appearance.getColorScheme(); //obtener preferencia de tema del usuario
   const [themeState, dispatch] = useReducer(themeReducer, ThemeInitialState);
 
