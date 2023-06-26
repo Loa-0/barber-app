@@ -1,6 +1,5 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {globalColors} from '../../theme/AppStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {EditServicePage} from '../../screens/editServicesPage';
 import {AdminServicesPage} from '../../screens/AdminServicesPage';
@@ -18,7 +17,6 @@ export const StackNavigatorAdmin = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: {backgroundColor: globalColors.mainBack},
         headerStyle: {elevation: 0, marginTop: top},
       }}>
       <Stack.Screen
