@@ -5,6 +5,7 @@ import {PaperProvider} from 'react-native-paper';
 import {AuthProvider} from './src/context/AuthContext';
 import {ThemeContext, ThemeProvider} from './src/context/ThemeContext';
 import {AgendaProvider} from './src/hooks/useCalendar';
+import {ServiceProvider} from './src/context/Service.Context';
 
 const App = () => {
   const {themeState} = useContext(ThemeContext);
@@ -12,9 +13,7 @@ const App = () => {
     <PaperProvider>
       <NavigationContainer theme={themeState}>
         <AppState>
-          <ThemeState>
-            <StackNavigator />
-          </ThemeState>
+          <StackNavigator />
         </AppState>
       </NavigationContainer>
     </PaperProvider>
@@ -26,11 +25,11 @@ export default App;
 const AppState = ({children}: any) => {
   return (
     <AuthProvider>
-      <AgendaProvider>{children}</AgendaProvider>
+      <ThemeProvider>
+        <ServiceProvider>
+          <AgendaProvider>{children}</AgendaProvider>
+        </ServiceProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
-};
-
-const ThemeState = ({children}: any) => {
-  return <ThemeProvider>{children}</ThemeProvider>;
 };
