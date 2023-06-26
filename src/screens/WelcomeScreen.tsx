@@ -10,7 +10,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const WelcomeScreen = ({navigation}: Props) => {
   return (
     <View style={{...S.globalContainer, ...S.center}}>
-      <Image source={backgroundImage} style={styles.backgroundImage} />
+      <Image source={backgroundImage} style={pageStyle.backgroundImage} />
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('Page1', {id: 1, nombre: 'Uriel'});
@@ -23,11 +23,10 @@ export const WelcomeScreen = ({navigation}: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
+const pageStyle = StyleSheet.create({
   backgroundImage: {
     width: '100%',
+    padding: 20,
     height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

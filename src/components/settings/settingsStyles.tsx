@@ -1,10 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {globalColors} from '../../theme/AppStyles';
+
 export const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     resizeMode: 'cover',
-    backgroundColor: globalColors.mainBack,
     height: '100%',
   },
   safeArea: {
@@ -16,14 +14,12 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
   },
   subtitleText: {
-    color: globalColors.mainText,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   separator: {
     marginVertical: 8,
-    borderBottomColor: globalColors.mainText,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   themeContainer: {
@@ -35,17 +31,12 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: 'white',
     borderRadius: 8,
     padding: 16,
     marginHorizontal: 8,
     marginVertical: 5,
   },
-  selectedThemeOption: {
-    borderColor: globalColors.golden,
-  },
   themeText: {
-    color: 'white',
     fontSize: 18,
     marginBottom: 8,
   },

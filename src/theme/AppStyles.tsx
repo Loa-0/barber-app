@@ -1,13 +1,19 @@
 import {StyleSheet} from 'react-native';
 export const globalColors = {
-  mainBack: '#000000',
+  mainBack: '#121212',
+  mainBlack: '#121212',
   mainText: '#ffffff',
+  white: '#ffffff',
   golden: '#DAA520',
   iconSize: 20,
   blueSelected: '#00adf5',
   darkblue: '#2d4150',
+  ligthgray: 'lightgrey',
   ligthBlue: '#74bece',
   pink: '#dd99ee',
+  bulletOcupied: '#800000',
+  bulletFree: '#72a276',
+  disabledRed: 'rgba(255, 0, 0, 0.4);',
 };
 export const styles = StyleSheet.create({
   center: {
@@ -20,8 +26,6 @@ export const styles = StyleSheet.create({
   },
   globalContainer: {
     flex: 1,
-    backgroundColor: globalColors.mainBack,
-    color: globalColors.mainText,
   },
   mainBtn: {
     borderRadius: 50,

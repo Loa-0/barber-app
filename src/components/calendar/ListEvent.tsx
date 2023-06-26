@@ -1,86 +1,87 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
-import {Text} from 'react-native-paper';
-import {globalColors} from '../../theme/AppStyles';
-
-LocaleConfig.locales.es = {
-  monthNames: [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ],
-  monthNamesShort: [
-    'Ene.',
-    'Feb.',
-    'Mar.',
-    'Abr.',
-    'May.',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Sept.',
-    'Oct.',
-    'Nov.',
-    'Dic.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ],
-  dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.'],
-  today: 'Hoy',
-};
-
-LocaleConfig.defaultLocale = 'es';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useState} from 'react';
+import {ToastAndroid, View, Modal} from 'react-native';
+import {Calendar, DateData} from 'react-native-calendars';
+import {AgendaContext} from '../../hooks/useCalendar';
+import {ThemeContext} from '../../context/ThemeContext';
+import {AgendaScreen} from './AgendaScreen';
 
 export const ListEvent = () => {
-  const [selected, setSelected] = useState('');
+  const {markedDates, today} = useContext(AgendaContext);
+  const {
+    themeState: {colors, themeCalendar, highlightColor, currentTheme},
+  } = useContext(ThemeContext);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>();
+  const closeModal = () => {
+    setIsVisible(false);
+  };
+  const handleSelectDate = (day: DateData) => {
+    const currentDate = new Date();
+    const maxAllowedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+    );
+    if (day.timestamp > maxAllowedDate.getTime()) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Solo puedes hacer citas dentro de 30 dias',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
+    setSelected(day.dateString);
+    setIsVisible(true);
+  };
 
   return (
     <>
-      <Calendar
-        onDayPress={day => {
-          setSelected(day.dateString);
-        }}
-        markedDates={{
-          [selected]: {
-            selected: true,
-            disableTouchEvent: false,
+      <View
+        key={currentTheme}
+        style={{
+          marginTop: 15,
+          marginHorizontal: 20,
+          borderRadius: 10,
+          borderBottomWidth: 3,
+          borderBottomColor: highlightColor,
+          shadowColor: colors.text,
+          shadowOffset: {
+            width: 0,
+            height: 10,
           },
-        }}
-        theme={{
-          backgroundColor: globalColors.mainBack,
-          calendarBackground: globalColors.mainBack,
-          textSectionTitleColor: globalColors.golden,
-          selectedDayBackgroundColor: globalColors.blueSelected,
-          textSectionTitleDisabledColor: globalColors.golden,
-          monthTextColor: globalColors.mainText,
-          selectedDayTextColor: globalColors.mainText,
-          todayTextColor: globalColors.blueSelected,
-          dayTextColor: globalColors.mainText,
-          textDisabledColor: globalColors.ligthBlue,
-        }}
-      />
-      <View>
-        <Text style={{color: globalColors.mainText}}>
-          Date: {selected.toString()}
-        </Text>
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+          elevation: 10,
+        }}>
+        <Calendar
+          minDate={today.dateString}
+          // startDate={nextMonth.dateString}
+          style={{borderRadius: 10}}
+          onDayPress={handleSelectDate}
+          markedDates={markedDates}
+          theme={{
+            ...themeCalendar,
+            textInactiveColor: 'red',
+            disabledArrowColor: 'red',
+          }}
+        />
       </View>
+      {selected && (
+        <Modal
+          animationType="fade"
+          visible={isVisible}
+          transparent={true}
+          style={{justifyContent: 'center', alignContent: 'center'}}>
+          <AgendaScreen
+            dateCurr={selected}
+            closeModal={closeModal}
+            time="1h-30m"
+          />
+        </Modal>
+      )}
     </>
   );
 };

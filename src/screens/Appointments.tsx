@@ -1,15 +1,26 @@
-import React from 'react';
-import {Text, View} from 'react-native';
-import {CalendarComponent} from '../components/calendar/CalendarComponet';
+import React, {useContext} from 'react';
+import {ScrollView} from 'react-native';
 import {styles as S} from '../theme/AppStyles';
+import {CalendarComponent} from '../components/calendar/CalendarComponet';
 import {HeaderComponent} from '../components/HeaderComponent';
+import {ThemeContext} from '../context/ThemeContext';
+// import {Ejemplo} from '../components/calendar/Ejemplo';
+// import {AgendaScreen} from '../components/calendar/AgendaScreen';
 
 export const Appointments = () => {
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
   return (
-    <View style={S.globalContainer}>
+    <ScrollView
+      style={{
+        ...S.globalContainer,
+        backgroundColor: colors.background,
+      }}>
       <HeaderComponent title="Citas" />
-      <Text>Appoinments</Text>
       <CalendarComponent />
-    </View>
+      {/* <Ejemplo /> */}
+      {/* <AgendaScreen /> */}
+    </ScrollView>
   );
 };
