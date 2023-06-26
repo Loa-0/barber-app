@@ -1,22 +1,27 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {WelcomeScreen} from '../../screens/WelcomeScreen';
 import {BottomNavigator} from './BottonNavigator';
-import {globalColors} from '../../theme/AppStyles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {LoginAdminPage} from '../../screens/loginAdminPage';
+import {ThemeContext} from '../../context/ThemeContext';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
   Page1: {id: number; nombre: string};
+  AdminLogin: undefined;
 };
 const Stack = createStackNavigator<RootStackParams>();
 export const StackNavigator = () => {
   const {top} = useSafeAreaInsets();
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
 
   return (
     <Stack.Navigator
       screenOptions={{
-        cardStyle: {backgroundColor: globalColors.mainBack},
+        cardStyle: {backgroundColor: colors.background},
         headerStyle: {elevation: 0, marginTop: top},
       }}>
       <Stack.Screen
@@ -28,6 +33,11 @@ export const StackNavigator = () => {
         name="Page1"
         options={{headerShown: false}}
         component={BottomNavigator}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="AdminLogin"
+        component={LoginAdminPage}
       />
     </Stack.Navigator>
   );
