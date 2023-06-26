@@ -1,14 +1,22 @@
 import React, {useContext} from 'react';
-import {View, Text} from 'react-native';
+import {ScrollView} from 'react-native';
+import {styles as S} from '../theme/AppStyles';
 import {SettingsDisplay} from '../components/settings/settings';
-import {AuthContext} from '../context/AuthContext';
+import {HeaderComponent} from '../components/HeaderComponent';
+import {ThemeContext} from '../context/ThemeContext';
 
 export const Settings = () => {
-  const {authState} = useContext(AuthContext);
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
   return (
-    <View>
+    <ScrollView
+      style={{
+        ...S.globalContainer,
+        backgroundColor: colors.background,
+      }}>
+      <HeaderComponent title="Configuración" />
       <SettingsDisplay />
-      <Text>{JSON.stringify(authState)}</Text>
-    </View>
+    </ScrollView>
   );
 };

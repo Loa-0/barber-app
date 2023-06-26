@@ -1,6 +1,12 @@
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
-import {StyleSheet, ImageBackground, Text, View, Linking} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+  Linking,
+  View,
+} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../theme/AppStyles';
 
@@ -22,9 +28,18 @@ export const Dashboard = ({}: Props) => {
       'https://www.instagram.com/ulisesvelru/?igshid=MzRlODBiNWFlZA%3D%3D',
     );
   };
+import {styles as S} from '../theme/AppStyles';
+import {HeaderComponent} from '../components/HeaderComponent';
+import {ThemeContext} from '../context/ThemeContext';
+import {Text} from 'react-native-paper';
 
   return (
-    <View style={styles.backgroundColor}>
+    <ScrollView
+      style={{
+        ...S.globalContainer,
+        backgroundColor: colors.background,
+      }}>
+      <HeaderComponent title="Inicio" />
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <View style={styles.textContainer}>
           <Text style={styles.text}>
@@ -87,7 +102,7 @@ export const Dashboard = ({}: Props) => {
           </Text>
         </View>
       </ImageBackground>
-    </View>
+    </ScrollView>
   );
 };
 

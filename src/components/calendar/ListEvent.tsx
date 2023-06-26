@@ -1,85 +1,79 @@
-import React, {useState} from 'react';
-import {View} from 'react-native';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useState} from 'react';
+import {ToastAndroid, View} from 'react-native';
+import {Calendar, DateData} from 'react-native-calendars';
 import {Text} from 'react-native-paper';
 import {globalColors} from '../../theme/AppStyles';
-
-LocaleConfig.locales.es = {
-  monthNames: [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ],
-  monthNamesShort: [
-    'Ene.',
-    'Feb.',
-    'Mar.',
-    'Abr.',
-    'May.',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Sept.',
-    'Oct.',
-    'Nov.',
-    'Dic.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ],
-  dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.'],
-  today: 'Hoy',
-};
-
-LocaleConfig.defaultLocale = 'es';
+import {AgendaContext} from '../../hooks/useCalendar';
+import {ThemeContext} from '../../context/ThemeContext';
 
 export const ListEvent = () => {
-  const [selected, setSelected] = useState('');
+  const {markedDates} = useContext(AgendaContext);
+  const {
+    themeState: {colors, themeCalendar, highlightColor, currentTheme},
+  } = useContext(ThemeContext);
+  // const {prevMonth, nextMonth} = useDates();
+  const [selected, setSelected] = useState<string>();
+  const handleSelectDate = (day: DateData) => {
+    const todayMidnight = new Date().setHours(1, 0, 0, 0);
+    const currentDate = new Date();
+    const maxAllowedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+    );
+    if (day.timestamp < todayMidnight) {
+      ToastAndroid.showWithGravityAndOffset(
+        'No puedes seleccionar días pasados',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
+    if (day.timestamp > maxAllowedDate.getTime()) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Solo puedes hacer citas dentro de 30 dias',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
+    setSelected(day.dateString);
+  };
 
   return (
     <>
-      <Calendar
-        onDayPress={day => {
-          setSelected(day.dateString);
-        }}
-        markedDates={{
-          [selected]: {
-            selected: true,
-            disableTouchEvent: false,
+      <View
+        key={currentTheme}
+        style={{
+          marginHorizontal: 20,
+          borderRadius: 10,
+          borderBottomWidth: 3,
+          borderBottomColor: highlightColor,
+          shadowColor: colors.text,
+          shadowOffset: {
+            width: 0,
+            height: 10,
           },
-        }}
-        theme={{
-          backgroundColor: globalColors.mainBack,
-          calendarBackground: globalColors.mainBack,
-          textSectionTitleColor: globalColors.golden,
-          selectedDayBackgroundColor: globalColors.blueSelected,
-          textSectionTitleDisabledColor: globalColors.golden,
-          monthTextColor: globalColors.mainText,
-          selectedDayTextColor: globalColors.mainText,
-          todayTextColor: globalColors.blueSelected,
-          dayTextColor: globalColors.mainText,
-          textDisabledColor: globalColors.ligthBlue,
-        }}
-      />
-      <View>
-        <Text style={{color: globalColors.mainText}}>
-          Date: {selected.toString()}
-        </Text>
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+          elevation: 10,
+        }}>
+        <Calendar
+          // minDate={prevMonth.dateString}
+          // startDate={nextMonth.dateString}
+          style={{borderRadius: 10}}
+          onDayPress={handleSelectDate}
+          markedDates={markedDates}
+          theme={themeCalendar}
+        />
+      </View>
+      <View style={{marginVertical: 20}}>
+        <Text style={{color: globalColors.mainText}}>Date: {selected}</Text>
       </View>
     </>
   );
