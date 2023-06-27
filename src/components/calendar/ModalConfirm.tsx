@@ -48,7 +48,6 @@ export const ModalConfirm = ({
         email: 'vazisaac9508@gmail.com',
       };
       try {
-        console.log('pay', payload);
         insertEvent(payload);
         ToastAndroid.showWithGravityAndOffset(
           'Registro Exitoso',
