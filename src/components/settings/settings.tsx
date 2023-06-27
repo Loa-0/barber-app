@@ -1,5 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  BackHandler,
+  ToastAndroid,
+} from 'react-native';
 import {styles as S} from './settingsStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -25,8 +32,18 @@ export const SettingsDisplay = () => {
     }
   };
 
-  const handleLogout = () => {
-    AsyncStorage.removeItem('user');
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('user');
+    ToastAndroid.showWithGravityAndOffset(
+      'Cerrando app',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      0,
+      210,
+    );
+    setTimeout(() => {
+      BackHandler.exitApp();
+    }, 2000);
   };
 
   useEffect(() => {

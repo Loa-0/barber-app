@@ -42,7 +42,7 @@ export const NewService = ({navigation}: Props) => {
     <SafeAreaView
       style={{
         ...styles.formContainer,
-        backgroundColor: colors.background,
+        // backgroundColor: colors.background,
       }}>
       <View style={styles.formTitle}>
         <TouchableOpacity
