@@ -13,7 +13,7 @@ type AgendaContextProps = {
   agenda: AgendaSchedule;
   dayCounter: CalendarCountType;
   markedDates: MarkedDates;
-  loadAgenda: (date: DateData) => Promise<void>;
+  loadAgenda: (date: DateData, reload?: boolean) => Promise<void>;
   today: DateData;
   loadedEvents: SelectedEvent;
 };
@@ -62,15 +62,15 @@ export const AgendaProvider = ({children}: any) => {
     loadAgenda(today);
   }, []);
 
-  const loadAgenda = async (d: DateData) => {
-    if (d.dateString in agenda) {
-      console.log('not Reload');
+  const loadAgenda = async (d: DateData, reload = false) => {
+    if (d.dateString in agenda && !reload) {
+      console.log('Not Reload');
       return;
     }
     console.log('Reloaded Calendar');
     try {
       const agendaResponse = await getCalendar();
-      setAgenda(agendaResponse);
+      setAgenda({...agendaResponse});
     } catch (error) {
       console.log(error);
     }
@@ -116,13 +116,13 @@ export const AgendaProvider = ({children}: any) => {
     const updatedDate: MarkedDates = {};
     for (const date in dayCounter) {
       const eventCount = dayCounter[date];
-      if (eventCount < 4) {
+      if (eventCount < 2) {
         updatedDate[date] = {
           marked: true,
           selected: true,
           selectedColor: globalColors.bulletFree,
         };
-      } else if (eventCount < 7) {
+      } else if (eventCount < 4) {
         updatedDate[date] = {
           marked: true,
           selected: true,
