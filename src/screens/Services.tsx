@@ -7,11 +7,12 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  Modal
+  Modal,
+  TouchableNativeFeedback
 } from 'react-native';
-//import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
 import { ThemeContext } from '../context/ThemeContext';
+import { InfoModal } from '../components/services/infoModal';
 
 const DATA = [
   {
@@ -94,19 +95,25 @@ type ItemProps = {
   price: number;
   duration: number};
 
+
+
 const Item = ({ title, image, price, duration }: ItemProps) => {
   const {themeState:{colors, servWhite}} = useContext(ThemeContext)
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleImagePress = () => {
-    setModalVisible(true);
+    setModalVisible(!modalVisible);
   };
   
   const handleReservationPress = () => {
     console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
   };
+  const sCar = () => {
+    console.log("hola");
+  };
 
   return (
+
     <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
         <Image source={image} style={styles.image} />
@@ -120,38 +127,27 @@ const Item = ({ title, image, price, duration }: ItemProps) => {
         </TouchableOpacity>
       </TouchableOpacity>
 
-      <Modal
-        animationType="slide"
-        statusBarTranslucent={true}
-        transparent={true}
+      <InfoModal
+        price={price}
+        duration={duration}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>El tiempo de este servicio es de {duration} hora</Text>
-            <Text style={styles.modalText}>el precio es de ${price}</Text>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={styles.textStyle}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        onClose={handleImagePress}
+      />
     </TouchableOpacity>  
   );
 };
 
 
 export const ServicesScreen  = () => {
- const {themeState:{colors, servWhite}} = useContext(ThemeContext);
- const [modalVisible, setModalVisible] = useState(false);
+ const {themeState:{colors, servWhite, sCarColor}} = useContext(ThemeContext);
+ 
+ const sCar = () => {
+    console.log("hola");
+  };
+  
   return (
         <SafeAreaView style={{...styles.container,backgroundColor: colors.background}}>
+       
         <FlatList
           data={DATA}
           ListHeaderComponent={<HeaderComponent title="Servicios" />}
@@ -163,6 +159,9 @@ export const ServicesScreen  = () => {
               duration={item.duration} />}
           keyExtractor={(item) => item.id}
         />
+          <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
+            <Text style={styles.buttonText}>Carrito de compra c:</Text>
+          </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -266,6 +265,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     lineHeight: 24, // Ajusta el valor según sea necesario
+    alignItems: 'center',
+  },
+  sCar: {
+    alignSelf: 'center',
+    marginBottom: 5,
+    width: 150,
+    height: 35,
+    borderRadius: 15,
+    borderWidth: 1,
+    marginTop:-50,
+    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

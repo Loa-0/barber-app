@@ -3,18 +3,19 @@ import {View, Text, StyleSheet, Pressable, ToastAndroid} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {HourList} from './HourList';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {displayDate} from '../../helpers/Date';
+import {displayDate, mostrarHora} from '../../helpers/Date';
 import {globalColors} from '../../theme/AppStyles';
 import {SelectedHour} from '../../interfaces/Appointments';
 import {AgendaContext} from '../../hooks/useCalendar';
+import {ServiceContext} from '../../context/Service.Context';
 
 interface Props {
   dayEvents?: any;
   dateCurr: string;
-  time: string;
   closeModal: () => void;
 }
-export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
+export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
+  const {servicesFinal} = useContext(ServiceContext);
   const {
     themeState: {colors, highlightColor, titleText, bulletFree},
   } = useContext(ThemeContext);
@@ -87,7 +88,9 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
               }}>
               Tiempo Aproximado:
             </Text>
-            <Text style={{color: colors.text, ...styles.bold}}>{time}</Text>
+            <Text style={{color: colors.text, ...styles.bold}}>
+              {mostrarHora(servicesFinal.totalDuration)}
+            </Text>
           </View>
           <Text style={{color: colors.text}}>
             De {datesD.startDate} a {datesD.endDate}
@@ -98,8 +101,9 @@ export const AgendaScreen = ({dateCurr, closeModal, time}: Props) => {
             <Text style={{color: globalColors.white}}>Confirmar</Text>
           </Pressable>
         </View>
+        {/* HoirList */}
         <HourList
-          timeEventDuration={1.5}
+          timeEventDuration={servicesFinal.totalDuration}
           setGSelectedEvents={setGlobalSelection}
           selectedGEvents={loadedEvents[dateCurr] ?? []}
         />

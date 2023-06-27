@@ -67,6 +67,16 @@ export const HourList = ({
 
   const renderHour = ({item}: {item: SelectedHour}) => {
     const handlePress = () => {
+      if (timeEventDuration <= 0) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Seleccona los Servicios antes de Reservar',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+        return;
+      }
       toggleSelection(item);
     };
     const isSelected = selectedEventIndex.includes(item.index);
