@@ -4,6 +4,7 @@ import React, {
   ScrollView,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -19,6 +20,7 @@ import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmi
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
+import {updateService} from '../../api/http';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {
@@ -29,6 +31,7 @@ export const EditService = ({route, navigation}: Props) => {
   const [serviceTitle, setServiceTitle] = useState<string>(title);
   const [servicePrice, setServicePrice] = useState<number>(price);
   const [serviceDuration, setServiceDuration] = useState<number>(duration);
+  const [serviceImage, setServiceImage] = useState<any>(image);
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -38,6 +41,34 @@ export const EditService = ({route, navigation}: Props) => {
   };
   const openGallery = async () => {
     const image = launchImageLibrary(options);
+  };
+  const handleSubmit = async () => {
+    const newService = {
+      title: serviceTitle,
+      image: serviceImage,
+      price: servicePrice,
+      duration: serviceDuration,
+    };
+    try {
+      await updateService(newService, id!);
+      ToastAndroid.showWithGravityAndOffset(
+        'Servicio actualizado',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      navigation.goBack();
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Error al actualizar servicio',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      console.log(error);
+    }
   };
   return (
     <SafeAreaView
@@ -146,7 +177,8 @@ export const EditService = ({route, navigation}: Props) => {
               backgroundColor: primaryButton,
               borderColor: highlightColor,
               ...styles.formSubmitBtn,
-            }}>
+            }}
+            onPress={handleSubmit}>
             <Text style={{color: colors.text}}>Guardar cambios</Text>
           </TouchableOpacity>
         </ScrollView>

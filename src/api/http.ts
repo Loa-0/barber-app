@@ -30,6 +30,20 @@ export const getServicesList = (): Promise<serviceInfoType[]> =>
   httpApi.get<serviceInfoType[]>('/services/').then(({data}) => {
     return data;
   });
+
+export const createService = (
+  payload: serviceInfoType,
+): Promise<serviceInfoType> =>
+  httpApi.post<serviceInfoType>('/services/', payload).then(({data}) => {
+    return data;
+  });
+export const updateService = (
+  payload: serviceInfoType,
+  id: string | number,
+): Promise<serviceInfoType> =>
+  httpApi.patch<serviceInfoType>(`/services/${id}`, payload).then(({data}) => {
+    return data;
+  });
 export const insertEvent = (payload: EventPayload): Promise<JSON> =>
   httpApi.post<JSON>('/google/insert', payload).then(({data}) => {
     return data;

@@ -4,6 +4,7 @@ import React, {
   ScrollView,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -19,6 +20,7 @@ import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmi
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
+import {createService} from '../../api/http';
 
 interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 export const NewService = ({navigation}: Props) => {
@@ -28,6 +30,9 @@ export const NewService = ({navigation}: Props) => {
   const [serviceTitle, setServiceTitle] = useState<string>('');
   const [servicePrice, setServicePrice] = useState<number>(0);
   const [serviceDuration, setServiceDuration] = useState<number>(0);
+  const [serviceImage, setServiceImage] = useState<any>({
+    uri: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png',
+  });
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -38,11 +43,39 @@ export const NewService = ({navigation}: Props) => {
   const openGallery = async () => {
     const image = launchImageLibrary(options);
   };
+
+  const handleSubmit = async () => {
+    const newService = {
+      title: serviceTitle,
+      image: serviceImage,
+      price: servicePrice,
+      duration: serviceDuration,
+    };
+    try {
+      await createService(newService);
+      ToastAndroid.showWithGravityAndOffset(
+        'Servicio creado',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      navigation.goBack();
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Error al crear nuevo servicio',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      console.log(error);
+    }
+  };
   return (
     <SafeAreaView
       style={{
         ...styles.formContainer,
-        // backgroundColor: colors.background,
       }}>
       <View style={styles.formTitle}>
         <TouchableOpacity
@@ -64,9 +97,7 @@ export const NewService = ({navigation}: Props) => {
         <View style={styles.formImageContainer}>
           <TouchableOpacity onPress={openGallery}>
             <Image
-              source={{
-                uri: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png',
-              }}
+              source={serviceImage}
               style={{
                 ...styles.formImage,
                 borderColor: colors.text,
@@ -147,7 +178,8 @@ export const NewService = ({navigation}: Props) => {
             backgroundColor: primaryButton,
             borderColor: highlightColor,
             ...styles.formSubmitBtn,
-          }}>
+          }}
+          onPress={handleSubmit}>
           <Text style={{color: colors.text}}>Guardar cambios</Text>
         </TouchableOpacity>
       </ScrollView>
