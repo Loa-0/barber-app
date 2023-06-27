@@ -43,7 +43,7 @@ export const SettingsDisplay = () => {
     );
     setTimeout(() => {
       BackHandler.exitApp();
-    }, 2000);
+    }, 1000);
   };
 
   useEffect(() => {

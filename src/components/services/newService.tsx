@@ -116,6 +116,7 @@ export const NewService = ({navigation}: Props) => {
                 valueType="real"
                 textColor={colors.text}
                 minValue={0}
+                iconStyle={{color: 'black'}}
               />
             </View>
           </View>
@@ -135,6 +136,7 @@ export const NewService = ({navigation}: Props) => {
                 valueType="real"
                 textColor={colors.text}
                 minValue={0.5}
+                iconStyle={{color: 'black'}}
               />
             </View>
           </View>

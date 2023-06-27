@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     marginVertical: 30,
     borderRadius: 50,
     borderWidth: 1,
-    borderBottomWidth: 2,
+    borderBottomWidth: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
