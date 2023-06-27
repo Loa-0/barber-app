@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,85 +7,13 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import {ThemeContext} from '../context/ThemeContext';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Corte de cabello caballero',
-    image: {
-      uri: 'https://content.latest-hairstyles.com/wp-content/uploads/casual-slick-back-mens-haircut-with-fade.jpg',
-    },
-    price: 200,
-    duration: 1,
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Corte de caballero niño',
-    image: {
-      uri: 'https://www.todofamilias.com/wp-content/uploads/2023/04/corte-degradado3.jpg',
-    },
-    price: 200,
-    duration: 1,
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Arreglo de barba',
-    image: {
-      uri: 'https://menshairstyletips.com/wp-content/uploads/High-and-Tight-Haircut.jpg?ezimgfmt=rs:372x462/rscb1/ngcb1/notWebP',
-    },
-    price: 100,
-    duration: 1,
-  },
-  {
-    id: '4bf6ad91-897f-4f7c-9c31-610ef1e0ae4f',
-    title: 'Corte y barba',
-    image: {
-      uri: 'https://image.winudf.com/v2/image1/Y29ydGViYXJiYS5kaXNlbm9zYmFyYmFzLm1vZGVsb3NiYXJiYXJfc2NyZWVuXzBfMTU1NjA2MzkzN18wMTQ/screen-0.webp?fakeurl=1&type=.webp',
-    },
-    price: 100,
-    duration: 1,
-  },
-  {
-    id: 'c867a1f2-aeae-47dc-9f48-41cfa1a01a61',
-    title: 'Diseño de ceja ',
-    image: {
-      uri: 'https://i0.wp.com/thehappening.com/wp-content/uploads/2017/05/cejas-hombre-4.jpg?resize=1024%2C694&ssl=1',
-    },
-    price: 100,
-    duration: 1,
-  },
-  {
-    id: 'd58255b8-22c1-431d-bd59-026ff5e3d051',
-    title: 'Lavado extra de cabello',
-    image: {
-      uri: 'https://bettinagullon.com/wp-content/uploads/2021/07/cuidados-del-cabello-del-hombre.jpeg',
-    },
-    price: 100,
-    duration: 1,
-  },
-  {
-    id: 'd58255b8-22c1-431d-bd59-026ff5e3d072',
-    title: 'Limpieza de contornos',
-    image: {
-      uri: 'https://i.ytimg.com/vi/LulfJqDEG8U/maxresdefault.jpg',
-    },
-    price: 100,
-    duration: 1,
-  },
-  {
-    id: 'd58255b8-22c1-431d-bd59-026ff5e3d088',
-    title: 'Manicure',
-    image: {
-      uri: 'https://media.istockphoto.com/id/93068923/photo/masculine-manicure.jpg?s=612x612&w=0&k=20&c=7pXFz443coA3Hmor6Vh129kcR_XtmwB-KilAgWJI_zM=',
-    },
-    price: 100,
-    duration: 1,
-  },
-];
+import {serviceInfoType} from '../components/services/types';
+import {getServicesList} from '../api/http';
 
 type ItemProps = {title: string; image: any};
 
@@ -105,12 +33,33 @@ export const Services = () => {
   const {
     themeState: {colors, titleText},
   } = useContext(ThemeContext);
+  const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
+
+  useEffect(() => {
+    listServices();
+  }, [servicesList]);
+
+  const listServices = async () => {
+    try {
+      const services = await getServicesList();
+      setServicesList(services);
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.showWithGravityAndOffset(
+        'Error obteniendo servicios',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+    }
+  };
   return (
     <View style={S.globalContainer}>
       <SafeAreaView
         style={{...styles.container, backgroundColor: colors.background}}>
         <FlatList
-          data={DATA}
+          data={servicesList}
           renderItem={({item}) => (
             <Item title={item.title} image={item.image} />
           )}

@@ -44,4 +44,21 @@ export const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  formLogout: {
+    marginVertical: 30,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderBottomWidth: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
