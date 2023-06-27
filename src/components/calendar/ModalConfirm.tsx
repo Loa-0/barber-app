@@ -49,7 +49,7 @@ export const ModalConfirm = ({
       };
       try {
         console.log('pay', payload);
-        const a = insertEvent(payload);
+        insertEvent(payload);
         ToastAndroid.showWithGravityAndOffset(
           'Registro Exitoso',
           ToastAndroid.LONG,
@@ -70,9 +70,15 @@ export const ModalConfirm = ({
         );
         setInitialServices();
         closeList();
-        console.log(a);
       } catch (error) {
         console.log(error);
+        ToastAndroid.showWithGravityAndOffset(
+          'Error, Intentalo mas tarde',
+          ToastAndroid.LONG,
+          ToastAndroid.CENTER,
+          25,
+          50,
+        );
       }
     }
   };
