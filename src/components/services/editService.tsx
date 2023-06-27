@@ -4,6 +4,7 @@ import React, {
   ScrollView,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -19,6 +20,7 @@ import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmi
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
+import {updateService} from '../../api/http';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {
@@ -29,6 +31,7 @@ export const EditService = ({route, navigation}: Props) => {
   const [serviceTitle, setServiceTitle] = useState<string>(title);
   const [servicePrice, setServicePrice] = useState<number>(price);
   const [serviceDuration, setServiceDuration] = useState<number>(duration);
+  const [serviceImage, setServiceImage] = useState<any>(image);
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -39,115 +42,147 @@ export const EditService = ({route, navigation}: Props) => {
   const openGallery = async () => {
     const image = launchImageLibrary(options);
   };
+  const handleSubmit = async () => {
+    const newService = {
+      title: serviceTitle,
+      image: serviceImage,
+      price: servicePrice,
+      duration: serviceDuration,
+    };
+    try {
+      await updateService(newService, id!);
+      ToastAndroid.showWithGravityAndOffset(
+        'Servicio actualizado',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      navigation.goBack();
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Error al actualizar servicio',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      console.log(error);
+    }
+  };
   return (
     <SafeAreaView
       style={{
         ...styles.formContainer,
-        backgroundColor: colors.background,
       }}>
-      <View style={styles.formTitle}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBackArrowPos}>
-          <FontAwesome5
-            name="chevron-left"
-            size={globalColors.iconSize}
-            color={colors.text}
-          />
-        </TouchableOpacity>
-
-        <Text style={{...styles.formTitleText, color: colors.text}}>
-          Editar servicio
-        </Text>
-      </View>
-
-      <ScrollView>
-        <View style={styles.formImageContainer}>
-          <TouchableOpacity onPress={openGallery}>
-            <Image
-              source={image}
-              style={{
-                ...styles.formImage,
-                borderColor: colors.text,
-              }}
+      <>
+        <View style={styles.formTitle}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.goBackArrowPos}>
+            <FontAwesome5
+              name="chevron-left"
+              size={globalColors.iconSize}
+              color={colors.text}
             />
-
-            <View style={styles.formCameraPos}>
-              <FontAwesome5
-                name="camera"
-                size={globalColors.iconSize}
-                color={colors.text}
-              />
-            </View>
           </TouchableOpacity>
+
+          <Text style={{...styles.formTitleText, color: colors.text}}>
+            Editar servicio
+          </Text>
         </View>
 
-        <View>
-          <View style={styles.formInputContainer}>
-            <Text style={{color: colors.text}}>Nombre</Text>
-            <View
-              style={{
-                ...styles.formTextBox,
-                borderColor: colors.border,
-              }}>
-              <TextInput
-                value={serviceTitle}
-                onChangeText={value => setServiceTitle(value)}
-                editable={true}
-                cursorColor={colors.text}
-                style={{color: colors.text}}
-              />
-            </View>
-          </View>
-
-          <View style={styles.formInputContainer}>
-            <Text style={{color: colors.text}}>Precio</Text>
-            <View
-              style={{
-                borderColor: colors.border,
-              }}>
-              <NumericInput
-                value={servicePrice}
-                onChange={value => {
-                  setServicePrice(value);
+        <ScrollView>
+          <View style={styles.formImageContainer}>
+            <TouchableOpacity onPress={openGallery}>
+              <Image
+                source={image}
+                style={{
+                  ...styles.formImage,
+                  borderColor: colors.text,
                 }}
-                step={0.01}
-                valueType="real"
-                textColor={colors.text}
-                minValue={0}
               />
+
+              <View style={styles.formCameraPos}>
+                <FontAwesome5
+                  name="camera"
+                  size={globalColors.iconSize}
+                  color={colors.text}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <View style={styles.formInputContainer}>
+              <Text style={{color: colors.text}}>Nombre</Text>
+              <View
+                style={{
+                  ...styles.formTextBox,
+                  borderColor: colors.border,
+                }}>
+                <TextInput
+                  value={serviceTitle}
+                  onChangeText={value => setServiceTitle(value)}
+                  editable={true}
+                  cursorColor={colors.text}
+                  style={{color: colors.text}}
+                />
+              </View>
+            </View>
+
+            <View style={styles.formInputContainer}>
+              <Text style={{color: colors.text}}>Precio</Text>
+              <View
+                style={{
+                  borderColor: colors.border,
+                }}>
+                <NumericInput
+                  value={servicePrice}
+                  onChange={value => {
+                    setServicePrice(value);
+                  }}
+                  step={0.01}
+                  valueType="real"
+                  textColor={colors.text}
+                  minValue={0}
+                  iconStyle={{color: 'black'}}
+                />
+              </View>
+            </View>
+
+            <View style={styles.formInputContainer}>
+              <Text style={{color: colors.text}}>Duración en horas</Text>
+              <View
+                style={{
+                  borderColor: colors.border,
+                }}>
+                <NumericInput
+                  value={serviceDuration}
+                  onChange={value => {
+                    setServiceDuration(value);
+                  }}
+                  step={0.5}
+                  valueType="real"
+                  textColor={colors.text}
+                  minValue={0.5}
+                  iconStyle={{color: 'black'}}
+                />
+              </View>
             </View>
           </View>
 
-          <View style={styles.formInputContainer}>
-            <Text style={{color: colors.text}}>Duración en horas</Text>
-            <View
-              style={{
-                borderColor: colors.border,
-              }}>
-              <NumericInput
-                value={serviceDuration}
-                onChange={value => {
-                  setServiceDuration(value);
-                }}
-                step={0.5}
-                valueType="real"
-                textColor={colors.text}
-                minValue={0.5}
-              />
-            </View>
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: primaryButton,
-            borderColor: highlightColor,
-            ...styles.formSubmitBtn,
-          }}>
-          <Text style={{color: colors.text}}>Guardar cambios</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            style={{
+              backgroundColor: primaryButton,
+              borderColor: highlightColor,
+              ...styles.formSubmitBtn,
+            }}
+            onPress={handleSubmit}>
+            <Text style={{color: colors.text}}>Guardar cambios</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </>
     </SafeAreaView>
   );
 };
