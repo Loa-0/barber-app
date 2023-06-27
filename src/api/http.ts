@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {AgendaSchedule} from '../interfaces/Appointments';
+import {AgendaSchedule, EventPayload} from '../interfaces/Appointments';
 import {UserInterface, UserLoginInterface} from '../interfaces/user';
 
 const backendUri = 'https://backend-barber-production.up.railway.app';
@@ -24,6 +24,11 @@ export const AdminLogin = (
     .then(({data}) => {
       return data;
     });
+
+export const insertEvent = (payload: EventPayload): Promise<JSON> =>
+  httpApi.post<JSON>('/google/insert', payload).then(({data}) => {
+    return data;
+  });
 
 // httpApi.interceptors.request.use(config => {
 //   config.headers.Authorization = `Bearer ${readToken()}`;

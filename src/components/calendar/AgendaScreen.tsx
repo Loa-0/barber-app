@@ -1,5 +1,12 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {View, Text, StyleSheet, Pressable, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ToastAndroid,
+  Modal,
+} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {HourList} from './HourList';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -8,6 +15,7 @@ import {globalColors} from '../../theme/AppStyles';
 import {SelectedHour} from '../../interfaces/Appointments';
 import {AgendaContext} from '../../hooks/useCalendar';
 import {ServiceContext} from '../../context/Service.Context';
+import {ModalConfirm} from './ModalConfirm';
 
 interface Props {
   dayEvents?: any;
@@ -15,7 +23,7 @@ interface Props {
   closeModal: () => void;
 }
 export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
-  const {servicesFinal} = useContext(ServiceContext);
+  const {servicesFinal, updateTotalCost} = useContext(ServiceContext);
   const {
     themeState: {colors, highlightColor, titleText, bulletFree},
   } = useContext(ThemeContext);
@@ -24,11 +32,15 @@ export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
   //QAqui
   const [globalSelection, setGlobalSelection] = useState<SelectedHour[]>([]);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [datesD, setDatesD] = useState({
     startDate: '00:00',
     endDate: '00:00',
   });
 
+  const closeModalConfirm = () => {
+    setIsVisibleModal(false);
+  };
   useEffect(() => {
     if (globalSelection.length > 0) {
       setIsDisabled(false);
@@ -52,63 +64,86 @@ export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
       );
       return;
     }
-    console.log(datesD);
+    const startD = `${dateCurr}T${datesD.startDate}:00-06:00`;
+    const endD = `${dateCurr}T${datesD.endDate}:00-06:00`;
+    updateTotalCost({...servicesFinal, start: startD, end: endD});
+    setIsVisibleModal(true);
   };
+  useEffect(() => {
+    console.log(servicesFinal);
+  }, [servicesFinal]);
 
   return (
-    <View
-      style={{
-        ...styles.modalContainer,
-        backgroundColor: colors.background,
-        borderColor: highlightColor,
-      }}>
-      <>
-        <View style={styles.titleContainer}>
-          <Text style={{...styles.titleText, color: colors.text}}>
-            <>{displayDate(dateCurr)}</>
-          </Text>
-          <Icon
-            name="close-circle"
-            size={25}
-            onPress={closeModal}
-            color={colors.text}
-            style={styles.icon}
-          />
-        </View>
-        <View
-          style={{
-            ...styles.dataContainer,
-            backgroundColor: colors.background,
-            shadowColor: colors.text,
-          }}>
-          <View style={styles.dataFirstText}>
-            <Text
-              style={{
-                color: titleText,
-              }}>
-              Tiempo Aproximado:
+    <>
+      <View
+        style={{
+          ...styles.modalContainer,
+          backgroundColor: colors.background,
+          borderColor: highlightColor,
+        }}>
+        <>
+          <View style={styles.titleContainer}>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              <>{displayDate(dateCurr)}</>
             </Text>
-            <Text style={{color: colors.text, ...styles.bold}}>
-              {mostrarHora(servicesFinal.totalDuration)}
-            </Text>
+            <Icon
+              name="close-circle"
+              size={25}
+              onPress={closeModal}
+              color={colors.text}
+              style={styles.icon}
+            />
           </View>
-          <Text style={{color: colors.text}}>
-            De {datesD.startDate} a {datesD.endDate}
-          </Text>
-          <Pressable
-            style={{...styles.btnConfirm, backgroundColor: bulletFree}}
-            onPress={onConfirm}>
-            <Text style={{color: globalColors.white}}>Confirmar</Text>
-          </Pressable>
-        </View>
-        {/* HoirList */}
-        <HourList
-          timeEventDuration={servicesFinal.totalDuration}
-          setGSelectedEvents={setGlobalSelection}
-          selectedGEvents={loadedEvents[dateCurr] ?? []}
+          <View
+            style={{
+              ...styles.dataContainer,
+              backgroundColor: colors.background,
+              shadowColor: colors.text,
+            }}>
+            <View style={styles.dataFirstText}>
+              <Text
+                style={{
+                  color: titleText,
+                }}>
+                Tiempo Aproximado:
+              </Text>
+              <Text style={{color: colors.text, ...styles.bold}}>
+                {mostrarHora(servicesFinal.totalDuration)}
+              </Text>
+            </View>
+            <Text style={{color: colors.text}}>
+              De {datesD.startDate} a {datesD.endDate}
+            </Text>
+            <Pressable
+              style={{...styles.btnConfirm, backgroundColor: bulletFree}}
+              onPress={onConfirm}>
+              <Text style={{color: globalColors.white}}>Confirmar</Text>
+            </Pressable>
+          </View>
+          {/* HorrList */}
+          <HourList
+            timeEventDuration={servicesFinal.totalDuration}
+            selectedGEvents={loadedEvents[dateCurr] ?? []}
+            setGSelectedEvents={setGlobalSelection}
+          />
+        </>
+      </View>
+      <Modal
+        animationType="fade"
+        visible={isVisibleModal}
+        transparent={true}
+        style={{justifyContent: 'center', alignContent: 'center'}}>
+        <ModalConfirm
+          closeModalConfirm={closeModalConfirm}
+          closeList={closeModal}
+          dataDate={{
+            data: dateCurr,
+            startD: datesD.startDate,
+            endDate: datesD.endDate,
+          }}
         />
-      </>
-    </View>
+      </Modal>
+    </>
   );
 };
 const styles = StyleSheet.create({

@@ -13,7 +13,13 @@ export interface AgendaSchedule {
 export interface CalendarCountType {
   [Date: string]: number;
 }
-
+export interface EventPayload {
+  summary: string; // Optional
+  description: string; // Optional
+  start: string;
+  end: string;
+  email: string;
+}
 export interface EventGoogle {
   kind: 'calendar#event';
   id?: string; // Optional
