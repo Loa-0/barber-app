@@ -9,12 +9,18 @@ import {
 } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../theme/AppStyles';
-
+import {styles as S} from '../theme/AppStyles';
+import {HeaderComponent} from '../components/HeaderComponent';
+import {ThemeContext} from '../context/ThemeContext';
+import {Text} from 'react-native-paper';
 const backgroundImage = require('../assets/fondo.jpg');
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const Dashboard = ({}: Props) => {
+  const {
+    themeState: {colors},
+  } = useContext(ThemeContext);
   const handleWebsitePress = () => {
     Linking.openURL('https://ulisesbarber.negocio.site');
   };
@@ -28,10 +34,6 @@ export const Dashboard = ({}: Props) => {
       'https://www.instagram.com/ulisesvelru/?igshid=MzRlODBiNWFlZA%3D%3D',
     );
   };
-import {styles as S} from '../theme/AppStyles';
-import {HeaderComponent} from '../components/HeaderComponent';
-import {ThemeContext} from '../context/ThemeContext';
-import {Text} from 'react-native-paper';
 
   return (
     <ScrollView
