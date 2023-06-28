@@ -85,6 +85,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         visible={modalVisible}
         onClose={handleImagePress}
         onAdd={addToCar}
+        fromAdmin={false}
       />
     </TouchableOpacity>
   );
