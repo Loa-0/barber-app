@@ -37,9 +37,9 @@ const Item = ({id, title, image, price, duration, setServices,resvBool }: ItemPr
   const handleReservationPress = () => {
     //console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
     setServices( (prev:any) => 
-    [...prev,{ id, title, image, price, duration, resvBool }]
-  )
-  //setModalVisible(!modalVisible);
+      [...prev,{ id, title, image, price, duration, resvBool }]
+    )
+    
   };
   
   const addToCar = () => {
