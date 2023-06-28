@@ -14,7 +14,7 @@ export const WelcomeScreen = ({navigation}: Props) => {
       <TouchableOpacity style={pageStyle.container}>
         <Text style={pageStyle.title}>¡Bienvenido!</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+     <TouchableOpacity
         style={pageStyle.backgroundImage}
         onPress={() => navigation.navigate('AdminLogin')}>
         <Image source={backgroundImage} style={pageStyle.backgroundImage} />

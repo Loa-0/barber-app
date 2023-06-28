@@ -1,15 +1,6 @@
 import React, {createContext, useState} from 'react';
-import { serviceInfoType } from '../components/services/types';
+import {serviceInfoType} from '../components/services/types';
 
-type Service = {
-  id: string;
-  title: string;
-  image: {
-    uri: any;
-  };
-  duration: number;
-  price: number;
-};
 type SelectedService = {
   services: serviceInfoType[];
   totalCost: number;
@@ -24,7 +15,9 @@ type SelectedService = {
 
 type AgendaContextProps = {
   servicesFinal: SelectedService;
-  updateTotalCost: (servicesParam: SelectedService) => void;
+  updateTotalCost: (
+    payload: Pick<SelectedService, 'services'> & Partial<SelectedService>,
+  ) => void;
   setInitialServices: () => void;
 };
 
@@ -44,21 +37,30 @@ export const ServiceProvider = ({children}: any) => {
   const [servicesFinal, setServices] =
     useState<SelectedService>(initialServicesVal);
 
-  const updateTotalCost = (payload: SelectedService) => {
-    if (payload.services.length > 0) {
+  const updateTotalCost = (
+    payload: Pick<SelectedService, 'services'> & Partial<SelectedService>,
+  ) => {
+    if (payload.services!.length > 0) {
       let totalCost: number = 0;
       let totalDuration: number = 0;
-      payload.services.map(serv => {
+      payload.services!.map(serv => {
         totalDuration += serv.duration;
         totalCost += serv.price;
       });
       setServices({
-        ...payload,
         totalCost,
         totalDuration,
+        services: payload.services,
+        start: payload.start ?? '00:00',
+        end: payload.end ?? '00:00',
+        nameEvent: payload.nameEvent ?? '',
+        description: payload.description ?? '',
+        clientName: payload.clientName ?? '',
+        email: payload.email ?? '',
       });
     }
   };
+
   const setInitialServices = () => {
     setServices({...initialServicesVal});
   };

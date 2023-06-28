@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
-  View,
   FlatList,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
   ToastAndroid,
+  View,
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
 import { ThemeContext } from '../context/ThemeContext';
@@ -103,6 +103,10 @@ export const ServicesScreen  = () => {
   }, [servicesArray]);
 
   useEffect(() => {
+    console.log(servicesArray);
+  }, [servicesArray]);
+
+  useEffect(() => {
     listServices();
   }, [servicesList]);
 
@@ -154,6 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    
   },
   item: {
     padding: 20,
@@ -173,6 +178,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
+    
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
     textShadowRadius: 1, // Radio del borde
   },
@@ -193,12 +199,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
+  
   modalView: {
     margin: 20,
     backgroundColor: 'rgba(255,255,255,0.985)',
