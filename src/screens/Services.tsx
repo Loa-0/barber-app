@@ -90,14 +90,6 @@ export const ServicesScreen = () => {
     if (servicesArray.length > 0) {
       updateTotalCost({
         services: servicesArray,
-        start: 'a',
-        totalCost: 0,
-        totalDuration: 0,
-        end: 'aa',
-        nameEvent: 'aa',
-        description: 'aa',
-        clientName: 'aa',
-        email: 'aa',
       });
     }
   };
@@ -218,7 +210,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     borderColor: 'rgb(218,165,32)',
-    borderWidth: 2, // Agregado para el borde negro
+    borderWidth: 2,
   },
   buttonClose: {
     backgroundColor: 'rgb(130,130,130)',
@@ -251,7 +243,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 10,
-    lineHeight: 24, // Ajusta el valor según sea necesario
+    lineHeight: 24,
     alignItems: 'center',
   },
   sCar: {
@@ -262,7 +254,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     marginTop: -50,
-    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
   },
