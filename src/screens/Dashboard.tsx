@@ -1,11 +1,12 @@
 import React, {useContext} from 'react';
 import {ScrollView} from 'react-native';
 import {styles as S} from '../theme/AppStyles';
-import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
-import {Text} from 'react-native-paper';
+import {DisplayInfoDashboard} from '../components/dashboard/DisplayInfoDashboard';
+import {SocialMedia} from '../components/dashboard/SocialMedia';
+import {MapsImage} from '../components/dashboard/MapsImage';
 
-export const Dashboard = () => {
+export const Dashboard = ({navigation}: any) => {
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -15,8 +16,9 @@ export const Dashboard = () => {
         ...S.globalContainer,
         backgroundColor: colors.background,
       }}>
-      <HeaderComponent title="Inicio" />
-      <Text>Inicio</Text>
+      <DisplayInfoDashboard navigation={navigation} />
+      <SocialMedia />
+      <MapsImage />
     </ScrollView>
   );
 };
