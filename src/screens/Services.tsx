@@ -7,11 +7,13 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  View,
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {serviceInfoType} from '../components/services/types';
 import {getServicesList} from '../api/http';
 import {ServiceContext} from '../context/Service.Context';
+import { ThemeContext } from '../context/ThemeContext';
 
 type ItemProps = {
   id: string;
@@ -171,5 +173,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
+  },
+  sCar: {
+    alignSelf: 'center',
+    marginBottom: 5,
+    width: 150,
+    height: 35,
+    borderRadius: 15,
+    borderWidth: 1,
+    marginTop:-50,
+    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
