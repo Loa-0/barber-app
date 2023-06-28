@@ -31,7 +31,7 @@ export const EditService = ({route, navigation}: Props) => {
   const [serviceTitle, setServiceTitle] = useState<string>(title);
   const [servicePrice, setServicePrice] = useState<number>(price);
   const [serviceDuration, setServiceDuration] = useState<number>(duration);
-  const [serviceImage, setServiceImage] = useState<any>(image);
+  const [serviceImageToShow, setServiceImageToShow] = useState<any>(image);
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -40,12 +40,15 @@ export const EditService = ({route, navigation}: Props) => {
     includeBase64: false,
   };
   const openGallery = async () => {
-    const image = launchImageLibrary(options);
+    const imageResult = await launchImageLibrary(options);
+    if (imageResult && imageResult.assets) {
+      setServiceImageToShow(imageResult.assets[0]);
+    }
   };
   const handleSubmit = async () => {
     const newService = {
       title: serviceTitle,
-      image: serviceImage,
+      image: serviceImageToShow,
       price: servicePrice,
       duration: serviceDuration,
     };

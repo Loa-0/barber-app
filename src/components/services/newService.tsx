@@ -30,7 +30,7 @@ export const NewService = ({navigation}: Props) => {
   const [serviceTitle, setServiceTitle] = useState<string>('');
   const [servicePrice, setServicePrice] = useState<number>(0);
   const [serviceDuration, setServiceDuration] = useState<number>(0);
-  const [serviceImage, setServiceImage] = useState<any>({
+  const [serviceImageToShow, setServiceImageToShow] = useState<any>({
     uri: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png',
   });
   const options: ImageLibraryOptions = {
@@ -41,13 +41,16 @@ export const NewService = ({navigation}: Props) => {
     includeBase64: false,
   };
   const openGallery = async () => {
-    const image = launchImageLibrary(options);
+    const image = await launchImageLibrary(options);
+    if (image && image.assets) {
+      setServiceImageToShow(image.assets[0]);
+    }
   };
 
   const handleSubmit = async () => {
     const newService = {
       title: serviceTitle,
-      image: serviceImage,
+      image: serviceImageToShow,
       price: servicePrice,
       duration: serviceDuration,
     };
@@ -97,7 +100,7 @@ export const NewService = ({navigation}: Props) => {
         <View style={styles.formImageContainer}>
           <TouchableOpacity onPress={openGallery}>
             <Image
-              source={serviceImage}
+              source={serviceImageToShow}
               style={{
                 ...styles.formImage,
                 borderColor: colors.text,
