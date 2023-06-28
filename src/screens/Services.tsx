@@ -26,20 +26,20 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
     themeState: {colors, servWhite},
   } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [wordReserved, setwordReserved] = useState<string>('Reservar');
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
 
   const handleReservationPress = (i: serviceInfoType) => {
-    console.log('easdasdasdsdasdasdasd ', i.id, i.resvBool);
-    if (i.resvBool) {
-      console.log('easdasdasda', selectSer[0].id);
-      if (selectSer.length > 0) {
-        const newA = selectSer.filter(ev => ev.id !== i.id);
-        setServices(newA);
-      }
+    const newA = selectSer.filter(ev => ev.id === i.id);
+    if (newA.length > 0) {
+      const newD = selectSer.filter(ev => ev.id !== i.id);
+      setwordReserved('Reservar');
+      setServices(newD);
     } else {
+      setwordReserved('Quitar');
       setServices((prev: any) => [...prev, {...i, resvBool: true}]);
     }
   };
@@ -75,7 +75,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
           onPress={() => {
             handleReservationPress(item);
           }}>
-          <Text style={styles.buttonText}>Reservar</Text>
+          <Text style={styles.buttonText}>{wordReserved}</Text>
         </TouchableOpacity>
       </TouchableOpacity>
 
@@ -103,14 +103,6 @@ export const ServicesScreen = () => {
     if (servicesArray.length > 0) {
       updateTotalCost({
         services: servicesArray,
-        start: 'a',
-        totalCost: 0,
-        totalDuration: 0,
-        end: 'aa',
-        nameEvent: 'aa',
-        description: 'aa',
-        clientName: 'aa',
-        email: 'aa',
       });
     }
   };
@@ -126,6 +118,9 @@ export const ServicesScreen = () => {
   const listServices = async () => {
     try {
       const services = await getServicesList();
+      services.map(s => {
+        return {...s, resvBool: false};
+      });
       setServicesList(services);
     } catch (error) {
       console.log(error);

@@ -9,12 +9,11 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const WelcomeScreen = ({navigation}: Props) => {
   return (
-    
     <View style={{...S.globalContainer, ...S.center}}>
       <TouchableOpacity style={pageStyle.container}>
         <Text style={pageStyle.title}>¡Bienvenido!</Text>
       </TouchableOpacity>
-     <TouchableOpacity
+      <TouchableOpacity
         style={pageStyle.backgroundImage}
         onPress={() => navigation.navigate('AdminLogin')}>
         <Image source={backgroundImage} style={pageStyle.backgroundImage} />
