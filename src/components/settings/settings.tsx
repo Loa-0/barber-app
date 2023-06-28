@@ -1,18 +1,27 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  BackHandler,
+  ToastAndroid,
+} from 'react-native';
 import {styles as S} from './settingsStyles';
 import {ScrollView} from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import {ThemeContext} from '../../context/ThemeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const SettingsDisplay = () => {
   const {
     setDark,
     setLight,
-    themeState: {colors, highlightColor, currentTheme},
+    themeState: {colors, highlightColor, currentTheme, primaryButton},
   } = useContext(ThemeContext);
   const [theme, setTheme] = useState(currentTheme);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const handleThemeChange = (selectedTheme: 'light' | 'dark') => {
     setTheme(selectedTheme);
@@ -21,6 +30,34 @@ export const SettingsDisplay = () => {
     } else {
       setDark();
     }
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('user');
+    ToastAndroid.showWithGravityAndOffset(
+      'Cerrando app',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      0,
+      210,
+    );
+    setTimeout(() => {
+      BackHandler.exitApp();
+    }, 1000);
+  };
+
+  useEffect(() => {
+    getAdmin();
+  }, []);
+
+  const getAdmin = async () => {
+    const loggedUser = await AsyncStorage.getItem('user');
+    if (!loggedUser) {
+      setIsAdmin(false);
+      return false;
+    }
+    setIsAdmin(true);
+    return true;
   };
 
   useEffect(() => {
@@ -80,6 +117,19 @@ export const SettingsDisplay = () => {
               Modo oscuro
             </Text>
           </TouchableOpacity>
+          {isAdmin && (
+            <TouchableOpacity
+              style={{
+                backgroundColor: highlightColor,
+                borderColor: primaryButton,
+                ...S.formLogout,
+              }}
+              onPress={handleLogout}>
+              <Text style={{color: colors.text}}>
+                Terminar sesión de administrador
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
