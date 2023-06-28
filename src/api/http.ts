@@ -31,6 +31,13 @@ export const getServicesList = (): Promise<serviceInfoType[]> =>
     return data;
   });
 
+export const deleteService = (
+  id: number | string,
+): Promise<serviceInfoType[]> =>
+  httpApi.delete<serviceInfoType[]>(`/services/${id}`).then(({data}) => {
+    return data;
+  });
+
 export const createService = (payload: FormData): Promise<serviceInfoType> =>
   httpApi
     .post<serviceInfoType>('/services/', payload, {
