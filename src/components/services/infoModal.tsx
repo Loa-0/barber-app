@@ -8,10 +8,20 @@ type modalProps = {
   duration: number;
   visible: boolean;
   onClose: () => any;
-  onAdd: () => any;
+  onAdd?: () => any;
+  fromAdmin: boolean;
+  wordReserved?: string;
 };
 
-export const InfoModal = ({price, duration, visible, onClose, onAdd}: modalProps) => {
+export const InfoModal = ({
+  price,
+  duration,
+  visible,
+  onClose,
+  onAdd,
+  wordReserved,
+  fromAdmin,
+}: modalProps) => {
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -21,8 +31,7 @@ export const InfoModal = ({price, duration, visible, onClose, onAdd}: modalProps
       statusBarTranslucent={true}
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
-      >
+      onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={{...styles.modalView, backgroundColor: colors.background}}>
           <Text style={{...styles.modalText, color: colors.text}}>
@@ -36,9 +45,13 @@ export const InfoModal = ({price, duration, visible, onClose, onAdd}: modalProps
             onPress={onClose}>
             <Text style={styles.textStyle}>Cerrar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={onAdd}>
-              <Text style={styles.textStyle}>Añadir al carrito</Text>
-          </TouchableOpacity>
+          {!fromAdmin && (
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={onAdd}>
+              <Text style={styles.textStyle}>{wordReserved}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>
