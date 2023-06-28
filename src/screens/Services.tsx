@@ -23,9 +23,10 @@ type ItemProps = {
   price: number;
   duration: number;
   setServices: any;
+  resvBool: boolean;
 };
 
-const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => {
+const Item = ({id, title, image, price, duration, setServices,resvBool }: ItemProps) => {
   const {themeState:{colors, servWhite}} = useContext(ThemeContext)
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -36,11 +37,16 @@ const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => 
   const handleReservationPress = () => {
     //console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
     setServices( (prev:any) => 
-    [...prev,{ id, title, image, price, duration }]
+    [...prev,{ id, title, image, price, duration, resvBool }]
   )
   //setModalVisible(!modalVisible);
   };
   
+  const addToCar = () => {
+    setModalVisible(!modalVisible);
+    handleReservationPress();
+  }
+
   return (
 
     <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
@@ -61,7 +67,7 @@ const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => 
         duration={duration}
         visible={modalVisible}
         onClose={handleImagePress}
-        onAdd = {handleReservationPress}
+        onAdd = {addToCar}
       />
     </TouchableOpacity>  
   );
@@ -103,6 +109,10 @@ export const ServicesScreen  = () => {
   const listServices = async () => {
     try {
       const services = await getServicesList();
+      services.map( (service)=>{
+          return {...service,resvBool:false}
+      }
+      )
       setServicesList(services);
     } catch (error) {
       console.log(error);
@@ -128,7 +138,9 @@ export const ServicesScreen  = () => {
               image={item.image} 
               price={item.price} 
               duration={item.duration}
-              setServices={setServicesArray} />}
+              setServices={setServicesArray}
+              resvBool= {item.resvBool ?? false}
+              />}
         />
           <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
             <Text style={styles.buttonText}>Servicios: {servicesArray.length}</Text>
