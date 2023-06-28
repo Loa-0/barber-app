@@ -28,9 +28,15 @@ export const WelcomeScreen = ({navigation}: Props) => {
 };
 
 const pageStyle = StyleSheet.create({
+  imageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    height: 300,
+    width: '70%',
+  },
   backgroundImage: {
-    width: '100%',
-    padding: 20,
+    width: '80%',
     height: 300,
   },
 });
