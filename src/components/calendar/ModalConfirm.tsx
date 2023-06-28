@@ -115,26 +115,32 @@ export const ModalConfirm = ({
             shadowColor: colors.text,
           }}>
           <View style={styles.dataFirstText}>
-            <Text>
+            <Text style={{color: colors.text}}>
               Tiempo Aproximado: {mostrarHora(servicesFinal.totalDuration)}
             </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.titleText}>Fecha:</Text>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Fecha:
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text>{displayDate(dataDate.data)}</Text>
+            <Text style={{color: colors.text}}>
+              {displayDate(dataDate.data)}
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.bold}>
+            <Text style={{...styles.bold, color: colors.text}}>
               De: {dataDate.startD} a: {dataDate.endDate}{' '}
             </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.titleText}>Servicios:</Text>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Servicios:
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text>
+            <Text style={{color: colors.text}}>
               {servicesFinal.services
                 .map(
                   ser =>
