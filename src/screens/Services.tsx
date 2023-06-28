@@ -7,116 +7,125 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
-  View,
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
-import { ThemeContext } from '../context/ThemeContext';
-import { InfoModal } from '../components/services/infoModal';
+import {ThemeContext} from '../context/ThemeContext';
+import {InfoModal} from '../components/services/infoModal';
 import {serviceInfoType} from '../components/services/types';
 import {getServicesList} from '../api/http';
-import { ServiceContext } from '../context/Service.Context';
+import {ServiceContext} from '../context/Service.Context';
 
-type ItemProps = { 
-  id: string;
-  title: string; 
-  image: any; 
-  price: number;
-  duration: number;
+type ItemProps = {
+  item: serviceInfoType;
   setServices: any;
-  resvBool: boolean;
+  selectSer: serviceInfoType[];
 };
 
-const Item = ({id, title, image, price, duration, setServices,resvBool }: ItemProps) => {
-  const {themeState:{colors, servWhite}} = useContext(ThemeContext)
+const Item = ({item, setServices, selectSer}: ItemProps) => {
+  const {
+    themeState: {colors, servWhite},
+  } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
-  
-  const handleReservationPress = () => {
-    //console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
-    setServices( (prev:any) => 
-      [...prev,{ id, title, image, price, duration, resvBool }]
-    )
-    
+
+  const handleReservationPress = (i: serviceInfoType) => {
+    console.log('easdasdasdsdasdasdasd ', i.id, i.resvBool);
+    if (i.resvBool) {
+      console.log('easdasdasda', selectSer[0].id);
+      if (selectSer.length > 0) {
+        const newA = selectSer.filter(ev => ev.id !== i.id);
+        setServices(newA);
+      }
+    } else {
+      setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+    }
   };
-  
+
   const addToCar = () => {
     setModalVisible(!modalVisible);
-    handleReservationPress();
-  }
+  };
 
   return (
-
-    <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
+    <TouchableOpacity
+      style={{
+        ...styles.item,
+        backgroundColor: servWhite,
+        borderColor: colors.border,
+      }}
+      onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
-        <Image source={image} style={styles.image} />
+        <Image source={item.image} style={styles.image} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
-        <Text style={{...styles.title,color:colors.text,textShadowColor:colors.background}}>{title}</Text>
-        <Text style={styles.price}>${price}</Text>
-       <TouchableOpacity style={styles.button} onPress={handleReservationPress}>
+        <Text
+          style={{
+            ...styles.title,
+            color: colors.text,
+            textShadowColor: colors.background,
+          }}>
+          {item.title}
+        </Text>
+        <Text style={styles.price}>${item.price}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            handleReservationPress(item);
+          }}>
           <Text style={styles.buttonText}>Reservar</Text>
         </TouchableOpacity>
       </TouchableOpacity>
 
       <InfoModal
-        price={price}
-        duration={duration}
+        price={item.price}
+        duration={item.duration}
         visible={modalVisible}
         onClose={handleImagePress}
-        onAdd = {addToCar}
+        onAdd={addToCar}
       />
-    </TouchableOpacity>  
+    </TouchableOpacity>
   );
 };
 
+export const ServicesScreen = () => {
+  const {
+    themeState: {colors, sCarColor},
+  } = useContext(ThemeContext);
+  const {updateTotalCost} = useContext(ServiceContext);
 
-export const ServicesScreen  = () => {
- const {themeState:{colors, servWhite, sCarColor}} = useContext(ThemeContext);
- const {updateTotalCost} = useContext(ServiceContext);
- 
- const [servicesArray, setServicesArray ] = useState<serviceInfoType[]>([]);
- 
- 
- const sCar = () => {
-    if (servicesArray.length>0){
-      updateTotalCost({services: servicesArray,
-        start: "a",
-        totalCost:0,
-        totalDuration:0,
-        end: "aa",
-        nameEvent: "aa",
-        description: "aa",
-        clientName: "aa",
-        email: "aa",
-      })
-    }
-  };
-  
+  const [servicesArray, setServicesArray] = useState<serviceInfoType[]>([]);
   const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
 
-  useEffect(() => {
-    console.log(servicesArray);
-  }, [servicesArray]);
+  const sCar = () => {
+    if (servicesArray.length > 0) {
+      updateTotalCost({
+        services: servicesArray,
+        start: 'a',
+        totalCost: 0,
+        totalDuration: 0,
+        end: 'aa',
+        nameEvent: 'aa',
+        description: 'aa',
+        clientName: 'aa',
+        email: 'aa',
+      });
+    }
+  };
 
   useEffect(() => {
-    console.log(servicesArray);
+    console.log('Serv Arr', servicesArray);
   }, [servicesArray]);
 
   useEffect(() => {
     listServices();
-  }, [servicesList]);
+  }, []);
 
   const listServices = async () => {
     try {
       const services = await getServicesList();
-      services.map( (service)=>{
-          return {...service,resvBool:false}
-      }
-      )
       setServicesList(services);
     } catch (error) {
       console.log(error);
@@ -130,25 +139,24 @@ export const ServicesScreen  = () => {
     }
   };
   return (
-        <SafeAreaView style={{...styles.container,backgroundColor: colors.background}}>
-       
-        <FlatList
-          data={servicesList}
-          ListHeaderComponent={<HeaderComponent title="Servicios" />}
-          renderItem={({ item }) => 
-            <Item 
-              id={item.id!.toString()}
-              title={item.title} 
-              image={item.image} 
-              price={item.price} 
-              duration={item.duration}
-              setServices={setServicesArray}
-              resvBool= {item.resvBool ?? false}
-              />}
-        />
-          <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
-            <Text style={styles.buttonText}>Servicios: {servicesArray.length}</Text>
-          </TouchableOpacity>
+    <SafeAreaView
+      style={{...styles.container, backgroundColor: colors.background}}>
+      <FlatList
+        data={servicesList}
+        ListHeaderComponent={<HeaderComponent title="Servicios" />}
+        renderItem={({item}) => (
+          <Item
+            selectSer={servicesArray}
+            item={item}
+            setServices={setServicesArray}
+          />
+        )}
+      />
+      <TouchableOpacity
+        style={{...styles.sCar, backgroundColor: sCarColor}}
+        onPress={sCar}>
+        <Text style={styles.buttonText}>Servicios: {servicesArray.length}</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -158,7 +166,6 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    
   },
   item: {
     padding: 20,
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
-    
+
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
     textShadowRadius: 1, // Radio del borde
   },
@@ -199,7 +206,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
   },
-  
+
   modalView: {
     margin: 20,
     backgroundColor: 'rgba(255,255,255,0.985)',
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    borderColor: 'rgb(218,165,32)', 
+    borderColor: 'rgb(218,165,32)',
     borderWidth: 2, // Agregado para el borde negro
   },
   buttonClose: {
@@ -258,8 +265,7 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 15,
     borderWidth: 1,
-    marginTop:-50,
-    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
+    marginTop: -50,
     justifyContent: 'center',
     alignItems: 'center',
   },
