@@ -125,6 +125,7 @@ export const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     paddingHorizontal: 22,
+    resizeMode: 'cover',
   },
   formTitle: {
     marginHorizontal: 12,

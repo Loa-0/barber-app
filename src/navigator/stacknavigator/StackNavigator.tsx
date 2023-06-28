@@ -8,7 +8,7 @@ import {ThemeContext} from '../../context/ThemeContext';
 
 export type RootStackParams = {
   WelcomeScreen: undefined;
-  Page1: {id: number; nombre: string};
+  Page1: undefined;
   AdminLogin: undefined;
 };
 const Stack = createStackNavigator<RootStackParams>();

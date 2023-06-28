@@ -1,5 +1,5 @@
 export type serviceInfoType = {
-  id: number | string;
+  id?: number | string;
   title: string;
   image: any;
   price: number;

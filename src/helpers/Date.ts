@@ -21,6 +21,6 @@ export const displayDate = (fechaString: string): string => {
 export const mostrarHora = (timeDecimal: number): string => {
   const h = Math.floor(timeDecimal);
   const m = (timeDecimal % 1) * 60;
-  const timeStr = m === 0 ? `${h}h` : `${h}h${m}m`;
+  const timeStr = m === 0 ? `${h}h` : h === 0 ? `${m}m` : `${h}h${m}m`;
   return timeStr;
 };

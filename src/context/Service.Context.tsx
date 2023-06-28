@@ -1,4 +1,5 @@
 import React, {createContext, useState} from 'react';
+import { serviceInfoType } from '../components/services/types';
 
 type Service = {
   id: string;
@@ -10,11 +11,11 @@ type Service = {
   price: number;
 };
 type SelectedService = {
-  services: Service[];
+  services: serviceInfoType[];
   totalCost: number;
   totalDuration: number; // .5- 1 -1.5
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   nameEvent: string;
   description: string;
   clientName: string;
@@ -23,54 +24,48 @@ type SelectedService = {
 
 type AgendaContextProps = {
   servicesFinal: SelectedService;
-  // setSelectedServices: (service: Service) => void;
-  updateTotalCost: (servicesParam: Service[]) => void;
+  updateTotalCost: (servicesParam: SelectedService) => void;
+  setInitialServices: () => void;
 };
 
 export const ServiceContext = createContext({} as AgendaContextProps);
 export const ServiceProvider = ({children}: any) => {
-  const [servicesFinal, setServices] = useState<SelectedService>({
+  const initialServicesVal = {
     services: [],
     totalCost: 0,
     totalDuration: 0,
-    start: new Date(),
-    end: new Date(),
+    start: '00:00',
+    end: '00:00',
     nameEvent: '',
     description: '',
     clientName: '',
     email: '',
-  });
-  // useEffect(() => {
-  //   updateTotalCost(servicesSelected);
-  // }, [servicesSelected]);
+  };
+  const [servicesFinal, setServices] =
+    useState<SelectedService>(initialServicesVal);
 
-  const updateTotalCost = (servicesParam: Service[]) => {
-    if (servicesParam.length > 0) {
+  const updateTotalCost = (payload: SelectedService) => {
+    if (payload.services.length > 0) {
       let totalCost: number = 0;
       let totalDuration: number = 0;
-      servicesParam.map(serv => {
+      payload.services.map(serv => {
         totalDuration += serv.duration;
         totalCost += serv.price;
       });
       setServices({
-        services: servicesParam,
+        ...payload,
         totalCost,
         totalDuration,
-        start: new Date(),
-        end: new Date(),
-        nameEvent: 'Servcio para',
-        description: 'Pending... ',
-        clientName: 'Isaac',
-        email: 'vazisaac9508@gmail.com',
       });
     }
   };
-  // const setSelectedServices = (service: Service) => {
-  //   setSelectedServices1(prev => [...prev, service]);
-  // };
+  const setInitialServices = () => {
+    setServices({...initialServicesVal});
+  };
 
   return (
-    <ServiceContext.Provider value={{servicesFinal, updateTotalCost}}>
+    <ServiceContext.Provider
+      value={{servicesFinal, updateTotalCost, setInitialServices}}>
       {children}
     </ServiceContext.Provider>
   );
