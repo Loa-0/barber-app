@@ -5,14 +5,13 @@
 // } from '@react-native-google-signin/google-signin';
 import React, {useContext} from 'react';
 import {ListEvent} from './ListEvent';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {AuthContext} from '../../context/AuthContext';
+// import {AuthContext} from '../../context/AuthContext';
 import {View, Text} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {SelectedServices} from './SelectedServices';
 
 export const CalendarComponent = () => {
-  const {signIn, authState, signOut} = useContext(AuthContext);
+  // const {signIn, authState, signOut} = useContext(AuthContext);
   const {
     themeState: {colors, bulletFree, highlightColor, bulletOcupied},
   } = useContext(ThemeContext);
@@ -119,7 +118,8 @@ export const CalendarComponent = () => {
         </View>
       </View>
       <SelectedServices />
-      <View style={{marginVertical: 20}}>
+      <View style={{marginBottom: 100}} />
+      {/* <View style={{marginVertical: 20}}>
         <Text style={{color: colors.text}}>Hoola</Text>
         {authState.isLoggedIn ? (
           <TouchableOpacity
@@ -137,7 +137,7 @@ export const CalendarComponent = () => {
             <Text style={{color: colors.text}}>SignOut</Text>
           </TouchableOpacity>
         )}
-      </View>
+      </View> */}
       {/* <View>
         <GoogleSigninButton
           size={GoogleSigninButton.Size.Wide}
