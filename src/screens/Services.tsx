@@ -8,60 +8,95 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  Modal,
+  TouchableNativeFeedback
 } from 'react-native';
-import {ThemeContext} from '../context/ThemeContext';
-// import {HeaderComponent} from '../components/HeaderComponent';
-import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
+import { ThemeContext } from '../context/ThemeContext';
+import { InfoModal } from '../components/services/infoModal';
 import {serviceInfoType} from '../components/services/types';
 import {getServicesList} from '../api/http';
+import { ServiceContext } from '../context/Service.Context';
 
-type ItemProps = {title: string; image: any};
+type ItemProps = { 
+  id: string;
+  title: string; 
+  image: any; 
+  price: number;
+  duration: number;
+  setServices: any;
+};
 
-const Item = ({title, image}: ItemProps) => {
-  const {
-    themeState: {
-      colors,
-      textShadowColor,
-      transparentBackground,
-      secondaryButton,
-    },
-  } = useContext(ThemeContext);
+const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => {
+  const {themeState:{colors, servWhite}} = useContext(ThemeContext)
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleImagePress = () => {
+    setModalVisible(!modalVisible);
+  };
+  
+  const handleReservationPress = () => {
+    //console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
+    setServices( (prev:any) => 
+    [...prev,{ id, title, image, price, duration }]
+  )
+  };
+  
+  
+
   return (
-    <View
-      style={{
-        ...styles.item,
-        borderColor: colors.border,
-        backgroundColor: transparentBackground,
-      }}>
-      <Image source={image} style={{...styles.image}} />
-      <View style={styles.content}>
-        <Text
-          style={{
-            ...styles.title,
-            color: colors.text,
-            textShadowColor: textShadowColor,
-          }}>
-          {title}
-        </Text>
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            backgroundColor: secondaryButton,
-            borderColor: colors.border,
-          }}>
-          <Text style={{...styles.buttonText}}>Reservar</Text>
+
+    <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
+      <TouchableOpacity onPress={handleImagePress}>
+        <Image source={image} style={styles.image} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.content} onPress={handleImagePress}>
+        <Text style={{...styles.title,color:colors.text,textShadowColor:colors.background}}>{title}</Text>
+        <Text style={styles.price}>${price}</Text>
+       <TouchableOpacity style={styles.button} onPress={handleReservationPress}>
+          <Text style={styles.buttonText}>Reservar</Text>
         </TouchableOpacity>
-      </View>
-    </View>
+      </TouchableOpacity>
+
+      <InfoModal
+        price={price}
+        duration={duration}
+        visible={modalVisible}
+        onClose={handleImagePress}
+      />
+    </TouchableOpacity>  
   );
 };
 
-export const Services = () => {
-  const {
-    themeState: {colors},
-  } = useContext(ThemeContext);
+
+export const ServicesScreen  = () => {
+ const {themeState:{colors, servWhite, sCarColor}} = useContext(ThemeContext);
+ const {updateTotalCost} = useContext(ServiceContext);
+ 
+ const [servicesArray, setServicesArray ] = useState<serviceInfoType[]>([]);
+ 
+ 
+ const sCar = () => {
+    if (servicesArray.length>0){
+      updateTotalCost({services: servicesArray,
+        start: "a",
+        totalCost:0,
+        totalDuration:0,
+        end: "aa",
+        nameEvent: "aa",
+        description: "aa",
+        clientName: "aa",
+        email: "aa",
+      })
+    }
+  };
+  
   const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
+
+  useEffect(() => {
+    console.log(servicesArray);
+  }, [servicesArray]);
 
   useEffect(() => {
     listServices();
@@ -83,19 +118,24 @@ export const Services = () => {
     }
   };
   return (
-    <View style={S.globalContainer}>
-      <SafeAreaView
-        style={{...styles.container, backgroundColor: colors.background}}>
+        <SafeAreaView style={{...styles.container,backgroundColor: colors.background}}>
+       
         <FlatList
           data={servicesList}
-          renderItem={({item}) => (
-            <Item title={item.title} image={item.image} />
-          )}
-          keyExtractor={item => item.id}
           ListHeaderComponent={<HeaderComponent title="Servicios" />}
+          renderItem={({ item }) => 
+            <Item 
+              id={item.id!.toString()}
+              title={item.title} 
+              image={item.image} 
+              price={item.price} 
+              duration={item.duration}
+              setServices={setServicesArray} />}
         />
-      </SafeAreaView>
-    </View>
+          <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
+            <Text style={styles.buttonText}>Carrito de compra c:</Text>
+          </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
@@ -103,6 +143,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   item: {
     padding: 20,
@@ -121,7 +162,7 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 22,
+    fontSize: 20,
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
     textShadowRadius: 1, // Radio del borde
   },
@@ -141,5 +182,74 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'rgba(255,255,255,0.985)',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: 'rgba(255,255,255,0.985)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderColor: 'rgb(218,165,32)', 
+    borderWidth: 2, // Agregado para el borde negro
+  },
+  buttonClose: {
+    backgroundColor: 'rgb(130,130,130)',
+    borderColor: 'black',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  reservationBox: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    alignItems: 'center',
+  },
+  reservationText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  price: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 10,
+    lineHeight: 24, // Ajusta el valor según sea necesario
+    alignItems: 'center',
+  },
+  sCar: {
+    alignSelf: 'center',
+    marginBottom: 5,
+    width: 150,
+    height: 35,
+    borderRadius: 15,
+    borderWidth: 1,
+    marginTop:-50,
+    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
