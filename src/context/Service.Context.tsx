@@ -1,4 +1,5 @@
 import React, {createContext, useState} from 'react';
+import { serviceInfoType } from '../components/services/types';
 
 type Service = {
   id: string;
@@ -10,7 +11,7 @@ type Service = {
   price: number;
 };
 type SelectedService = {
-  services: Service[];
+  services: serviceInfoType[];
   totalCost: number;
   totalDuration: number; // .5- 1 -1.5
   start: string;

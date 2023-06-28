@@ -59,4 +59,16 @@ export const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'sans-serif',
   },
+  themeCalendar: {
+    backgroundColor: globalColors.mainBack,
+    calendarBackground: globalColors.mainBack,
+    textSectionTitleColor: globalColors.golden,
+    selectedDayBackgroundColor: globalColors.blueSelected,
+    textSectionTitleDisabledColor: globalColors.golden,
+    monthTextColor: globalColors.mainText,
+    selectedDayTextColor: globalColors.mainText,
+    todayTextColor: globalColors.blueSelected,
+    dayTextColor: globalColors.mainText,
+    textDisabledColor: globalColors.ligthBlue,
+  },
 });
