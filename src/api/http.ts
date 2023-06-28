@@ -31,19 +31,31 @@ export const getServicesList = (): Promise<serviceInfoType[]> =>
     return data;
   });
 
-export const createService = (
-  payload: serviceInfoType,
-): Promise<serviceInfoType> =>
-  httpApi.post<serviceInfoType>('/services/', payload).then(({data}) => {
-    return data;
-  });
+export const createService = (payload: FormData): Promise<serviceInfoType> =>
+  httpApi
+    .post<serviceInfoType>('/services/', payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+      },
+    })
+    .then(({data}) => {
+      return data;
+    });
 export const updateService = (
-  payload: serviceInfoType,
+  payload: FormData,
   id: string | number,
 ): Promise<serviceInfoType> =>
-  httpApi.patch<serviceInfoType>(`/services/${id}`, payload).then(({data}) => {
-    return data;
-  });
+  httpApi
+    .patch<serviceInfoType>(`/services/${id}`, payload, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+      },
+    })
+    .then(({data}) => {
+      return data;
+    });
 export const insertEvent = (payload: EventPayload): Promise<JSON> =>
   httpApi.post<JSON>('/google/insert', payload).then(({data}) => {
     return data;
