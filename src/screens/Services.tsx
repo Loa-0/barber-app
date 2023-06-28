@@ -8,8 +8,6 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
-  Modal,
-  TouchableNativeFeedback
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
 import { ThemeContext } from '../context/ThemeContext';
@@ -40,10 +38,9 @@ const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => 
     setServices( (prev:any) => 
     [...prev,{ id, title, image, price, duration }]
   )
+  //setModalVisible(!modalVisible);
   };
   
-  
-
   return (
 
     <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
@@ -64,6 +61,7 @@ const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => 
         duration={duration}
         visible={modalVisible}
         onClose={handleImagePress}
+        onAdd = {handleReservationPress}
       />
     </TouchableOpacity>  
   );
@@ -133,7 +131,7 @@ export const ServicesScreen  = () => {
               setServices={setServicesArray} />}
         />
           <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
-            <Text style={styles.buttonText}>Carrito de compra c:</Text>
+            <Text style={styles.buttonText}>Servicios: {servicesArray.length}</Text>
           </TouchableOpacity>
     </SafeAreaView>
   );
