@@ -44,8 +44,9 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
     }
   };
 
-  const addToCar = () => {
+  const addToCar = (i: serviceInfoType) => {
     setModalVisible(!modalVisible);
+    handleReservationPress(i);
   };
 
   return (
@@ -84,7 +85,10 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         duration={item.duration}
         visible={modalVisible}
         onClose={handleImagePress}
-        onAdd={addToCar}
+        onAdd={() => {
+          addToCar(item);
+        }}
+        wordReserved={wordReserved}
         fromAdmin={false}
       />
     </TouchableOpacity>

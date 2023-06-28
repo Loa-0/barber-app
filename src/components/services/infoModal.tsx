@@ -10,6 +10,7 @@ type modalProps = {
   onClose: () => any;
   onAdd?: () => any;
   fromAdmin: boolean;
+  wordReserved?: string;
 };
 
 export const InfoModal = ({
@@ -18,6 +19,7 @@ export const InfoModal = ({
   visible,
   onClose,
   onAdd,
+  wordReserved,
   fromAdmin,
 }: modalProps) => {
   const {
@@ -47,7 +49,7 @@ export const InfoModal = ({
             <TouchableOpacity
               style={[styles.button, styles.buttonClose]}
               onPress={onAdd}>
-              <Text style={styles.textStyle}>Añadir al carrito</Text>
+              <Text style={styles.textStyle}>{wordReserved}</Text>
             </TouchableOpacity>
           )}
         </View>
