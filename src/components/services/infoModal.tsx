@@ -9,9 +9,10 @@ type modalProps = {
   visible: boolean;
   onClose: () => any;
   onAdd: () => any;
+  wordReserved: string;
 };
 
-export const InfoModal = ({price, duration, visible, onClose, onAdd}: modalProps) => {
+export const InfoModal = ({price, duration, visible, onClose, onAdd, wordReserved}: modalProps) => {
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -37,7 +38,7 @@ export const InfoModal = ({price, duration, visible, onClose, onAdd}: modalProps
             <Text style={styles.textStyle}>Cerrar</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={onAdd}>
-              <Text style={styles.textStyle}>Añadir al carrito</Text>
+              <Text style={styles.textStyle}>{wordReserved}</Text>
           </TouchableOpacity>
         </View>
       </View>
