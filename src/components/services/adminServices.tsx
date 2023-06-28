@@ -124,6 +124,7 @@ const Item = ({service, onClickEdit}: ItemProps) => {
         duration={service.duration}
         visible={modalVisible}
         onClose={handleImagePress}
+        fromAdmin={true}
       />
     </TouchableOpacity>
   );

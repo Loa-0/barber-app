@@ -88,7 +88,8 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         onAdd={() => {
           addToCar(item);
         }}
-        wordReserved= {wordReserved}
+        wordReserved={wordReserved}
+        fromAdmin={false}
       />
     </TouchableOpacity>
   );
