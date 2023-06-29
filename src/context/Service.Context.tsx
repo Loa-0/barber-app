@@ -44,8 +44,8 @@ export const ServiceProvider = ({children}: any) => {
       let totalCost: number = 0;
       let totalDuration: number = 0;
       payload.services!.map(serv => {
-        totalDuration += serv.duration;
-        totalCost += serv.price;
+        totalDuration += Number(serv.duration);
+        totalCost += Number(serv.price);
       });
       setServices({
         totalCost,

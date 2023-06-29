@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {styles as S, globalColors} from '../../theme/AppStyles';
@@ -14,7 +15,7 @@ import {styles} from './editStyles';
 import {InfoModal} from './infoModal';
 import {StackScreenProps} from '@react-navigation/stack';
 import {serviceInfoType} from './types';
-import {getServicesList} from '../../api/http';
+import {deleteService, getServicesList} from '../../api/http';
 
 type ItemProps = {
   service: serviceInfoType;
@@ -29,6 +30,41 @@ const Item = ({service, onClickEdit}: ItemProps) => {
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
+  };
+
+  const onDelete = async (id: number | string) => {
+    try {
+      await deleteService(id);
+      ToastAndroid.showWithGravityAndOffset(
+        'Servicio eliminado',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+    } catch (error) {
+      console.log(error);
+      ToastAndroid.showWithGravityAndOffset(
+        'Error borrando servicio',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+    }
+  };
+  const showConfirmDialog = (id: number | string) => {
+    return Alert.alert('Eliminar', '¿Seguro que quiere eliminar el servicio?', [
+      {
+        text: 'Eliminar',
+        onPress: () => {
+          onDelete(id);
+        },
+      },
+      {
+        text: 'No eliminar',
+      },
+    ]);
   };
 
   return (
@@ -48,9 +84,23 @@ const Item = ({service, onClickEdit}: ItemProps) => {
           }}>
           {service.title}
         </Text>
-        <Text style={{...styles.price, color: colors.text}}>
-          ${service.price}
-        </Text>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            backgroundColor: secondaryButton,
+            borderColor: colors.border,
+          }}
+          onPress={() => {
+            showConfirmDialog(service.id!);
+          }}>
+          <Text style={{...styles.buttonText}}>
+            <FontAwesome5
+              name="trash"
+              color={globalColors.disabledRed}
+              size={globalColors.iconSize}
+            />
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{
             ...styles.button,
@@ -74,6 +124,7 @@ const Item = ({service, onClickEdit}: ItemProps) => {
         duration={service.duration}
         visible={modalVisible}
         onClose={handleImagePress}
+        fromAdmin={true}
       />
     </TouchableOpacity>
   );
