@@ -79,7 +79,7 @@ export const DarkTheme: ThemeState = {
   },
   dividerColor: 'rgba(255,0,0,0.7)',
   highlightColor: globalColors.golden,
-  servWhite: 'rgba(255,255,255,0.2)',
+  servWhite: 'rgba(255,255,255,0.5)',
   sCarColor: 'rgba(218,165,32,0.7)',
   textShadowColor: globalColors.white,
   bulletOcupied: globalColors.bulletOcupied,

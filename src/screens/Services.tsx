@@ -4,6 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  View,
   Image,
   TouchableOpacity,
   ToastAndroid,
@@ -55,6 +56,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         ...styles.item,
         backgroundColor: servWhite,
         borderColor: colors.border,
+        shadowColor:colors.border,
       }}
       onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
@@ -174,6 +176,8 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
   },
   content: {
     flex: 1,
