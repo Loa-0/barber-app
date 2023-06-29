@@ -14,6 +14,7 @@ import {InfoModal} from '../components/services/infoModal';
 import {serviceInfoType} from '../components/services/types';
 import {getServicesList} from '../api/http';
 import {ServiceContext} from '../context/Service.Context';
+import {View} from 'react-native';
 
 type ItemProps = {
   item: serviceInfoType;
@@ -27,6 +28,12 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
   } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [wordReserved, setwordReserved] = useState<string>('Reservar');
+
+  useEffect(() => {
+    if (selectSer.length === 0) {
+      setwordReserved('Reservar');
+    }
+  }, [selectSer]);
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
@@ -95,7 +102,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
   );
 };
 
-export const ServicesScreen = () => {
+export const ServicesScreen = ({navigation}: any) => {
   const {
     themeState: {colors, sCarColor},
   } = useContext(ThemeContext);
@@ -109,6 +116,8 @@ export const ServicesScreen = () => {
       updateTotalCost({
         services: servicesArray,
       });
+      setServicesArray([]);
+      navigation.navigate('Appoinments');
     }
   };
 
@@ -144,6 +153,7 @@ export const ServicesScreen = () => {
       <FlatList
         data={servicesList}
         ListHeaderComponent={<HeaderComponent title="Servicios" />}
+        ListFooterComponent={<View style={styles.marginB} />}
         renderItem={({item}) => (
           <Item
             selectSer={servicesArray}
@@ -268,5 +278,8 @@ const styles = StyleSheet.create({
     marginTop: -50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  marginB: {
+    marginBottom: 70,
   },
 });
