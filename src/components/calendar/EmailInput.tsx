@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
+import {ThemeContext} from '../../context/ThemeContext';
 
 type Props = {
   setName: any;
@@ -9,6 +10,9 @@ type Props = {
 };
 
 export const EmailNameForm = ({setName, setEmail, email, name}: Props) => {
+  const {
+    themeState: {colors, highlightColor},
+  } = useContext(ThemeContext);
   const handleEmailChange = (text: string) => {
     setEmail(text);
   };
@@ -25,13 +29,23 @@ export const EmailNameForm = ({setName, setEmail, email, name}: Props) => {
         keyboardType="email-address"
         autoCapitalize="none"
         autoCorrect={false}
-        style={styles.inputB}
+        placeholderTextColor={colors.text}
+        style={{
+          ...styles.inputB,
+          color: colors.text,
+          borderColor: highlightColor,
+        }}
       />
       <TextInput
         placeholder="Nombre"
         value={name}
         onChangeText={handleNameChange}
-        style={styles.inputB}
+        placeholderTextColor={colors.text}
+        style={{
+          ...styles.inputB,
+          color: colors.text,
+          borderColor: highlightColor,
+        }}
       />
     </View>
   );
@@ -40,5 +54,7 @@ const styles = StyleSheet.create({
   inputB: {
     borderWidth: 2,
     marginBottom: 5,
+    padding: 10,
+    borderRadius: 20,
   },
 });

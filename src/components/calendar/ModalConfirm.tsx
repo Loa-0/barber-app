@@ -47,6 +47,10 @@ export const ModalConfirm = ({
         Alert.alert('Error', 'Por favor, ingresa un correo electrónico válido');
         return;
       }
+      if (email.length === 0 || name.length === 0) {
+        Alert.alert('Error', 'Faltan Campos Requeridos');
+        return;
+      }
       const serv: String[] = servicesFinal.services.map(ser => {
         return `${ser.title} - Costo = $${ser.price}`;
       });
@@ -106,7 +110,7 @@ export const ModalConfirm = ({
             ...styles.titleContainer,
           }}>
           <Text style={{...styles.titleText, color: colors.text}}>
-            Confirmar
+            Datos de la Cita
           </Text>
           <TouchableNativeFeedback
             onPress={() => {
@@ -163,6 +167,11 @@ export const ModalConfirm = ({
                 .join('\n')}
             </Text>
           </View>
+          <View style={styles.dataFirstText}>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Total: ${servicesFinal.totalCost}
+            </Text>
+          </View>
           <EmailNameForm
             setName={setName}
             email={email}
@@ -183,7 +192,7 @@ export const ModalConfirm = ({
 const styles = StyleSheet.create({
   modalContainer: {
     width: '85%',
-    height: '70%',
+    height: '82%',
     marginTop: 'auto',
     marginBottom: 'auto',
     alignSelf: 'center',
