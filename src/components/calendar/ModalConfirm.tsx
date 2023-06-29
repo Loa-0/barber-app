@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {insertEvent} from '../../api/http';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Pressable,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import {useContext} from 'react';
 import {ServiceContext} from '../../context/Service.Context';
@@ -15,6 +16,7 @@ import {EventPayload} from '../../interfaces/Appointments';
 import {ThemeContext} from '../../context/ThemeContext';
 import {displayDate, mostrarHora} from '../../helpers/Date';
 import {AgendaContext} from '../../hooks/useCalendar';
+import {EmailNameForm} from './EmailInput';
 
 interface Props {
   closeModalConfirm: () => void;
@@ -33,19 +35,29 @@ export const ModalConfirm = ({
     themeState: {colors, highlightColor, bulletFree},
   } = useContext(ThemeContext);
 
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const validateEmail = (emai1: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emai1);
+  };
   const constructPetition = () => {
     if (servicesFinal.services.length > 0) {
+      if (!validateEmail(email)) {
+        Alert.alert('Error', 'Por favor, ingresa un correo electrónico válido');
+        return;
+      }
       const serv: String[] = servicesFinal.services.map(ser => {
         return `${ser.title} - Costo = $${ser.price}`;
       });
 
       const servString = serv.join(', ');
       const payload: EventPayload = {
-        summary: 'Isaac',
+        summary: name,
         description: `Costo Total: ${servicesFinal.totalCost}\nServicos: ${servString}`,
         start: servicesFinal.start,
         end: servicesFinal.end,
-        email: 'vazisaac9508@gmail.com',
+        email: email.toString().trim().toLowerCase(),
       };
       try {
         insertEvent(payload);
@@ -151,6 +163,12 @@ export const ModalConfirm = ({
                 .join('\n')}
             </Text>
           </View>
+          <EmailNameForm
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            name={name}
+          />
           <Pressable
             style={{...styles.btnConfirm, backgroundColor: bulletFree}}
             onPress={constructPetition}>
@@ -165,7 +183,7 @@ export const ModalConfirm = ({
 const styles = StyleSheet.create({
   modalContainer: {
     width: '85%',
-    height: '50%',
+    height: '70%',
     marginTop: 'auto',
     marginBottom: 'auto',
     alignSelf: 'center',
