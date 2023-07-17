@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   FlatList,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {styles as S, globalColors} from '../../theme/AppStyles';
@@ -15,7 +16,8 @@ import {styles} from './editStyles';
 import {InfoModal} from './infoModal';
 import {StackScreenProps} from '@react-navigation/stack';
 import {serviceInfoType} from './types';
-import {deleteService, getServicesList} from '../../api/http';
+import {deleteService} from '../../api/http';
+import {ServiceListContext} from '../../context/ServicesListContext';
 
 type ItemProps = {
   service: serviceInfoType;
@@ -23,6 +25,7 @@ type ItemProps = {
 };
 
 const Item = ({service, onClickEdit}: ItemProps) => {
+  const {setNewStatus} = useContext(ServiceListContext);
   const {
     themeState: {colors, transparentBackground, secondaryButton},
   } = useContext(ThemeContext);
@@ -42,6 +45,7 @@ const Item = ({service, onClickEdit}: ItemProps) => {
         0,
         210,
       );
+      setNewStatus('updating');
     } catch (error) {
       console.log(error);
       ToastAndroid.showWithGravityAndOffset(
@@ -132,29 +136,17 @@ const Item = ({service, onClickEdit}: ItemProps) => {
 interface Props extends StackScreenProps<any, any> {}
 export const AdminServicesView = ({navigation}: Props) => {
   const {
-    themeState: {colors, primaryButton, highlightColor},
+    themeState: {colors, primaryButton, highlightColor, dividerColor},
   } = useContext(ThemeContext);
 
-  const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
-
-  useEffect(() => {
-    listServices();
-  }, [servicesList]);
-
-  const listServices = async () => {
-    try {
-      const services = await getServicesList();
-      setServicesList(services);
-    } catch (error) {
-      console.log(error);
-      ToastAndroid.showWithGravityAndOffset(
-        'Error obteniendo servicios',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-        0,
-        210,
-      );
-    }
+  const {servicesList, setNewStatus} = useContext(ServiceListContext);
+  const [refreshing, setrefreshing] = useState<boolean>(false);
+  const onRefresh = () => {
+    setrefreshing(true);
+    setTimeout(async () => {
+      await setNewStatus('updating');
+      setrefreshing(false);
+    }, 1000);
   };
 
   const navigateEditServices = ({
@@ -190,7 +182,15 @@ export const AdminServicesView = ({navigation}: Props) => {
         renderItem={({item}) => (
           <Item service={item} onClickEdit={navigateEditServices} />
         )}
-        keyExtractor={item => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={10}
+            progressBackgroundColor={dividerColor}
+            colors={[colors.background]}
+          />
+        }
       />
     </View>
   );

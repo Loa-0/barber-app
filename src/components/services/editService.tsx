@@ -22,10 +22,12 @@ import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
 import {updateService} from '../../api/http';
 import {Loader} from '../common/Loader';
+import {ServiceListContext} from '../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {
   const {id, title, image, price, duration} = route.params;
+  const {setNewStatus} = useContext(ServiceListContext);
   const {
     themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
@@ -75,6 +77,7 @@ export const EditService = ({route, navigation}: Props) => {
         210,
       );
       setIsLoading(false);
+      setNewStatus('updating');
       navigation.goBack();
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
