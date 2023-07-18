@@ -6,6 +6,7 @@ import {AuthProvider} from './src/context/AuthContext';
 import {ThemeContext, ThemeProvider} from './src/context/ThemeContext';
 import {AgendaProvider} from './src/hooks/useCalendar';
 import {ServiceProvider} from './src/context/Service.Context';
+import { ServiceListProvider } from './src/context/ServicesListContext';
 
 const App = () => {
   const {themeState} = useContext(ThemeContext);
@@ -27,7 +28,9 @@ const AppState = ({children}: any) => {
     <AuthProvider>
       <ThemeProvider>
         <ServiceProvider>
-          <AgendaProvider>{children}</AgendaProvider>
+          <ServiceListProvider>
+            <AgendaProvider>{children}</AgendaProvider>
+          </ServiceListProvider>
         </ServiceProvider>
       </ThemeProvider>
     </AuthProvider>

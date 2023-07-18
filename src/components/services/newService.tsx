@@ -21,9 +21,12 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
 import {createService} from '../../api/http';
+import {Loader} from '../common/Loader';
+import {ServiceListContext} from '../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 export const NewService = ({navigation}: Props) => {
+  const {setNewStatus} = useContext(ServiceListContext);
   const {
     themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
@@ -77,6 +80,7 @@ export const NewService = ({navigation}: Props) => {
         210,
       );
       setIsLoading(false);
+      setNewStatus('updating');
       navigation.goBack();
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
@@ -198,7 +202,11 @@ export const NewService = ({navigation}: Props) => {
             ...styles.formSubmitBtn,
           }}
           onPress={handleSubmit}>
-          <Text style={{color: colors.text}}>Guardar cambios</Text>
+          {!isLoading ? (
+            <Text style={{color: colors.text}}>Guardar cambios</Text>
+          ) : (
+            <Loader />
+          )}
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
