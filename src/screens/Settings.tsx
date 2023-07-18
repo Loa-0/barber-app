@@ -5,7 +5,10 @@ import {SettingsDisplay} from '../components/settings/settings';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
 
-export const Settings = () => {
+type Props = {
+  mainNav: any;
+};
+export const Settings = ({mainNav}: Props) => {
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -16,7 +19,7 @@ export const Settings = () => {
         backgroundColor: colors.background,
       }}>
       <HeaderComponent title="Configuración" />
-      <SettingsDisplay />
+      <SettingsDisplay mainNav={mainNav} />
     </ScrollView>
   );
 };

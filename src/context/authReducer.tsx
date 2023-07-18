@@ -4,7 +4,7 @@ type AuthAction =
   | {
       type: 'signOut';
     }
-  | {type: 'signIn'; payload: {userName: string}};
+  | {type: 'signIn'; payload: {userName: string; token: string}};
 export const authReducer = (
   state: AuthState,
   action: AuthAction,
@@ -15,6 +15,7 @@ export const authReducer = (
         ...state,
         isLoggedIn: true,
         userName: action.payload.userName,
+        token: action.payload.token,
       };
     case 'signOut':
       return {

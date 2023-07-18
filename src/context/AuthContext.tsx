@@ -1,6 +1,7 @@
-import React, {createContext, useReducer} from 'react';
+import React, {createContext, useReducer, useEffect} from 'react';
 import {authReducer} from './authReducer';
 import {LocaleConfig} from 'react-native-calendars';
+import {AppState} from 'react-native';
 
 LocaleConfig.locales.es = {
   monthNames: [
@@ -59,7 +60,7 @@ const AuthInitialState: AuthState = {
 };
 export interface AuthContextProps {
   authState: AuthState;
-  signIn: () => void;
+  signIn: (userName: string, token: string) => void;
   signOut: () => void;
 }
 
@@ -72,8 +73,19 @@ export const AuthProvider = ({
 }) => {
   const [authState, dispatch] = useReducer(authReducer, AuthInitialState);
 
-  const signIn = () => {
-    dispatch({type: 'signIn', payload: {userName: 'Loa'}});
+  useEffect(() => {
+    AppState.addEventListener('change', status => {
+      console.log(status);
+      if (status === 'background') {
+        if (authState.isLoggedIn) {
+          signOut();
+        }
+      }
+    });
+  }, [authState]);
+
+  const signIn = (userName: string, token: string) => {
+    dispatch({type: 'signIn', payload: {userName, token}});
   };
   const signOut = () => {
     dispatch({type: 'signOut'});
