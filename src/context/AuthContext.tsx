@@ -84,7 +84,7 @@ export const AuthProvider = ({
     });
   }, [authState]);
 
-  const signIn = (userName: string, token: string) => {
+  const signIn = async (userName: string, token: string) => {
     dispatch({type: 'signIn', payload: {userName, token}});
   };
   const signOut = () => {

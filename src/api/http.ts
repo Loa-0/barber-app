@@ -1,12 +1,28 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {AgendaSchedule, EventPayload} from '../interfaces/Appointments';
 import {UserInterface, UserLoginInterface} from '../interfaces/user';
 import {serviceInfoType} from '../components/services/types';
 
 const backendUri = 'https://backend-barber-production.up.railway.app';
 
+const getToken = (): string => {
+  let token = '';
+  AsyncStorage.getItem('token')
+    .then(params => {
+      token = params!;
+    })
+    .catch(_ => {
+      token = '';
+    });
+  return token;
+};
 export const httpApi = axios.create({
   baseURL: `${backendUri}/api`,
+  headers: {
+    'x-token': getToken(),
+  },
 });
 
 export const getCalendar = (): Promise<AgendaSchedule> =>

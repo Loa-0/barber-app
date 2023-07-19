@@ -1,4 +1,5 @@
 import {AuthState} from './AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type AuthAction =
   | {
@@ -11,6 +12,7 @@ export const authReducer = (
 ): AuthState => {
   switch (action.type) {
     case 'signIn':
+      AsyncStorage.setItem('token', action.payload.token).then(() => {});
       return {
         ...state,
         isLoggedIn: true,
@@ -18,6 +20,7 @@ export const authReducer = (
         token: action.payload.token,
       };
     case 'signOut':
+      AsyncStorage.removeItem('token').then(() => {});
       return {
         isLoggedIn: false,
         userName: '',
