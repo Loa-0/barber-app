@@ -30,14 +30,14 @@ export const StackNavigator = () => {
         component={WelcomeScreen}
       />
       <Stack.Screen
-        name="Page1"
-        options={{headerShown: false}}
-        component={BottomNavigator}
-      />
-      <Stack.Screen
         options={{headerShown: false}}
         name="AdminLogin"
         component={LoginAdminPage}
+      />
+      <Stack.Screen
+        name="Page1"
+        options={{headerShown: false}}
+        component={BottomNavigator}
       />
     </Stack.Navigator>
   );

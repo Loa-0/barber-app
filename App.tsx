@@ -12,11 +12,11 @@ const App = () => {
   const {themeState} = useContext(ThemeContext);
   return (
     <PaperProvider>
-      <NavigationContainer theme={themeState}>
-        <AppState>
+      <AppState>
+        <NavigationContainer theme={themeState}>
           <StackNavigator />
-        </AppState>
-      </NavigationContainer>
+        </NavigationContainer>
+      </AppState>
     </PaperProvider>
   );
 };
