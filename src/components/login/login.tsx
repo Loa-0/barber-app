@@ -36,7 +36,6 @@ export const LoginAdmin = ({navigation}: Props) => {
     };
     try {
       const loggedUser = await AdminLogin(loginData);
-      console.log(loggedUser);
       signIn(loggedUser.user, loggedUser.token);
       navigation.navigate('Page1');
     } catch (error) {

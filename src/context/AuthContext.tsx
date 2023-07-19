@@ -75,7 +75,6 @@ export const AuthProvider = ({
 
   useEffect(() => {
     AppState.addEventListener('change', status => {
-      console.log(status);
       if (status === 'background') {
         if (authState.isLoggedIn) {
           signOut();
