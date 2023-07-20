@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
@@ -15,7 +16,7 @@ import {serviceInfoType} from '../components/services/types';
 import {ServiceContext} from '../context/Service.Context';
 import {View} from 'react-native';
 import {ServiceListContext} from '../context/ServicesListContext';
-
+const limitHorsSerivce = 2;
 type ItemProps = {
   item: serviceInfoType;
   setServices: any;
@@ -38,7 +39,10 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
-
+  const currentSum = selectSer.reduce(
+    (sum, service) => sum + service.duration,
+    0,
+  );
   const handleReservationPress = (i: serviceInfoType) => {
     const newA = selectSer.filter(ev => ev.id === i.id);
     if (newA.length > 0) {
@@ -46,11 +50,21 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
       setwordReserved('Reservar');
       setServices(newD);
     } else {
-      setwordReserved('Quitar');
-      setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+      const newSum = currentSum + i.duration;
+      if (newSum <= limitHorsSerivce) {
+        setwordReserved('Quitar');
+        setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          'Maximo 2 horas por cita',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+      }
     }
   };
-
   const addToCar = (i: serviceInfoType) => {
     setModalVisible(!modalVisible);
     handleReservationPress(i);

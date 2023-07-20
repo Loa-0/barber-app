@@ -77,7 +77,11 @@ export const AuthProvider = ({
     AppState.addEventListener('change', status => {
       if (status === 'background') {
         if (authState.isLoggedIn) {
-          signOut();
+          setTimeout(() => {
+            if (status === 'background') {
+              signOut();
+            }
+          }, 1000 * 60 * 5);
         }
       }
     });
