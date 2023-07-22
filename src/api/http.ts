@@ -4,8 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AgendaSchedule, EventPayload} from '../interfaces/Appointments';
 import {UserInterface, UserLoginInterface} from '../interfaces/user';
 import {serviceInfoType} from '../components/services/types';
+import Config from 'react-native-config';
 
-const backendUri = 'https://backend-barber-production.up.railway.app';
+const backendUri = Config.API_URI ?? 'L';
 
 const getToken = (): string => {
   let token = '';

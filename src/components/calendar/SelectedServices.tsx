@@ -4,10 +4,11 @@ import {View, Text} from 'react-native';
 import {ThemeContext} from '../../context/ThemeContext';
 import {ServiceContext} from '../../context/Service.Context';
 import {mostrarHora} from '../../helpers/Date';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const SelectedServices = () => {
   const {
-    themeState: {colors, titleText},
+    themeState: {colors, titleText, highlightColor},
   } = useContext(ThemeContext);
 
   const {servicesFinal} = useContext(ServiceContext);
@@ -28,6 +29,8 @@ export const SelectedServices = () => {
         shadowOpacity: 0.34,
         shadowRadius: 6.27,
         elevation: 10,
+        borderBottomWidth: 3,
+        borderBottomColor: highlightColor,
       }}>
       {servicesFinal.services.length > 0 ? (
         <>
@@ -36,6 +39,7 @@ export const SelectedServices = () => {
               style={{
                 color: titleText,
                 marginVertical: 10,
+                fontSize: 23,
                 fontWeight: 'bold',
                 alignItems: 'center',
               }}>
@@ -51,12 +55,23 @@ export const SelectedServices = () => {
             }}>
             {servicesFinal.services.length > 0 &&
               servicesFinal.services.map((service, i) => (
-                <Text style={{color: colors.text}} key={i}>
-                  {service.title} - ${service.price}
-                </Text>
+                <View
+                  style={{flexDirection: 'row', alignItems: 'center'}}
+                  key={i}>
+                  <Icon name={'circle'} color={colors.text} />
+                  <Text
+                    style={{color: colors.text, fontSize: 17, marginLeft: 6}}>
+                    {service.title} - ${service.price}
+                  </Text>
+                </View>
               ))}
             <Text
-              style={{color: colors.text, fontWeight: 'bold', marginTop: 10}}>
+              style={{
+                color: colors.text,
+                fontWeight: 'bold',
+                marginTop: 10,
+                fontSize: 20,
+              }}>
               Costo: ${servicesFinal.totalCost} Tiempo:{' '}
               {mostrarHora(servicesFinal.totalDuration)}
             </Text>
