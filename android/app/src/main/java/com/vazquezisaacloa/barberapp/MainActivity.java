@@ -1,4 +1,5 @@
-package com.barberapp;
+// package com.barberapp;
+package com.vazquezisaacloa.barberapp;
 
 import android.os.Bundle;
 

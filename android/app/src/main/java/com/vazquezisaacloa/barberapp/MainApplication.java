@@ -1,4 +1,5 @@
-package com.barberapp;
+// package com.barberapp;
+package com.vazquezisaacloa.barberapp;
 // Splash Screen
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
