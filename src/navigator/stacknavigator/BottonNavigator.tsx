@@ -15,6 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {StackNavigatorAdmin} from './StackNavigatorAdmin';
 import {Loader} from '../../components/common/Loader';
+import {EditProfilePage} from '../../screens/EditProfilePage';
 
 interface Props extends StackScreenProps<RootStackParams, 'Page1'> {}
 
@@ -51,20 +52,36 @@ export const BottomNavigator = ({navigation}: Props) => {
             backgroundColor: globalColors.mainBack,
           }}>
           {authState.isLoggedIn ? (
-            <Tab.Screen
-              name="AdminServices"
-              component={StackNavigatorAdmin}
-              options={{
-                tabBarLabel: 'Editar',
-                tabBarIcon: ({color}) => (
-                  <FontAwesome5
-                    name="edit"
-                    color={color}
-                    size={globalColors.iconSize}
-                  />
-                ),
-              }}
-            />
+            <>
+              <Tab.Screen
+                name="AdminServices"
+                component={StackNavigatorAdmin}
+                options={{
+                  tabBarLabel: 'Editar',
+                  tabBarIcon: ({color}) => (
+                    <FontAwesome5
+                      name="edit"
+                      color={color}
+                      size={globalColors.iconSize}
+                    />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="EditProfile"
+                component={EditProfilePage}
+                options={{
+                  tabBarLabel: 'Perfil',
+                  tabBarIcon: ({color}) => (
+                    <FontAwesome5
+                      name="person"
+                      color={color}
+                      size={globalColors.iconSize}
+                    />
+                  ),
+                }}
+              />
+            </>
           ) : (
             <>
               <Tab.Screen
