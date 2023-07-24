@@ -5,13 +5,14 @@ import {CalendarComponent} from '../components/calendar/CalendarComponet';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
 import {AgendaContext} from '../hooks/useCalendar';
-// import {Ejemplo} from '../components/calendar/Ejemplo';
-// import {AgendaScreen} from '../components/calendar/AgendaScreen';
+import {AuthContext} from '../context/AuthContext';
+import {GoogleAuth} from '../components/sesion/GoogleAuth';
 
 export const Appointments = () => {
   const {
     themeState: {colors, dividerColor},
   } = useContext(ThemeContext);
+  const {clientUserState} = useContext(AuthContext);
   const {loadAgenda} = useContext(AgendaContext);
   const [refreshing, setrefreshing] = useState<boolean>(false);
   const onRefresh = () => {
@@ -40,9 +41,7 @@ export const Appointments = () => {
         />
       }>
       <HeaderComponent title="Citas" />
-      <CalendarComponent />
-      {/* <Ejemplo /> */}
-      {/* <AgendaScreen /> */}
+      {clientUserState.isClientLogged ? <CalendarComponent /> : <GoogleAuth />}
     </ScrollView>
   );
 };
