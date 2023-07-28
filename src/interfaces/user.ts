@@ -8,4 +8,10 @@ export interface UserInterface {
   password: string;
 }
 
+export interface UserUpdateInterface {
+  newUserName: string;
+  oldpassword: string;
+  newPassword: string;
+}
+
 export interface GoogleUserReponse extends User {}

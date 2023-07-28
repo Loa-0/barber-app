@@ -2,30 +2,37 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {AgendaSchedule, EventPayload} from '../interfaces/Appointments';
-import {UserInterface, UserLoginInterface} from '../interfaces/user';
+import {
+  UserInterface,
+  UserLoginInterface,
+  UserUpdateInterface,
+} from '../interfaces/user';
 import {serviceInfoType} from '../components/services/types';
 import Config from 'react-native-config';
 
-const backendUri = Config.API_URI ?? 'L';
+const backendUri = Config.API_URI ?? 'http://192.168.1.103:8080';
+// const backendUri = 'http://192.168.1.103:8080';
 
-const getToken = (): string => {
-  let token = '';
-  AsyncStorage.getItem('token')
-    .then(params => {
-      token = params!;
-    })
-    .catch(_ => {
-      token = '';
-    });
-  return token;
-};
 export const httpApi = axios.create({
   baseURL: `${backendUri}/api`,
-  headers: {
-    'x-token': getToken(),
-  },
 });
 
+httpApi.interceptors.request.use(
+  async config => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        config.headers['x-token'] = token;
+      }
+    } catch (error) {
+      console.log('Error al obtener el token:', error);
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
 export const getCalendar = (): Promise<AgendaSchedule> =>
   httpApi.get<AgendaSchedule>('/google/calendar').then(({data}) => {
     return data;
@@ -39,6 +46,16 @@ export const AdminLogin = (
 ): Promise<UserLoginInterface> =>
   httpApi
     .post<UserLoginInterface>('/auth/loginBarber', {...userData})
+    .then(({data}) => {
+      return data;
+    });
+
+export const EditAdmin = (
+  userData: UserUpdateInterface,
+  userName: string,
+): Promise<UserLoginInterface> =>
+  httpApi
+    .put<UserLoginInterface>(`/admin/${userName}`, {...userData})
     .then(({data}) => {
       return data;
     });
