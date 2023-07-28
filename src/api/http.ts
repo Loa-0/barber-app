@@ -10,8 +10,8 @@ import {
 import {serviceInfoType} from '../components/services/types';
 import Config from 'react-native-config';
 
-//const backendUri = Config.API_URI ?? 'http://192.168.1.103:8080';
-const backendUri = 'http://192.168.1.103:8080';
+const backendUri = Config.API_URI ?? 'http://192.168.1.103:8080';
+// const backendUri = 'http://192.168.1.103:8080';
 
 export const httpApi = axios.create({
   baseURL: `${backendUri}/api`,
