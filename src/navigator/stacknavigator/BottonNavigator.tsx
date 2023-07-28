@@ -74,7 +74,7 @@ export const BottomNavigator = ({navigation}: Props) => {
                   tabBarLabel: 'Perfil',
                   tabBarIcon: ({color}) => (
                     <FontAwesome5
-                      name="person"
+                      name="user"
                       color={color}
                       size={globalColors.iconSize}
                     />

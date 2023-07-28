@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {globalColors} from '../../theme/AppStyles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -96,5 +97,32 @@ export const styles = StyleSheet.create({
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  diffPassError: {
+    fontSize: 13,
+    color: globalColors.disabledRed,
+  },
+  newButton: {
+    borderRadius: 50,
+    borderWidth: 1,
+    borderBottomWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    height: 50,
+    marginVertical: 5,
+    marginHorizontal: 10,
+  },
+  newButtonText: {
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
