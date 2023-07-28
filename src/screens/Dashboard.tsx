@@ -10,14 +10,21 @@ import {
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../theme/AppStyles';
 import {styles as S} from '../theme/AppStyles';
-import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
+<<<<<<< HEAD
 import {Text} from 'react-native-paper';
 const backgroundImage = require('../assets/fondo.jpg');
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const Dashboard = ({}: Props) => {
+=======
+import {DisplayInfoDashboard} from '../components/dashboard/DisplayInfoDashboard';
+import {SocialMedia} from '../components/dashboard/SocialMedia';
+import {MapsImage} from '../components/dashboard/MapsImage';
+
+export const Dashboard = ({navigation}: any) => {
+>>>>>>> main
   const {
     themeState: {colors},
   } = useContext(ThemeContext);
@@ -41,6 +48,7 @@ export const Dashboard = ({}: Props) => {
         ...S.globalContainer,
         backgroundColor: colors.background,
       }}>
+<<<<<<< HEAD
       <HeaderComponent title="Inicio" />
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <View style={styles.textContainer}>
@@ -104,6 +112,11 @@ export const Dashboard = ({}: Props) => {
           </Text>
         </View>
       </ImageBackground>
+=======
+      <DisplayInfoDashboard navigation={navigation} />
+      <SocialMedia />
+      <MapsImage />
+>>>>>>> main
     </ScrollView>
   );
 };

@@ -1,4 +1,5 @@
 import React, {createContext, useEffect, useReducer} from 'react';
+
 import {AppState, Appearance} from 'react-native';
 import {themeReducer} from './ThemeReducer';
 import {ThemeState, DarkTheme} from '../theme/themes';

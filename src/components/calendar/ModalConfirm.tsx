@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {insertEvent} from '../../api/http';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Pressable,
   ToastAndroid,
+  Alert,
 } from 'react-native';
 import {useContext} from 'react';
 import {ServiceContext} from '../../context/Service.Context';
@@ -15,6 +16,8 @@ import {EventPayload} from '../../interfaces/Appointments';
 import {ThemeContext} from '../../context/ThemeContext';
 import {displayDate, mostrarHora} from '../../helpers/Date';
 import {AgendaContext} from '../../hooks/useCalendar';
+import {EmailNameForm} from './EmailInput';
+import {AuthContext} from '../../context/AuthContext';
 
 interface Props {
   closeModalConfirm: () => void;
@@ -28,24 +31,31 @@ export const ModalConfirm = ({
   closeList,
 }: Props) => {
   const {servicesFinal, setInitialServices} = useContext(ServiceContext);
+  const {clientUserState} = useContext(AuthContext);
   const {loadAgenda} = useContext(AgendaContext);
   const {
     themeState: {colors, highlightColor, bulletFree},
   } = useContext(ThemeContext);
 
+  const [name, setName] = useState(clientUserState.name);
+
   const constructPetition = () => {
     if (servicesFinal.services.length > 0) {
+      if (name.length === 0) {
+        Alert.alert('Error', 'Faltan Campos Requeridos');
+        return;
+      }
       const serv: String[] = servicesFinal.services.map(ser => {
         return `${ser.title} - Costo = $${ser.price}`;
       });
 
       const servString = serv.join(', ');
       const payload: EventPayload = {
-        summary: 'Isaac',
+        summary: name,
         description: `Costo Total: ${servicesFinal.totalCost}\nServicos: ${servString}`,
         start: servicesFinal.start,
         end: servicesFinal.end,
-        email: 'vazisaac9508@gmail.com',
+        email: clientUserState.email.toString().trim().toLowerCase(),
       };
       try {
         insertEvent(payload);
@@ -94,7 +104,7 @@ export const ModalConfirm = ({
             ...styles.titleContainer,
           }}>
           <Text style={{...styles.titleText, color: colors.text}}>
-            Confirmar
+            Datos de la Cita
           </Text>
           <TouchableNativeFeedback
             onPress={() => {
@@ -114,27 +124,42 @@ export const ModalConfirm = ({
             backgroundColor: colors.background,
             shadowColor: colors.text,
           }}>
-          <View style={styles.dataFirstText}>
-            <Text>
+          <View
+            style={[
+              styles.dataFirstText,
+              {...styles.borderBott, borderBottomColor: highlightColor},
+            ]}>
+            <Text style={{...styles.fontEmail, color: colors.text}}>
+              Email: {clientUserState.email}
+            </Text>
+          </View>
+          <View style={[styles.dataFirstText]}>
+            <Text style={{color: colors.text}}>
               Tiempo Aproximado: {mostrarHora(servicesFinal.totalDuration)}
             </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.titleText}>Fecha:</Text>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Fecha:
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text>{displayDate(dataDate.data)}</Text>
+            <Text style={{color: colors.text}}>
+              {displayDate(dataDate.data)}
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.bold}>
+            <Text style={{...styles.bold, color: colors.text}}>
               De: {dataDate.startD} a: {dataDate.endDate}{' '}
             </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text style={styles.titleText}>Servicios:</Text>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Servicios:
+            </Text>
           </View>
           <View style={styles.dataFirstText}>
-            <Text>
+            <Text style={{color: colors.text}}>
               {servicesFinal.services
                 .map(
                   ser =>
@@ -145,6 +170,12 @@ export const ModalConfirm = ({
                 .join('\n')}
             </Text>
           </View>
+          <View style={styles.dataFirstText}>
+            <Text style={{...styles.titleText, color: colors.text}}>
+              Total: ${servicesFinal.totalCost}
+            </Text>
+          </View>
+          <EmailNameForm setName={setName} name={name} />
           <Pressable
             style={{...styles.btnConfirm, backgroundColor: bulletFree}}
             onPress={constructPetition}>
@@ -157,9 +188,19 @@ export const ModalConfirm = ({
 };
 
 const styles = StyleSheet.create({
+  borderBott: {
+    borderBottomWidth: 3,
+    padding: 10,
+  },
+  fontEmail: {
+    fontSize: 16,
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontWeight: 'bold',
+  },
   modalContainer: {
     width: '85%',
-    height: '50%',
+    height: '70%',
     marginTop: 'auto',
     marginBottom: 'auto',
     alignSelf: 'center',

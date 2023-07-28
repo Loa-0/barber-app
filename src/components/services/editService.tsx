@@ -21,17 +21,22 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
 import {updateService} from '../../api/http';
+import {Loader} from '../common/Loader';
+import {ServiceListContext} from '../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {
   const {id, title, image, price, duration} = route.params;
+  const {setNewStatus} = useContext(ServiceListContext);
   const {
     themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [serviceTitle, setServiceTitle] = useState<string>(title);
   const [servicePrice, setServicePrice] = useState<number>(price);
   const [serviceDuration, setServiceDuration] = useState<number>(duration);
-  const [serviceImage, setServiceImage] = useState<any>(image);
+  const [serviceImageToShow, setServiceImageToShow] = useState<any>(image);
+  const [isNewImage, setIsNewImage] = useState<boolean>(false);
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -40,17 +45,30 @@ export const EditService = ({route, navigation}: Props) => {
     includeBase64: false,
   };
   const openGallery = async () => {
-    const image = launchImageLibrary(options);
+    const imageResult = await launchImageLibrary(options);
+    if (imageResult && imageResult.assets) {
+      setServiceImageToShow(imageResult.assets[0]);
+      setIsNewImage(true);
+    }
   };
   const handleSubmit = async () => {
-    const newService = {
-      title: serviceTitle,
-      image: serviceImage,
-      price: servicePrice,
-      duration: serviceDuration,
-    };
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('title', serviceTitle);
+    formData.append('image', image.uri);
+    formData.append('price', String(servicePrice));
+    formData.append('duration', String(serviceDuration));
+    if (isNewImage) {
+      console.log('entra');
+      formData.append('archivo', {
+        name: serviceImageToShow.fileName,
+        type: serviceImageToShow.type,
+        uri: serviceImageToShow.uri,
+        tempFilePath: serviceImageToShow.uri,
+      });
+    }
     try {
-      await updateService(newService, id!);
+      await updateService(formData, id!);
       ToastAndroid.showWithGravityAndOffset(
         'Servicio actualizado',
         ToastAndroid.SHORT,
@@ -58,6 +76,8 @@ export const EditService = ({route, navigation}: Props) => {
         0,
         210,
       );
+      setIsLoading(false);
+      setNewStatus('updating');
       navigation.goBack();
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
@@ -67,6 +87,7 @@ export const EditService = ({route, navigation}: Props) => {
         0,
         210,
       );
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -96,7 +117,7 @@ export const EditService = ({route, navigation}: Props) => {
           <View style={styles.formImageContainer}>
             <TouchableOpacity onPress={openGallery}>
               <Image
-                source={image}
+                source={serviceImageToShow}
                 style={{
                   ...styles.formImage,
                   borderColor: colors.text,
@@ -179,7 +200,11 @@ export const EditService = ({route, navigation}: Props) => {
               ...styles.formSubmitBtn,
             }}
             onPress={handleSubmit}>
-            <Text style={{color: colors.text}}>Guardar cambios</Text>
+            {!isLoading ? (
+              <Text style={{color: colors.text}}>Guardar cambios</Text>
+            ) : (
+              <Loader />
+            )}
           </TouchableOpacity>
         </ScrollView>
       </>

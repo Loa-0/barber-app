@@ -1,140 +1,187 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
-  View,
   FlatList,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
+  RefreshControl,
   ToastAndroid,
-  Modal,
-  TouchableNativeFeedback
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
-import { ThemeContext } from '../context/ThemeContext';
-import { InfoModal } from '../components/services/infoModal';
+import {ThemeContext} from '../context/ThemeContext';
+import {InfoModal} from '../components/services/infoModal';
 import {serviceInfoType} from '../components/services/types';
-import {getServicesList} from '../api/http';
-import { ServiceContext } from '../context/Service.Context';
-
-type ItemProps = { 
-  id: string;
-  title: string; 
-  image: any; 
-  price: number;
-  duration: number;
+import {ServiceContext} from '../context/Service.Context';
+import {View} from 'react-native';
+import {ServiceListContext} from '../context/ServicesListContext';
+const limitHorsSerivce = 2;
+type ItemProps = {
+  item: serviceInfoType;
   setServices: any;
+  selectSer: serviceInfoType[];
 };
 
-const Item = ({id, title, image, price, duration, setServices, }: ItemProps) => {
-  const {themeState:{colors, servWhite}} = useContext(ThemeContext)
+const Item = ({item, setServices, selectSer}: ItemProps) => {
+  const {
+    themeState: {colors, servWhite},
+  } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [wordReserved, setwordReserved] = useState<string>('Reservar');
+
+  useEffect(() => {
+    if (selectSer.length === 0) {
+      setwordReserved('Reservar');
+    }
+  }, [selectSer]);
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
-  
-  const handleReservationPress = () => {
-    //console.log("Reserva de: " + title + " Duracion: " + duration + " precio:"+ price );
-    setServices( (prev:any) => 
-    [...prev,{ id, title, image, price, duration }]
-  )
+  const currentSum = selectSer.reduce(
+    (sum, service) => sum + service.duration,
+    0,
+  );
+  const handleReservationPress = (i: serviceInfoType) => {
+    const newA = selectSer.filter(ev => ev.id === i.id);
+    if (newA.length > 0) {
+      const newD = selectSer.filter(ev => ev.id !== i.id);
+      setwordReserved('Reservar');
+      setServices(newD);
+    } else {
+      const newSum = currentSum + i.duration;
+      if (newSum <= limitHorsSerivce) {
+        setwordReserved('Quitar');
+        setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          'Maximo 2 horas por cita',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+      }
+    }
   };
-  
-  
+  const addToCar = (i: serviceInfoType) => {
+    setModalVisible(!modalVisible);
+    handleReservationPress(i);
+  };
 
   return (
-
-    <TouchableOpacity style={{...styles.item,backgroundColor: servWhite, borderColor:colors.border}} onPress={handleImagePress}>
+    <TouchableOpacity
+      style={{
+        ...styles.item,
+        backgroundColor: servWhite,
+        borderColor: colors.border,
+      }}
+      onPress={handleImagePress}>
       <TouchableOpacity onPress={handleImagePress}>
-        <Image source={image} style={styles.image} />
+        <Image source={item.image} style={styles.image} />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
-        <Text style={{...styles.title,color:colors.text,textShadowColor:colors.background}}>{title}</Text>
-        <Text style={styles.price}>${price}</Text>
-       <TouchableOpacity style={styles.button} onPress={handleReservationPress}>
-          <Text style={styles.buttonText}>Reservar</Text>
+        <Text
+          style={{
+            ...styles.title,
+            color: colors.text,
+            textShadowColor: colors.background,
+          }}>
+          {item.title}
+        </Text>
+        <Text style={styles.price}>${item.price}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            handleReservationPress(item);
+          }}>
+          <Text style={styles.buttonText}>{wordReserved}</Text>
         </TouchableOpacity>
       </TouchableOpacity>
 
       <InfoModal
-        price={price}
-        duration={duration}
+        price={item.price}
+        duration={item.duration}
         visible={modalVisible}
         onClose={handleImagePress}
+        onAdd={() => {
+          addToCar(item);
+        }}
+        wordReserved={wordReserved}
+        fromAdmin={false}
       />
-    </TouchableOpacity>  
+    </TouchableOpacity>
   );
 };
 
+export const ServicesScreen = ({navigation}: any) => {
+  const {
+    themeState: {colors, sCarColor, dividerColor},
+  } = useContext(ThemeContext);
+  const {updateTotalCost} = useContext(ServiceContext);
+  const {servicesList, setNewStatus} = useContext(ServiceListContext);
+  const [refreshing, setrefreshing] = useState<boolean>(false);
+  const onRefresh = () => {
+    setrefreshing(true);
+    setTimeout(async () => {
+      await setNewStatus('updating');
+      setrefreshing(false);
+    }, 1000);
+  };
 
-export const ServicesScreen  = () => {
- const {themeState:{colors, servWhite, sCarColor}} = useContext(ThemeContext);
- const {updateTotalCost} = useContext(ServiceContext);
- 
- const [servicesArray, setServicesArray ] = useState<serviceInfoType[]>([]);
- 
- 
- const sCar = () => {
-    if (servicesArray.length>0){
-      updateTotalCost({services: servicesArray,
-        start: "a",
-        totalCost:0,
-        totalDuration:0,
-        end: "aa",
-        nameEvent: "aa",
-        description: "aa",
-        clientName: "aa",
-        email: "aa",
-      })
+  const [processedServicesList, setProcessedServicesList] = useState<
+    serviceInfoType[]
+  >(servicesList ?? []);
+  const [servicesArray, setServicesArray] = useState<serviceInfoType[]>([]);
+
+  const sCar = () => {
+    if (servicesArray.length > 0) {
+      updateTotalCost({
+        services: servicesArray,
+      });
+      setServicesArray([]);
+      navigation.navigate('Appoinments');
     }
   };
-  
-  const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
 
   useEffect(() => {
-    console.log(servicesArray);
-  }, [servicesArray]);
-
-  useEffect(() => {
-    listServices();
+    const services = servicesList.map(s => {
+      return {...s, resvBool: false};
+    });
+    setProcessedServicesList(services);
   }, [servicesList]);
 
-  const listServices = async () => {
-    try {
-      const services = await getServicesList();
-      setServicesList(services);
-    } catch (error) {
-      console.log(error);
-      ToastAndroid.showWithGravityAndOffset(
-        'Error obteniendo servicios',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-        0,
-        210,
-      );
-    }
-  };
   return (
-        <SafeAreaView style={{...styles.container,backgroundColor: colors.background}}>
-       
-        <FlatList
-          data={servicesList}
-          ListHeaderComponent={<HeaderComponent title="Servicios" />}
-          renderItem={({ item }) => 
-            <Item 
-              id={item.id!.toString()}
-              title={item.title} 
-              image={item.image} 
-              price={item.price} 
-              duration={item.duration}
-              setServices={setServicesArray} />}
-        />
-          <TouchableOpacity style={{...styles.sCar,backgroundColor: sCarColor}} onPress={sCar}>
-            <Text style={styles.buttonText}>Carrito de compra c:</Text>
-          </TouchableOpacity>
+    <SafeAreaView
+      style={{...styles.container, backgroundColor: colors.background}}>
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={10}
+            progressBackgroundColor={dividerColor}
+            colors={[colors.background]}
+          />
+        }
+        data={processedServicesList}
+        ListHeaderComponent={<HeaderComponent title="Servicios" />}
+        ListFooterComponent={<View style={styles.marginB} />}
+        renderItem={({item}) => (
+          <Item
+            selectSer={servicesArray}
+            item={item}
+            setServices={setServicesArray}
+          />
+        )}
+      />
+      <TouchableOpacity
+        style={{...styles.sCar, backgroundColor: sCarColor}}
+        onPress={sCar}>
+        <Text style={styles.buttonText}>Servicios: {servicesArray.length}</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -163,6 +210,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
+
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
     textShadowRadius: 1, // Radio del borde
   },
@@ -183,12 +231,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
+
   modalView: {
     margin: 20,
     backgroundColor: 'rgba(255,255,255,0.985)',
@@ -203,7 +246,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    borderColor: 'rgb(218,165,32)', 
+    borderColor: 'rgb(218,165,32)',
     borderWidth: 2, // Agregado para el borde negro
   },
   buttonClose: {
@@ -247,9 +290,11 @@ const styles = StyleSheet.create({
     height: 35,
     borderRadius: 15,
     borderWidth: 1,
-    marginTop:-50,
-    //backgroundColor: 'rgba(260, 0, 0, 0.8)',
+    marginTop: -50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  marginB: {
+    marginBottom: 70,
   },
 });

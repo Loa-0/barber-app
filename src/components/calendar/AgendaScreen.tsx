@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState, useEffect} from 'react';
 import {
   View,
@@ -122,6 +123,7 @@ export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
           </View>
           {/* HorrList */}
           <HourList
+            datesD={datesD}
             timeEventDuration={servicesFinal.totalDuration}
             selectedGEvents={loadedEvents[dateCurr] ?? []}
             setGSelectedEvents={setGlobalSelection}

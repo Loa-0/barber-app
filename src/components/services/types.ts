@@ -4,4 +4,5 @@ export type serviceInfoType = {
   image: any;
   price: number;
   duration: number;
+  resvBool?: boolean;
 };

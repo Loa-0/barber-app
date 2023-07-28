@@ -5,6 +5,7 @@ import {Calendar, DateData} from 'react-native-calendars';
 import {AgendaContext} from '../../hooks/useCalendar';
 import {ThemeContext} from '../../context/ThemeContext';
 import {AgendaScreen} from './AgendaScreen';
+import {Alert} from 'react-native';
 
 export const ListEvent = () => {
   const {markedDates, today} = useContext(AgendaContext);
@@ -14,6 +15,7 @@ export const ListEvent = () => {
   } = useContext(ThemeContext);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>();
+
   const closeModal = () => {
     setIsVisible(false);
   };
@@ -37,7 +39,19 @@ export const ListEvent = () => {
     setSelected(day.dateString);
     setIsVisible(true);
   };
-
+  const handleMonthChange = (month: DateData) => {
+    const currentDate = new Date().getMonth() + 1;
+    const cuerentY = new Date().getFullYear() + 1;
+    console.log('Mes cambiado:', month);
+    console.log('y', cuerentY);
+    console.log(currentDate);
+    if (
+      month.month - currentDate > 2 ||
+      Number(month.year) > Number(cuerentY)
+    ) {
+      Alert.alert('Solo puedes hacer citas dentro de 30 dias');
+    }
+  };
   return (
     <>
       <View
@@ -62,6 +76,7 @@ export const ListEvent = () => {
           // startDate={nextMonth.dateString}
           style={{borderRadius: 10}}
           onDayPress={handleSelectDate}
+          onMonthChange={handleMonthChange}
           markedDates={markedDates}
           theme={{
             ...themeCalendar,

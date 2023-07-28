@@ -21,18 +21,25 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
 import {createService} from '../../api/http';
+import {Loader} from '../common/Loader';
+import {ServiceListContext} from '../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 export const NewService = ({navigation}: Props) => {
+  const {setNewStatus} = useContext(ServiceListContext);
   const {
     themeState: {colors, primaryButton, highlightColor},
   } = useContext(ThemeContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [serviceTitle, setServiceTitle] = useState<string>('');
   const [servicePrice, setServicePrice] = useState<number>(0);
   const [serviceDuration, setServiceDuration] = useState<number>(0);
-  const [serviceImage, setServiceImage] = useState<any>({
+  const [isNewImage, setIsNewImage] = useState<boolean>(false);
+  const [serviceImageToShow, setServiceImageToShow] = useState<any>({
     uri: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png',
   });
+  const imagePlaceHolder =
+    'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png';
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -41,18 +48,30 @@ export const NewService = ({navigation}: Props) => {
     includeBase64: false,
   };
   const openGallery = async () => {
-    const image = launchImageLibrary(options);
+    const image = await launchImageLibrary(options);
+    if (image && image.assets) {
+      setServiceImageToShow(image.assets[0]);
+      setIsNewImage(true);
+    }
   };
 
   const handleSubmit = async () => {
-    const newService = {
-      title: serviceTitle,
-      image: serviceImage,
-      price: servicePrice,
-      duration: serviceDuration,
-    };
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append('title', serviceTitle);
+    formData.append('image', imagePlaceHolder);
+    formData.append('price', String(servicePrice));
+    formData.append('duration', String(serviceDuration));
+    if (isNewImage) {
+      formData.append('archivo', {
+        name: serviceImageToShow.fileName,
+        type: serviceImageToShow.type,
+        uri: serviceImageToShow.uri,
+        tempFilePath: serviceImageToShow.uri,
+      });
+    }
     try {
-      await createService(newService);
+      await createService(formData);
       ToastAndroid.showWithGravityAndOffset(
         'Servicio creado',
         ToastAndroid.SHORT,
@@ -60,6 +79,8 @@ export const NewService = ({navigation}: Props) => {
         0,
         210,
       );
+      setIsLoading(false);
+      setNewStatus('updating');
       navigation.goBack();
     } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
@@ -69,6 +90,7 @@ export const NewService = ({navigation}: Props) => {
         0,
         210,
       );
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -97,7 +119,7 @@ export const NewService = ({navigation}: Props) => {
         <View style={styles.formImageContainer}>
           <TouchableOpacity onPress={openGallery}>
             <Image
-              source={serviceImage}
+              source={serviceImageToShow}
               style={{
                 ...styles.formImage,
                 borderColor: colors.text,
@@ -180,7 +202,11 @@ export const NewService = ({navigation}: Props) => {
             ...styles.formSubmitBtn,
           }}
           onPress={handleSubmit}>
-          <Text style={{color: colors.text}}>Guardar cambios</Text>
+          {!isLoading ? (
+            <Text style={{color: colors.text}}>Guardar cambios</Text>
+          ) : (
+            <Loader />
+          )}
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
