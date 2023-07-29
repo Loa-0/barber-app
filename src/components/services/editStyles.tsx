@@ -97,6 +97,15 @@ export const styles = StyleSheet.create({
     borderColor: 'rgb(218,165,32)',
     borderWidth: 2, // Agregado para el borde negro
   },
+  modalViewPic: {
+  //margin: 50,
+  //borderRadius: 20,
+  //padding: 35,
+  alignItems: 'center',
+  backgroundColor: 'transparent', // Fondo transparente
+  borderColor: 'transparent', // Borde transparente
+  borderWidth: 1, // Puedes ajustar el ancho del borde si lo deseas
+  },
   buttonClose: {
     backgroundColor: 'rgb(130,130,130)',
     borderColor: 'black',

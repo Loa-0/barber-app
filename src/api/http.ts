@@ -3,7 +3,9 @@ import {AgendaSchedule, EventPayload} from '../interfaces/Appointments';
 import {UserInterface, UserLoginInterface} from '../interfaces/user';
 import {serviceInfoType} from '../components/services/types';
 
-const backendUri = 'https://backend-barber-production.up.railway.app';
+//const backendUri = 'https://backend-barber-production.up.railway.app';
+//const backendUri = 'https://192.168.144.1:8080';
+const backendUri = 'https://c5c3-177-249-160-101.ngrok-free.app'
 
 export const httpApi = axios.create({
   baseURL: `${backendUri}/api`,

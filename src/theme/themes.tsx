@@ -28,6 +28,7 @@ export interface ThemeState extends Theme {
   servWhite: string;
   primaryButton: string;
   sCarColor: string;
+  cButtonPic:string;
 }
 
 export const LightTheme: ThemeState = {
@@ -44,6 +45,7 @@ export const LightTheme: ThemeState = {
   bulletOcupied: globalColors.bulletOcupied,
   servWhite: 'rgba(0,0,0,0.2)',
   sCarColor: 'rgba(218,165,32,0.7)',
+  cButtonPic: 'rgba(0,0,0,1)',
   bulletFree: globalColors.bulletFree,
   dividerColor: 'rgba(0,0,0,0.7)',
   highlightColor: globalColors.golden,
@@ -81,6 +83,7 @@ export const DarkTheme: ThemeState = {
   highlightColor: globalColors.golden,
   servWhite: 'rgba(255,255,255,0.5)',
   sCarColor: 'rgba(218,165,32,0.7)',
+  cButtonPic: 'rgba(255,255,255,1)',
   textShadowColor: globalColors.white,
   bulletOcupied: globalColors.bulletOcupied,
   bulletFree: globalColors.bulletFree,

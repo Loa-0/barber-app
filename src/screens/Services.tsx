@@ -12,10 +12,10 @@ import {
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
 import {InfoModal} from '../components/services/infoModal';
+import {ModalPic} from '../components/services/modalPic';
 import {serviceInfoType} from '../components/services/types';
 import {getServicesList} from '../api/http';
 import {ServiceContext} from '../context/Service.Context';
-import {View} from 'react-native';
 
 type ItemProps = {
   item: serviceInfoType;
@@ -28,6 +28,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
     themeState: {colors, servWhite},
   } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalPic, setModalPic] = useState(false);
   const [wordReserved, setwordReserved] = useState<string>('Reservar');
 
   useEffect(() => {
@@ -38,6 +39,9 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
 
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
+  };
+  const handleImagePic = () => {
+    setModalPic(!modalPic);
   };
 
   const handleReservationPress = (i: serviceInfoType) => {
@@ -66,9 +70,9 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         shadowColor:colors.border,
       }}
       onPress={handleImagePress}>
-      <TouchableOpacity onPress={handleImagePress}>
+      <TouchableOpacity onPress={handleImagePic}> 
         <Image source={item.image} style={styles.image} />
-      </TouchableOpacity>
+      </TouchableOpacity> 
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
         <Text
@@ -99,6 +103,11 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         }}
         wordReserved={wordReserved}
         fromAdmin={false}
+      />
+      <ModalPic
+      imagen={item.image}
+        visible={modalPic}
+        onClose={handleImagePic}
       />
     </TouchableOpacity>
   );
