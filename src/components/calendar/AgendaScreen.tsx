@@ -70,9 +70,7 @@ export const AgendaScreen = ({dateCurr, closeModal}: Props) => {
     updateTotalCost({...servicesFinal, start: startD, end: endD});
     setIsVisibleModal(true);
   };
-  useEffect(() => {
-    console.log(servicesFinal);
-  }, [servicesFinal]);
+  
 
   return (
     <>

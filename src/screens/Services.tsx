@@ -16,7 +16,6 @@ import {InfoModal} from '../components/services/infoModal';
 import {ModalPic} from '../components/services/modalPic';
 import {serviceInfoType} from '../components/services/types';
 import {ServiceContext} from '../context/Service.Context';
-import {View} from 'react-native';
 import {ServiceListContext} from '../context/ServicesListContext';
 const limitHorsSerivce = 2;
 type ItemProps = {
@@ -100,6 +99,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
           {item.title}
         </Text>
         <Text style={styles.price}>${item.price}</Text>
+        <View style={{width: 10}}></View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {

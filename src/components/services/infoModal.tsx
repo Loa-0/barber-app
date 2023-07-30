@@ -23,7 +23,7 @@ export const InfoModal = ({
   fromAdmin,
 }: modalProps) => {
   const {
-    themeState: {colors},
+    themeState: {colors, cButtonPic},
   } = useContext(ThemeContext);
   return (
     <Modal
@@ -34,17 +34,29 @@ export const InfoModal = ({
       onRequestClose={onClose}>
       <View style={styles.centeredView}>
         <View style={{...styles.modalView, backgroundColor: colors.background}}>
+        <TouchableOpacity
+            style={{ 
+              position: 'absolute', 
+              top: 10, 
+              left: 10, 
+              width: 33,
+              height: 33,
+              borderRadius: 50,
+              borderColor: cButtonPic,
+              borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onPress={onClose}>
+            <Text style={{color: cButtonPic,fontWeight: 'bold', textAlign: 'center'}}>X</Text>
+        </TouchableOpacity>
+        <View style={{height: 10}}></View>
           <Text style={{...styles.modalText, color: colors.text}}>
             El tiempo de este servicio es de {duration} hora
           </Text>
           <Text style={{...styles.modalText, color: colors.text}}>
             el precio es de ${price}
           </Text>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonClose]}
-            onPress={onClose}>
-            <Text style={styles.textStyle}>Cerrar</Text>
-          </TouchableOpacity>
           {!fromAdmin && (
             <TouchableOpacity
               style={[styles.button, styles.buttonClose]}
@@ -52,6 +64,7 @@ export const InfoModal = ({
               <Text style={styles.textStyle}>{wordReserved}</Text>
             </TouchableOpacity>
           )}
+          
         </View>
       </View>
     </Modal>

@@ -42,9 +42,6 @@ export const ListEvent = () => {
   const handleMonthChange = (month: DateData) => {
     const currentDate = new Date().getMonth() + 1;
     const cuerentY = new Date().getFullYear() + 1;
-    console.log('Mes cambiado:', month);
-    console.log('y', cuerentY);
-    console.log(currentDate);
     if (
       month.month - currentDate > 2 ||
       Number(month.year) > Number(cuerentY)
