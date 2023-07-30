@@ -52,10 +52,10 @@ export const InfoModal = ({
         </TouchableOpacity>
         <View style={{height: 10}}></View>
           <Text style={{...styles.modalText, color: colors.text}}>
-            El tiempo de este servicio es de {duration} hora
+            El tiempo de este servicio es de {duration} hora(s)
           </Text>
           <Text style={{...styles.modalText, color: colors.text}}>
-            el precio es de ${price}
+            El precio es de ${price}
           </Text>
           {!fromAdmin && (
             <TouchableOpacity

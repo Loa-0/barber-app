@@ -5,6 +5,10 @@ import {
   CalendarCountType,
   SelectedHour,
 } from '../interfaces/Appointments';
+
+// type MarkedDates = {
+//   [key: string]: MarkingProps;
+// }
 import {DateData, MarkedDates} from 'react-native-calendars';
 import {globalColors} from '../theme/AppStyles';
 import {getCalendar} from '../api/http';
@@ -16,6 +20,7 @@ type AgendaContextProps = {
   loadAgenda: (date: DateData, reload?: boolean) => Promise<void>;
   today: DateData;
   loadedEvents: SelectedEvent;
+  internetConnected: boolean;
 };
 
 interface SelectedEvent {
@@ -36,6 +41,7 @@ export const AgendaProvider = ({children}: any) => {
   };
 
   const [loadedEvents, setLoadedEvents] = useState<SelectedEvent>({});
+  const [internetConnected, setInternetConnected] = useState<boolean>(true);
   const [agenda, setAgenda] = useState<AgendaSchedule>({});
   const [dayCounter, setDayCounter] = useState<CalendarCountType>({});
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
@@ -58,6 +64,7 @@ export const AgendaProvider = ({children}: any) => {
   useEffect(() => {
     handleCount();
   }, [dayCounter]);
+
   useEffect(() => {
     loadAgenda(today);
   }, []);
@@ -65,13 +72,18 @@ export const AgendaProvider = ({children}: any) => {
   const loadAgenda = async (d: DateData, reload = false) => {
     if (d.dateString in agenda && !reload) {
       console.log('Not Reload');
+      setInternetConnected(true);
       return;
     }
-    console.log('Reloaded Calendar');
     try {
+      console.log('Reloaded Calendar');
       const agendaResponse = await getCalendar();
+      console.log(agendaResponse);
       setAgenda({...agendaResponse});
+      setInternetConnected(true);
     } catch (error) {
+      console.log(error);
+      setInternetConnected(false);
       console.log(error);
     }
   };
@@ -111,7 +123,9 @@ export const AgendaProvider = ({children}: any) => {
       setLoadedEvents(raw);
     }
   };
-
+  useEffect(() => {
+    loadAgenda(today);
+  }, [internetConnected]);
   const handleCount = () => {
     const updatedDate: MarkedDates = {};
     for (const date in dayCounter) {
@@ -148,6 +162,7 @@ export const AgendaProvider = ({children}: any) => {
         loadAgenda,
         loadedEvents,
         today,
+        internetConnected,
       }}>
       {children}
     </AgendaContext.Provider>
