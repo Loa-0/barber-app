@@ -99,6 +99,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
           {item.title}
         </Text>
         <Text style={styles.price}>${item.price}</Text>
+        <View style={{width: 10}}></View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {

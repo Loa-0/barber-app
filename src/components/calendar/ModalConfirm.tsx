@@ -60,7 +60,7 @@ export const ModalConfirm = ({
       try {
         insertEvent(payload);
         ToastAndroid.showWithGravityAndOffset(
-          'Registro Exitoso',
+          'Cita agendada, revisa tu calendario de Google',
           ToastAndroid.LONG,
           ToastAndroid.CENTER,
           25,
