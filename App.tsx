@@ -13,8 +13,9 @@ import {ServiceListProvider} from './src/context/ServicesListContext';
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
-  });
+  }, []);
   const {themeState} = useContext(ThemeContext);
+
   return (
     <PaperProvider>
       <AppState>
@@ -28,15 +29,17 @@ const App = () => {
 
 export default App;
 
-const AppState = ({children}: any) => {
+const AppState = ({
+  children,
+}: {children: JSX.Element[]} | {children: JSX.Element}) => {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <ServiceProvider>
-          <ServiceListProvider>
-            <AgendaProvider>{children}</AgendaProvider>
-          </ServiceListProvider>
-        </ServiceProvider>
+        <AgendaProvider>
+          <ServiceProvider>
+            <ServiceListProvider>{children}</ServiceListProvider>
+          </ServiceProvider>
+        </AgendaProvider>
       </ThemeProvider>
     </AuthProvider>
   );

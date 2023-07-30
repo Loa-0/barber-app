@@ -51,7 +51,7 @@ export const ModalConfirm = ({
 
       const servString = serv.join(', ');
       const payload: EventPayload = {
-        summary: name,
+        summary: `Ulises Barber Cita: ${name}`,
         description: `Costo Total: ${servicesFinal.totalCost}\nServicos: ${servString}`,
         start: servicesFinal.start,
         end: servicesFinal.end,
