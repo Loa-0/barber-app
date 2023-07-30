@@ -4,6 +4,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  View,
   Image,
   TouchableOpacity,
   RefreshControl,
@@ -12,6 +13,7 @@ import {
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
 import {InfoModal} from '../components/services/infoModal';
+import {ModalPic} from '../components/services/modalPic';
 import {serviceInfoType} from '../components/services/types';
 import {ServiceContext} from '../context/Service.Context';
 import {View} from 'react-native';
@@ -28,6 +30,7 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
     themeState: {colors, servWhite},
   } = useContext(ThemeContext);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalPic, setModalPic] = useState(false);
   const [wordReserved, setwordReserved] = useState<string>('Reservar');
 
   useEffect(() => {
@@ -43,6 +46,10 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
     (sum, service) => sum + service.duration,
     0,
   );
+  const handleImagePic = () => {
+    setModalPic(!modalPic);
+  };
+
   const handleReservationPress = (i: serviceInfoType) => {
     const newA = selectSer.filter(ev => ev.id === i.id);
     if (newA.length > 0) {
@@ -76,11 +83,12 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         ...styles.item,
         backgroundColor: servWhite,
         borderColor: colors.border,
+        shadowColor:colors.border,
       }}
       onPress={handleImagePress}>
-      <TouchableOpacity onPress={handleImagePress}>
+      <TouchableOpacity onPress={handleImagePic}> 
         <Image source={item.image} style={styles.image} />
-      </TouchableOpacity>
+      </TouchableOpacity> 
 
       <TouchableOpacity style={styles.content} onPress={handleImagePress}>
         <Text
@@ -111,6 +119,11 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
         }}
         wordReserved={wordReserved}
         fromAdmin={false}
+      />
+      <ModalPic
+      imagen={item.image}
+        visible={modalPic}
+        onClose={handleImagePic}
       />
     </TouchableOpacity>
   );
@@ -200,6 +213,8 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Para centrar verticalmente la imagen y el texto
     borderRadius: 10, // Radio de las esquinas redondeadas
     borderWidth: 1, // Ancho del borde
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
   },
   content: {
     flex: 1,

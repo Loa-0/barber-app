@@ -27,7 +27,7 @@ export const InfoModal = ({
   } = useContext(ThemeContext);
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       statusBarTranslucent={true}
       transparent={true}
       visible={visible}
