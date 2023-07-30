@@ -10,15 +10,21 @@ import {
 import {ThemeContext} from '../../context/ThemeContext';
 import {globalColors} from '../../theme/AppStyles';
 import {SelectedHour} from '../../interfaces/Appointments';
+import {CustomOverlay} from './CustomOverlay';
 
 type Props = {
   timeEventDuration: number;
   selectedGEvents: SelectedHour[];
   setGSelectedEvents: any;
+  datesD: {
+    startDate: string;
+    endDate: string;
+  };
 };
 export const HourList = ({
   timeEventDuration,
   setGSelectedEvents,
+  datesD,
   selectedGEvents,
 }: Props) => {
   const {
@@ -89,7 +95,16 @@ export const HourList = ({
         ? styles.initSelectedEv
         : null,
     ];
+    let showCustomOverlay = false;
 
+    if (isSelected && selectedEventIndex.length > 0) {
+      if (selectedEventIndex.length <= 2) {
+        showCustomOverlay = selectedEventIndex[0] === item.index; // Mostrar para el primer evento seleccionado
+      } else {
+        const middleIndex = Math.floor(selectedEventIndex.length / 2);
+        showCustomOverlay = selectedEventIndex[middleIndex] === item.index; // Mostrar para el evento de enmedio (redondear hacia abajo)
+      }
+    }
     return (
       <TouchableOpacity onPress={handlePress}>
         <View style={styles.row}>
@@ -98,12 +113,15 @@ export const HourList = ({
           </View>
           <View style={[styles.generalEvent, ...hourItemStyle]}>
             <Text style={{color: colors.text}}>
-              {isSelected
-                ? 'Reservar'
-                : item.toDisplay
-                ? 'Ocupado'
-                : 'Disponible'}
+              {isSelected ? '' : item.toDisplay ? 'Ocupado' : 'Disponible'}
             </Text>
+            {isSelected && (
+              <CustomOverlay
+                datesD={datesD}
+                time={timeEventDuration}
+                show={showCustomOverlay}
+              />
+            )}
           </View>
         </View>
       </TouchableOpacity>

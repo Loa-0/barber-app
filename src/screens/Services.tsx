@@ -7,6 +7,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  RefreshControl,
   ToastAndroid,
 } from 'react-native';
 import {HeaderComponent} from '../components/HeaderComponent';
@@ -14,9 +15,10 @@ import {ThemeContext} from '../context/ThemeContext';
 import {InfoModal} from '../components/services/infoModal';
 import {ModalPic} from '../components/services/modalPic';
 import {serviceInfoType} from '../components/services/types';
-import {getServicesList} from '../api/http';
 import {ServiceContext} from '../context/Service.Context';
-
+import {View} from 'react-native';
+import {ServiceListContext} from '../context/ServicesListContext';
+const limitHorsSerivce = 2;
 type ItemProps = {
   item: serviceInfoType;
   setServices: any;
@@ -40,6 +42,10 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
   const handleImagePress = () => {
     setModalVisible(!modalVisible);
   };
+  const currentSum = selectSer.reduce(
+    (sum, service) => sum + service.duration,
+    0,
+  );
   const handleImagePic = () => {
     setModalPic(!modalPic);
   };
@@ -51,11 +57,21 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
       setwordReserved('Reservar');
       setServices(newD);
     } else {
-      setwordReserved('Quitar');
-      setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+      const newSum = currentSum + i.duration;
+      if (newSum <= limitHorsSerivce) {
+        setwordReserved('Quitar');
+        setServices((prev: any) => [...prev, {...i, resvBool: true}]);
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          'Maximo 2 horas por cita',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+      }
     }
   };
-
   const addToCar = (i: serviceInfoType) => {
     setModalVisible(!modalVisible);
     handleReservationPress(i);
@@ -115,12 +131,23 @@ const Item = ({item, setServices, selectSer}: ItemProps) => {
 
 export const ServicesScreen = ({navigation}: any) => {
   const {
-    themeState: {colors, sCarColor},
+    themeState: {colors, sCarColor, dividerColor},
   } = useContext(ThemeContext);
   const {updateTotalCost} = useContext(ServiceContext);
+  const {servicesList, setNewStatus} = useContext(ServiceListContext);
+  const [refreshing, setrefreshing] = useState<boolean>(false);
+  const onRefresh = () => {
+    setrefreshing(true);
+    setTimeout(async () => {
+      await setNewStatus('updating');
+      setrefreshing(false);
+    }, 1000);
+  };
 
+  const [processedServicesList, setProcessedServicesList] = useState<
+    serviceInfoType[]
+  >(servicesList ?? []);
   const [servicesArray, setServicesArray] = useState<serviceInfoType[]>([]);
-  const [servicesList, setServicesList] = useState<serviceInfoType[]>([]);
 
   const sCar = () => {
     if (servicesArray.length > 0) {
@@ -133,36 +160,26 @@ export const ServicesScreen = ({navigation}: any) => {
   };
 
   useEffect(() => {
-    console.log('Serv Arr', servicesArray);
-  }, [servicesArray]);
+    const services = servicesList.map(s => {
+      return {...s, resvBool: false};
+    });
+    setProcessedServicesList(services);
+  }, [servicesList]);
 
-  useEffect(() => {
-    listServices();
-  }, []);
-
-  const listServices = async () => {
-    try {
-      const services = await getServicesList();
-      services.map(s => {
-        return {...s, resvBool: false};
-      });
-      setServicesList(services);
-    } catch (error) {
-      console.log(error);
-      ToastAndroid.showWithGravityAndOffset(
-        'Error obteniendo servicios',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-        0,
-        210,
-      );
-    }
-  };
   return (
     <SafeAreaView
       style={{...styles.container, backgroundColor: colors.background}}>
       <FlatList
-        data={servicesList}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={10}
+            progressBackgroundColor={dividerColor}
+            colors={[colors.background]}
+          />
+        }
+        data={processedServicesList}
         ListHeaderComponent={<HeaderComponent title="Servicios" />}
         ListFooterComponent={<View style={styles.marginB} />}
         renderItem={({item}) => (

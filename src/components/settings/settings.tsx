@@ -1,27 +1,29 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {AuthContext} from '../../context/AuthContext';
 import {
   Text,
   View,
   SafeAreaView,
   TouchableOpacity,
-  BackHandler,
-  ToastAndroid,
+  ScrollView,
 } from 'react-native';
+
+import {ThemeContext} from '../../context/ThemeContext';
+
 import {styles as S} from './settingsStyles';
-import {ScrollView} from 'react-native-gesture-handler';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {globalColors} from '../../theme/AppStyles';
-import {ThemeContext} from '../../context/ThemeContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const SettingsDisplay = () => {
+type Props = {mainNav: any};
+
+export const SettingsDisplay = ({mainNav}: Props) => {
   const {
     setDark,
     setLight,
     themeState: {colors, highlightColor, currentTheme, primaryButton},
   } = useContext(ThemeContext);
+  const {authState, signOut} = useContext(AuthContext);
   const [theme, setTheme] = useState(currentTheme);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const handleThemeChange = (selectedTheme: 'light' | 'dark') => {
     setTheme(selectedTheme);
@@ -33,31 +35,8 @@ export const SettingsDisplay = () => {
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem('user');
-    ToastAndroid.showWithGravityAndOffset(
-      'Cerrando app',
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-      0,
-      210,
-    );
-    setTimeout(() => {
-      BackHandler.exitApp();
-    }, 1000);
-  };
-
-  useEffect(() => {
-    getAdmin();
-  }, []);
-
-  const getAdmin = async () => {
-    const loggedUser = await AsyncStorage.getItem('user');
-    if (!loggedUser) {
-      setIsAdmin(false);
-      return false;
-    }
-    setIsAdmin(true);
-    return true;
+    signOut();
+    mainNav.navigate('Home');
   };
 
   useEffect(() => {
@@ -117,7 +96,7 @@ export const SettingsDisplay = () => {
               Modo oscuro
             </Text>
           </TouchableOpacity>
-          {isAdmin && (
+          {authState.isLoggedIn && (
             <TouchableOpacity
               style={{
                 backgroundColor: highlightColor,
