@@ -59,7 +59,6 @@ export const EditService = ({route, navigation}: Props) => {
     formData.append('price', String(servicePrice));
     formData.append('duration', String(serviceDuration));
     if (isNewImage) {
-      console.log('entra');
       formData.append('archivo', {
         name: serviceImageToShow.fileName,
         type: serviceImageToShow.type,
