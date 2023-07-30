@@ -37,6 +37,8 @@ export const EditService = ({route, navigation}: Props) => {
   const [serviceDuration, setServiceDuration] = useState<number>(duration);
   const [serviceImageToShow, setServiceImageToShow] = useState<any>(image);
   const [isNewImage, setIsNewImage] = useState<boolean>(false);
+  const [showPriceErr, setShowPriceErr] = useState(false);
+  const [showDurationErr, setShowDurationErr] = useState(false);
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -51,7 +53,49 @@ export const EditService = ({route, navigation}: Props) => {
       setIsNewImage(true);
     }
   };
+  const handlePriceInput = (input: number | string) => {
+    if (!input || input === undefined) {
+      setServicePrice(0);
+      setShowPriceErr(true);
+      return;
+    }
+    if (typeof input === 'number') {
+      setServicePrice(input);
+      setShowPriceErr(false);
+      return;
+    }
+    setServicePrice(0);
+    setShowPriceErr(true);
+  };
+  const handleDurationInput = (input: number | string) => {
+    if (typeof input === 'string') {
+      const parsedInput = parseFloat(input);
+      if (isNaN(parsedInput)) {
+        setServiceDuration(0);
+        setShowDurationErr(true);
+        return;
+      }
+      input = parsedInput;
+    }
+    if (input % 1 !== 0 && input % 1 !== 0.5) {
+      setServiceDuration(0);
+      setShowDurationErr(true);
+      return;
+    }
+    setServiceDuration(input);
+    setShowDurationErr(false);
+  };
   const handleSubmit = async () => {
+    if (showDurationErr || showPriceErr) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Error: Revise los campos numéricos',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
     setIsLoading(true);
     const formData = new FormData();
     formData.append('title', serviceTitle);
@@ -100,11 +144,13 @@ export const EditService = ({route, navigation}: Props) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.goBackArrowPos}>
-            <FontAwesome5
-              name="chevron-left"
-              size={globalColors.iconSize}
-              color={colors.text}
-            />
+            <View style={styles.goBackWrapper}>
+              <FontAwesome5
+                name="chevron-left"
+                size={globalColors.iconSize}
+                color={colors.text}
+              />
+            </View>
           </TouchableOpacity>
 
           <Text style={{...styles.formTitleText, color: colors.text}}>
@@ -158,10 +204,10 @@ export const EditService = ({route, navigation}: Props) => {
                   borderColor: colors.border,
                 }}>
                 <NumericInput
-                  value={servicePrice}
-                  onChange={value => {
-                    setServicePrice(value);
-                  }}
+                  value={servicePrice ?? 0}
+                  onChange={handlePriceInput}
+                  validateOnBlur
+                  editable={!showDurationErr}
                   step={0.01}
                   valueType="real"
                   textColor={colors.text}
@@ -169,6 +215,9 @@ export const EditService = ({route, navigation}: Props) => {
                   iconStyle={{color: 'black'}}
                 />
               </View>
+              {showPriceErr && (
+                <Text style={styles.error}>Número inválido</Text>
+              )}
             </View>
 
             <View style={styles.formInputContainer}>
@@ -179,16 +228,21 @@ export const EditService = ({route, navigation}: Props) => {
                 }}>
                 <NumericInput
                   value={serviceDuration}
-                  onChange={value => {
-                    setServiceDuration(value);
-                  }}
+                  onChange={handleDurationInput}
+                  editable={!showPriceErr}
                   step={0.5}
                   valueType="real"
                   textColor={colors.text}
+                  validateOnBlur
                   minValue={0.5}
                   iconStyle={{color: 'black'}}
                 />
               </View>
+              {showDurationErr && (
+                <Text style={styles.error}>
+                  Solo se aceptan números enteros y con decimal .5
+                </Text>
+              )}
             </View>
           </View>
 
