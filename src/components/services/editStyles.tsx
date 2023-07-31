@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {globalColors} from '../../theme/AppStyles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -97,6 +98,15 @@ export const styles = StyleSheet.create({
     borderColor: 'rgb(218,165,32)',
     borderWidth: 2, // Agregado para el borde negro
   },
+  modalViewPic: {
+    //margin: 50,
+    //borderRadius: 20,
+    //padding: 35,
+    alignItems: 'center',
+    backgroundColor: 'transparent', // Fondo transparente
+    borderColor: 'transparent', // Borde transparente
+    borderWidth: 1, // Puedes ajustar el ancho del borde si lo deseas
+  },
   buttonClose: {
     backgroundColor: 'rgb(130,130,130)',
     borderColor: 'black',
@@ -143,6 +153,9 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
   },
+  goBackWrapper: {
+    padding: 10, // Ajusta el padding según tu preferencia para aumentar el área tocable
+  },
   formImageContainer: {
     alignItems: 'center',
     marginVertical: 22,
@@ -188,5 +201,9 @@ export const styles = StyleSheet.create({
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  error: {
+    fontSize: 13,
+    color: globalColors.disabledRed,
   },
 });

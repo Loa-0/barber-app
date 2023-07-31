@@ -23,7 +23,7 @@ export const Appointments = () => {
         true,
       );
       setrefreshing(false);
-    }, 1000);
+    }, 600);
   };
   return (
     <ScrollView
