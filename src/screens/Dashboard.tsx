@@ -1,32 +1,14 @@
-import {StackScreenProps} from '@react-navigation/stack';
-import React, {useContext} from 'react';
-import {
-  StyleSheet,
-  ImageBackground,
-  ScrollView,
-  Linking,
-  View,
-} from 'react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {globalColors} from '../theme/AppStyles';
-import {styles as S} from '../theme/AppStyles';
-import {ThemeContext} from '../context/ThemeContext';
-<<<<<<< HEAD
-import {Text} from 'react-native-paper';
-const backgroundImage = require('../assets/fondo.jpg');
+import React, { useContext } from 'react';
+import {StyleSheet, ScrollView, Linking} from 'react-native';
+import { styles as S } from '../theme/AppStyles';
+import { ThemeContext } from '../context/ThemeContext';
+import { DisplayInfoDashboard } from '../components/dashboard/DisplayInfoDashboard';
+import { SocialMedia } from '../components/dashboard/SocialMedia';
+import { MapsImage } from '../components/dashboard/MapsImage';
 
-interface Props extends StackScreenProps<any, any> {}
-
-export const Dashboard = ({}: Props) => {
-=======
-import {DisplayInfoDashboard} from '../components/dashboard/DisplayInfoDashboard';
-import {SocialMedia} from '../components/dashboard/SocialMedia';
-import {MapsImage} from '../components/dashboard/MapsImage';
-
-export const Dashboard = ({navigation}: any) => {
->>>>>>> main
+export const Dashboard = ({ navigation }: any) => {
   const {
-    themeState: {colors},
+    themeState: { colors },
   } = useContext(ThemeContext);
   const handleWebsitePress = () => {
     Linking.openURL('https://ulisesbarber.negocio.site');
@@ -48,75 +30,9 @@ export const Dashboard = ({navigation}: any) => {
         ...S.globalContainer,
         backgroundColor: colors.background,
       }}>
-<<<<<<< HEAD
-      <HeaderComponent title="Inicio" />
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            <FontAwesome5
-              name="cut"
-              color={'#333333'}
-              size={globalColors.iconSize}
-            />
-            Ulises Barber
-            <FontAwesome5
-              name="cut"
-              color={'#333333'}
-              size={globalColors.iconSize}
-            />
-          </Text>
-          <Text style={styles.text}>
-            Encuéntranos en nuestras redes sociales
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome5
-              onPress={handleFacebookPress}
-              accessibilityRole="link"
-              href="https://es-la.facebook.com/UBPeluqueriaYBarberia/"
-              name="facebook"
-              color={'#0000FF'}
-              size={globalColors.iconSize}
-            />
-            Ulises Barber Peluqueria & Barberia
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome5
-              onPress={handleInstagramPress}
-              accessibilityRole="link"
-              href="https://www.instagram.com/ulisesvelru/?igshid=MzRlODBiNWFlZA%3D%3D"
-              name="instagram"
-              color={'#333333'}
-              size={globalColors.iconSize}
-            />
-            ulisesvelru
-          </Text>
-          <Text style={styles.text}>
-            <FontAwesome5
-              name="phone-volume"
-              color={'#1C754C'}
-              size={globalColors.iconSize}
-            />
-            Citas al: 4492091414
-          </Text>
-          <Text
-            style={styles.text}
-            onPress={handleWebsitePress}
-            accessibilityRole="link"
-            href="https://ulisesbarber.negocio.site">
-            <FontAwesome5
-              name="internet-explorer"
-              color={'#ADD8E6'}
-              size={globalColors.iconSize}
-            />
-            ulisesbarber.negocio.site
-          </Text>
-        </View>
-      </ImageBackground>
-=======
       <DisplayInfoDashboard navigation={navigation} />
       <SocialMedia />
       <MapsImage />
->>>>>>> main
     </ScrollView>
   );
 };
