@@ -78,11 +78,9 @@ export const AgendaProvider = ({children}: any) => {
     try {
       console.log('Reloaded Calendar');
       const agendaResponse = await getCalendar();
-      console.log(agendaResponse);
       setAgenda({...agendaResponse});
       setInternetConnected(true);
     } catch (error) {
-      console.log(error);
       setInternetConnected(false);
       console.log(error);
     }
