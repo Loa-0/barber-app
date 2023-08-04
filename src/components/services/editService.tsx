@@ -235,6 +235,7 @@ export const EditService = ({route, navigation}: Props) => {
                   textColor={colors.text}
                   validateOnBlur
                   minValue={0.5}
+                  maxValue={2.5}
                   iconStyle={{color: 'black'}}
                 />
               </View>
