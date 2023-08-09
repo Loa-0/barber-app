@@ -85,7 +85,31 @@ export const EditService = ({route, navigation}: Props) => {
     setServiceDuration(input);
     setShowDurationErr(false);
   };
+  const validateSubmit = () => {
+    if (!serviceDuration || serviceDuration > 2) {
+      setShowDurationErr(true);
+      return false;
+    }
+    if (!servicePrice) {
+      setShowPriceErr(true);
+      return false;
+    }
+    if (!serviceTitle) {
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async () => {
+    if (!validateSubmit()) {
+      ToastAndroid.showWithGravityAndOffset(
+        'Error: Revise los campos',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+        0,
+        210,
+      );
+      return;
+    }
     if (showDurationErr || showPriceErr) {
       ToastAndroid.showWithGravityAndOffset(
         'Error: Revise los campos numéricos',
@@ -235,13 +259,19 @@ export const EditService = ({route, navigation}: Props) => {
                   textColor={colors.text}
                   validateOnBlur
                   minValue={0.5}
+                  maxValue={2}
                   iconStyle={{color: 'black'}}
                 />
               </View>
               {showDurationErr && (
-                <Text style={styles.error}>
-                  Solo se aceptan números enteros y con decimal .5
-                </Text>
+                <>
+                  <Text style={styles.error}>
+                    Solo se aceptan números enteros y con decimal .5
+                  </Text>
+                  <Text style={styles.error}>
+                    El servicio no puede durar más de 2 horas
+                  </Text>
+                </>
               )}
             </View>
           </View>
