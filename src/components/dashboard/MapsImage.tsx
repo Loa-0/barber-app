@@ -33,7 +33,6 @@ export const MapsImage = () => {
           style={{...styles.imageS, borderColor: highlightColor}}
         />
       </TouchableOpacity>
-      <View style={styles.end} />
     </View>
   );
 };
@@ -56,8 +55,5 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 20,
     borderWidth: 1,
-  },
-  end: {
-    marginBottom: 50,
   },
 });

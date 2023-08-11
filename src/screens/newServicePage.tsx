@@ -5,7 +5,7 @@ import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../navigator/stacknavigator/StackNavigatorAdmin';
-import {NewService} from '../components/services/newService';
+import {NewService} from '../components/services/admin/newService';
 
 interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 

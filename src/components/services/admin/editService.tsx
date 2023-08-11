@@ -14,15 +14,15 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import {useContext, useState} from 'react';
-import {ThemeContext} from '../../context/ThemeContext';
+import {ThemeContext} from '../../../context/ThemeContext';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmin';
+import {RootStackParams} from '../../../navigator/stacknavigator/StackNavigatorAdmin';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {globalColors} from '../../theme/AppStyles';
+import {globalColors} from '../../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
-import {updateService} from '../../api/http';
-import {Loader} from '../common/Loader';
-import {ServiceListContext} from '../../context/ServicesListContext';
+import {updateService} from '../../../api/http';
+import {Loader} from '../../common/Loader';
+import {ServiceListContext} from '../../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'editService'> {}
 export const EditService = ({route, navigation}: Props) => {

@@ -8,9 +8,13 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import {AuthContext} from '../../context/AuthContext';
 import {ThemeContext} from '../../context/ThemeContext';
+import {ToastAndroid} from 'react-native';
 
 GoogleSignin.configure({
   scopes: ['email'],
@@ -49,8 +53,25 @@ export const GoogleAuth = () => {
           isClientLogged: true,
         });
       }
-    } catch (error) {
-      console.error('Error al iniciar sesión con Google:', error);
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Inicio de sesión con Google cancelado.',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+      } else {
+        console.error('Error al iniciar sesión con Google:', error);
+        ToastAndroid.showWithGravityAndOffset(
+          `Error al iniciar sesión con Google: ${error}`,
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+          0,
+          210,
+        );
+      }
     } finally {
       setIsSigningIn(false);
     }

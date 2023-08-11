@@ -75,9 +75,10 @@ export const styles = StyleSheet.create({
     padding: 10,
   },
   formTitleText: {
-    fontSize: 22,
+    fontSize: 20,
     textShadowOffset: {width: 1, height: 1}, // Desplazamiento del borde
-    textShadowRadius: 1,
+    textShadowRadius: 2,
+    flexWrap: 'wrap',
   },
   formImageContainer: {
     alignItems: 'center',

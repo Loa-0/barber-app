@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {ScrollView} from 'react-native';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
-import {EditService} from '../components/services/editService';
+import {EditService} from '../components/services/admin/editService';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../navigator/stacknavigator/StackNavigatorAdmin';
 import {ThemeContext} from '../context/ThemeContext';

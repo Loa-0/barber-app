@@ -14,15 +14,15 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 import {useContext, useState} from 'react';
-import {ThemeContext} from '../../context/ThemeContext';
+import {ThemeContext} from '../../../context/ThemeContext';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../navigator/stacknavigator/StackNavigatorAdmin';
+import {RootStackParams} from '../../../navigator/stacknavigator/StackNavigatorAdmin';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {globalColors} from '../../theme/AppStyles';
+import {globalColors} from '../../../theme/AppStyles';
 import NumericInput from 'react-native-numeric-input';
-import {createService} from '../../api/http';
-import {Loader} from '../common/Loader';
-import {ServiceListContext} from '../../context/ServicesListContext';
+import {createService} from '../../../api/http';
+import {Loader} from '../../common/Loader';
+import {ServiceListContext} from '../../../context/ServicesListContext';
 
 interface Props extends StackScreenProps<RootStackParams, 'newService'> {}
 export const NewService = ({navigation}: Props) => {
@@ -37,11 +37,9 @@ export const NewService = ({navigation}: Props) => {
   const [isNewImage, setIsNewImage] = useState<boolean>(false);
   const [showPriceErr, setShowPriceErr] = useState(false);
   const [showDurationErr, setShowDurationErr] = useState(false);
-  const [serviceImageToShow, setServiceImageToShow] = useState<any>({
-    uri: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png',
-  });
-  const imagePlaceHolder =
-    'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png';
+  const uri = require('../../../assets/placeholder-newservice.png');
+  const [serviceImageToShow, setServiceImageToShow] = useState<any>(uri);
+
   const options: ImageLibraryOptions = {
     maxHeight: 200,
     maxWidth: 200,
@@ -126,7 +124,7 @@ export const NewService = ({navigation}: Props) => {
     setIsLoading(true);
     const formData = new FormData();
     formData.append('title', serviceTitle);
-    formData.append('image', imagePlaceHolder);
+    formData.append('image', uri);
     formData.append('price', String(servicePrice));
     formData.append('duration', String(serviceDuration));
     if (isNewImage) {

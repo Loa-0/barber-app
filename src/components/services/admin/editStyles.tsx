@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {globalColors} from '../../theme/AppStyles';
+import {globalColors} from '../../../theme/AppStyles';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
@@ -99,9 +99,7 @@ export const styles = StyleSheet.create({
     borderWidth: 2, // Agregado para el borde negro
   },
   modalViewPic: {
-    //margin: 50,
-    //borderRadius: 20,
-    //padding: 35,
+    borderRadius: 20,
     alignItems: 'center',
     backgroundColor: 'transparent', // Fondo transparente
     borderColor: 'transparent', // Borde transparente
