@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
 import {
   View,
@@ -9,15 +10,17 @@ import {
   Alert,
   RefreshControl,
 } from 'react-native';
-import {ThemeContext} from '../../context/ThemeContext';
-import {styles as S, globalColors} from '../../theme/AppStyles';
+import {ThemeContext} from '../../../context/ThemeContext';
+import {styles as SP} from '../client/ServiceItem.style';
+import {styles as S, globalColors} from '../../../theme/AppStyles';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {styles} from './editStyles';
-import {InfoModal} from './infoModal';
 import {StackScreenProps} from '@react-navigation/stack';
-import {serviceInfoType} from './types';
-import {deleteService} from '../../api/http';
-import {ServiceListContext} from '../../context/ServicesListContext';
+import {serviceInfoType} from '../types';
+import {deleteService} from '../../../api/http';
+import {ServiceListContext} from '../../../context/ServicesListContext';
+import {Divider} from '../../Divider';
+import {mostrarHora} from '../../../helpers/Date';
 
 type ItemProps = {
   service: serviceInfoType;
@@ -27,13 +30,8 @@ type ItemProps = {
 const Item = ({service, onClickEdit}: ItemProps) => {
   const {setNewStatus} = useContext(ServiceListContext);
   const {
-    themeState: {colors, transparentBackground, secondaryButton},
+    themeState: {colors, secondaryButton, servWhite},
   } = useContext(ThemeContext);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleImagePress = () => {
-    setModalVisible(!modalVisible);
-  };
 
   const onDelete = async (id: number | string) => {
     try {
@@ -72,65 +70,78 @@ const Item = ({service, onClickEdit}: ItemProps) => {
   };
 
   return (
-    <TouchableOpacity
-      style={{...styles.item, backgroundColor: transparentBackground}}
-      onPress={handleImagePress}>
-      <TouchableOpacity onPress={handleImagePress}>
-        <Image source={service.image} style={styles.image} />
-      </TouchableOpacity>
+    <>
+      <View
+        style={{
+          ...SP.itemMainBox,
+          backgroundColor: servWhite,
+          borderColor: colors.border,
+          shadowColor: colors.border,
+        }}>
+        <TouchableOpacity style={SP.contentBox}>
+          <View>
+            <Image source={service.image} style={SP.leftImage} />
+          </View>
+          <View style={{flex: 1, justifyContent: 'flex-start'}}>
+            <View style={SP.box1}>
+              <Text
+                style={{
+                  ...SP.Servicetitle,
+                  color: colors.text,
 
-      <TouchableOpacity style={styles.content} onPress={handleImagePress}>
-        <Text
-          style={{
-            ...styles.title,
-            color: colors.text,
-            textShadowColor: colors.background,
-          }}>
-          {service.title}
-        </Text>
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            backgroundColor: secondaryButton,
-            borderColor: colors.border,
-          }}
-          onPress={() => {
-            showConfirmDialog(service.id!);
-          }}>
-          <Text style={{...styles.buttonText}}>
-            <FontAwesome5
-              name="trash"
-              color={globalColors.disabledRed}
-              size={globalColors.iconSize}
-            />
-          </Text>
+                  textShadowColor: colors.background,
+                }}>
+                {service.title}
+              </Text>
+              <Divider heig={2} />
+            </View>
+            <View style={SP.box2}>
+              <Text style={SP.priceTxt}>Precio: ${service.price}</Text>
+              <View style={{width: 10}} />
+              <Text style={SP.priceTxt}>
+                Tiempo: {mostrarHora(service.duration)}
+              </Text>
+            </View>
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            ...styles.button,
-            backgroundColor: secondaryButton,
-            borderColor: colors.border,
-          }}
-          onPress={() => {
-            onClickEdit(service);
-          }}>
-          <Text style={{...styles.buttonText}}>
-            <FontAwesome5
-              name="edit"
-              color={'black'}
-              size={globalColors.iconSize}
-            />
-          </Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
-      <InfoModal
-        price={service.price}
-        duration={service.duration}
-        visible={modalVisible}
-        onClose={handleImagePress}
-        fromAdmin={true}
-      />
-    </TouchableOpacity>
+        <View style={styles.content}>
+          <TouchableOpacity
+            style={{
+              ...styles.button,
+              backgroundColor: secondaryButton,
+              borderColor: colors.border,
+            }}
+            onPress={() => {
+              showConfirmDialog(service.id!);
+            }}>
+            <Text style={{...styles.buttonText}}>
+              <FontAwesome5
+                name="trash"
+                color={globalColors.disabledRed}
+                size={globalColors.iconSize}
+              />
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              ...styles.button,
+              backgroundColor: secondaryButton,
+              borderColor: colors.border,
+            }}
+            onPress={() => {
+              onClickEdit(service);
+            }}>
+            <Text style={{...styles.buttonText}}>
+              <FontAwesome5
+                name="edit"
+                color={'black'}
+                size={globalColors.iconSize}
+              />
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
   );
 };
 interface Props extends StackScreenProps<any, any> {}

@@ -28,7 +28,7 @@ export interface ThemeState extends Theme {
   servWhite: string;
   primaryButton: string;
   sCarColor: string;
-  cButtonPic:string;
+  cButtonPic: string;
 }
 
 export const LightTheme: ThemeState = {

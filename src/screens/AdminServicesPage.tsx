@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {styles as S} from '../theme/AppStyles';
 import {HeaderComponent} from '../components/HeaderComponent';
 import {ThemeContext} from '../context/ThemeContext';
-import {AdminServicesView} from '../components/services/adminServices';
+import {AdminServicesView} from '../components/services/admin/adminServices';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {StackScreenProps} from '@react-navigation/stack';
 

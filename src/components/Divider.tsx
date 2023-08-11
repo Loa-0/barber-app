@@ -2,8 +2,11 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {globalColors} from '../theme/AppStyles';
 
-export const Divider = () => {
-  return <View style={styles.container} />;
+type DividerProps = {
+  heig?: number;
+};
+export const Divider = ({heig = 5}: DividerProps) => {
+  return <View style={{...styles.container, height: heig}} />;
 };
 
 const styles = StyleSheet.create({
@@ -18,7 +21,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
-
     elevation: 10,
   },
 });
